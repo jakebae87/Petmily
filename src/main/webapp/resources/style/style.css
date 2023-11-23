@@ -1,0 +1,22 @@
+h1 {
+	text-align: center;
+}
+
+table {
+	border: 2px solid;
+	border-collapse: collapse;
+	text-align: center;
+	width: 100%;
+	height: 10%;
+}
+
+th, td {
+	border: 1px solid;
+	padding: 10px 5px;
+}
+
+th {
+	background-color: teal;
+	width: 25%;
+	color: white;
+}
