@@ -21,4 +21,8 @@ public interface BoardMapper {
 
 	int updateNotice(NoticeDTO dto);
 
+	int insertNotice(NoticeDTO dto);
+
+	int deleteNotice(NoticeDTO dto);
+
 }

@@ -5,6 +5,31 @@
 <head>
 <title>Board List</title>
 <link rel="stylesheet" type="text/css" href="/resources/style/style.css" />
+<script type="text/javascript">
+	function openInsertForm() {
+		const popup = window.open('noticeInsertForm', 'popup',
+				'width=600, height=400');
+
+		const checkPopupClosed = setInterval(function() {
+			if (popup.closed) {
+				clearInterval(checkPopupClosed);
+				location.reload(); // 목록 새로고침
+			}
+		}, 1000); // 1초마다 확인
+	}
+
+	function openDetail(id) {
+		const popup = window.open('noticeDetail?notice_id='+id, 'popup',
+				'width=600, height=400');
+
+		const checkPopupClosed = setInterval(function() {
+			if (popup.closed) {
+				clearInterval(checkPopupClosed);
+				location.reload(); // 목록 새로고침
+			}
+		}, 1000); // 1초마다 확인
+	}
+</script>
 </head>
 <body>
 	<h1>관리자페이지</h1>
@@ -30,7 +55,7 @@
 	</table>
 	<div id="newPage">
 		<h2>[공지사항 목록 페이지]</h2>
-		<button id="crud">글쓰기</button>
+		<button id="crud" onclick="openInsertForm()">글쓰기</button>
 		<br> <br>
 		<table id="boardTable">
 			<tr>
@@ -44,13 +69,13 @@
 			<c:if test="${not empty requestScope.notice}">
 				<c:forEach var="s" items="${requestScope.notice}">
 					<tr>
-						<td><a href="noticeDetail?notice_id=${s.notice_id}"
-							onclick="window.open(this.href, '_blank', 'width=600, height=400'); return false;">${s.notice_title}</a></td>
+						<td><a onclick="openDetail(${s.notice_id})">${s.notice_title}</a></td>
 						<td>${s.notice_writer}</td>
 						<td>${s.notice_count}</td>
 						<td>${s.notice_content}</td>
 						<td>${s.notice_regdate}</td>
-						<td><a href="delete?id=${s.notice_id}">삭제</a></td>
+						<td><a href="noticeDelete?notice_id=${s.notice_id}"
+							onclick="return confirm('삭제하시겠습니까?');">삭제</a></td>
 					</tr>
 				</c:forEach>
 			</c:if>

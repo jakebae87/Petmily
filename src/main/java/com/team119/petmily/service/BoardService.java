@@ -24,5 +24,9 @@ public interface BoardService {
 	NoticeDTO getNotice(NoticeDTO dto);
 	
 	int updateNotice(NoticeDTO dto);
+	
+	int insertNotice(NoticeDTO dto);
+
+	int deleteNotice(NoticeDTO dto);
 
 }

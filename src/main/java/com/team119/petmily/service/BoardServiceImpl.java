@@ -32,10 +32,12 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getReviewList();
 	}
 
+	@Override
 	public List<FaqDTO> getFaqList() {
 		return boardMapper.getFaqList();
 	}
 
+	@Override
 	public NoticeDTO getNotice(NoticeDTO dto) {
 		return boardMapper.getNotice(dto);
 	}
@@ -43,6 +45,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int updateNotice(NoticeDTO dto) {
 		return boardMapper.updateNotice(dto);
+	}
+
+	@Override
+	public int insertNotice(NoticeDTO dto) {
+		return boardMapper.insertNotice(dto);
+	}
+
+	@Override
+	public int deleteNotice(NoticeDTO dto) {
+		return boardMapper.deleteNotice(dto);
 	}
 
 } // class
