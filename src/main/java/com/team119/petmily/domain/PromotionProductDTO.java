@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PromotionProductDTO {
-	private int PROMOTION_ID;
-	private String PROMOTION_NAME;
-	private String PROMOTION_IMAGE;
-	private LocalDateTime PROMOTION_START;
-	private LocalDateTime PROMOTION_END;
-	private int PROMOTION_DISCOUNT;
-	private String PROMOTION_VALUE1;
+	private int prormotion_id;
+	private String promotion_name;
+	private String promotion_image;
+	private LocalDateTime promotion_start;
+	private LocalDateTime promotion_end;
+	private int promotion_discount;
+	private String promotion_value1;
 }

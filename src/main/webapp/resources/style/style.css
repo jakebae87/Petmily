@@ -1,8 +1,25 @@
-h1 {
+h1, h2 {
 	text-align: center;
 }
 
-table {
+a {
+	text-decoration-line: none;
+}
+
+a:visited {
+	color: black;
+}
+
+/* CRUD 버튼 스타일 */
+#crud {
+	text-align: end;
+	padding: 10px 10px;
+}
+/* CRUD 버튼 스타일 끝*/
+
+
+/* 메인페이지 테이블 스타일 */
+#mainTable {
 	border: 2px solid;
 	border-collapse: collapse;
 	text-align: center;
@@ -10,13 +27,71 @@ table {
 	height: 10%;
 }
 
-th, td {
+#mainTable th, td {
 	border: 1px solid;
 	padding: 10px 5px;
 }
 
-th {
+#mainTable th {
 	background-color: teal;
 	width: 25%;
 	color: white;
 }
+/* 메인페이지 테이블 스타일 끝 */
+
+/* ------------------------------------------------------------------- */
+
+/* 서브페이지 테이블 스타일 */
+#subTable {
+	border: 2px solid;
+	border-collapse: collapse;
+	text-align: center;
+	width: 100%;
+	height: 5%;
+}
+
+#subTable th, td {
+	border: 1px solid;
+	padding: 5px 5px;
+}
+
+#subTable th {
+	background-color: skyblue;
+	width: 25%;
+	color: white;
+}
+/* 서브페이지 테이블 스타일 끝 */
+
+/* ------------------------------------------------------------------- */
+
+/* 게시글페이지 테이블 스타일 */
+#boardTable {
+	border: 2px solid;
+	border-collapse: collapse;
+	text-align: center;
+	width: 100%;
+	height: 10%;
+}
+
+#boardTable th, td {
+	border: 1px solid;
+	padding: 5px 5px;
+}
+/* 게시글페이지 테이블 스타일 끝 */
+
+/* ------------------------------------------------------------------- */
+
+/* 게시글페이지 테이블 스타일 */
+#boardDetail {
+	border: 2px solid;
+	border-collapse: collapse;
+	text-align: center;
+	width: 70%;
+	height: 10%;
+}
+
+#boardDetail th, td {
+	border: 1px solid;
+	padding: 5px 5px;
+}
+/* 게시글페이지 테이블 스타일 끝 */

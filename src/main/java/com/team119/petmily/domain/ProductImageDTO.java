@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductImageDTO {
-	private int PIMAGE_ID;
-	private int PRODUCT_ID;
-	private String PRODUCT_IMAGEPATH;
-	private String PRODUCT_VALUE1;
+	private int pimage_ID;
+	private int product_id;
+	private String product_imagepath;
+	private String product_value1;
 }

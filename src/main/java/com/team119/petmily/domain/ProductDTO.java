@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
-	private int PRODUCT_ID;
-	private int PROMOTION_ID;
-	private String PRODUCT_KIND;
-	private String PRODUCT_CATEGORY;
-	private String PRODUCT_NAME;
-	private String PRODUCT_DESCRIPTION;
-	private int PRODUCT_PRICE;
-	private int PRODUCT_STOCK;
-	private int PRODUCT_SALES;
-	private LocalDateTime PRODUCT_REGDATE;
-	private String PRODUCT_MAINIMAGEPATH;
-	private double PRODUCT_RATING;
+	private int product_id;
+	private int promotion_id;
+	private String product_kind;
+	private String product_category;
+	private String product_name;
+	private String product_description;
+	private int product_price;
+	private int product_stock;
+	private int product_sales;
+	private LocalDateTime product_regdate;
+	private String product_mainimagepath;
+	private double product_rating;
 }

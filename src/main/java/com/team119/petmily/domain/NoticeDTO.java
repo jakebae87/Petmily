@@ -1,6 +1,6 @@
 package com.team119.petmily.domain;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NoticeDTO {
 
-	private int NOTICE_ID;
-	private String NOTICE_TITLE; 
-	private String NOTICE_WRITER;
-	private int NOTICE_COUNT;
-	private String NOTICE_CONTENT;
-	private LocalDateTime NOTICE_REGDATE;
+	private int notice_id; 
+	private String notice_title; 
+	private String notice_writer;
+	private int notice_count;
+	private String notice_content;
+	private Date notice_regdate;
 }

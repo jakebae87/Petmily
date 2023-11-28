@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-	
-	private String USER_ID;
-	private String USER_PASSWORD;
-	private String USER_NAME;
-	private String USER_EMAIL;
-	private String USER_BIRTHDAY;
-	private String USER_PHONE;
-	private String ZIPCODE;
-	private String ADDR;
-	private String ADDR_DETAIL;
+   
+   private String user_id;
+   private String user_password;
+   private String user_name;
+   private String user_email;
+   private String user_birthday;
+   private String user_phone;
+   private String zipcode;
+   private String addr;
+   private String addr_detail;
 }

@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewReplyDTO {
 
-	private int REPLY_ID;
-	private int REVIEW_ID;
-	private String REPLY_WRITER;
-	private String REPLY_CONTENT;
-	private LocalDateTime REPLY_REGDATE;
+	private int reply_id;
+	private int review_id;
+	private String reply_writer;
+	private String reply_content;
+	private LocalDateTime reply_regdate;
 }

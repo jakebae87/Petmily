@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventDTO {
-	private int EVENT_ID;
-	private String EVENT_NAME;
-	private String EVENT_DESCRIPTION;
-	private LocalDateTime EVENT_START;
-	private LocalDateTime EVENT_END;
-	private String EVENT_IMAGEPATH;
+	private int event_id;
+	private String event_name;
+	private String event_description;
+	private LocalDateTime event_start;
+	private LocalDateTime event_end;
+	private String event_imagepath;
 }

@@ -1,6 +1,6 @@
 package com.team119.petmily.domain;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewDTO {
 
-	private int REVIEW_ID;
-	private String REVIEW_WRITER;
-	private String REVIEW_TITLE;
-	private int REVIEW_POINT;
-	private int REVIEW_COUNT;
-	private String REVIEW_CONTENT;
-	private LocalDateTime REVIEW_REGDATE;
-	private String REVIEW_IMAGE1;
-	private String REVIEW_IMAGE2;
+	private int review_id;
+	private String review_writer;
+	private String review_title;
+	private int review_point;
+	private int review_count;
+	private String review_content;
+	private Date review_regdate;
+	private String review_image1;
+	private String review_image2;
 }

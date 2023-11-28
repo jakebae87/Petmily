@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderProductDTO {
-	private int ORDER_KEY;
-	private String USER_ID;
-	private int ORDER_TOTAL_PRICE;
-	private LocalDateTime ORDER_DATE;
-	private String PAY_METHOD;
-	private String ORDER_NAME;
-	private String ORDER_EMAIL;
-	private String ORDER_TEL;
-	private String ORDER_ZIPCODE;
-	private String ORDER_ADDR;
-	private String ORDER_ADDR_DETAIL;
-	private String ORDER_REQ;
+	private int order_key;
+	private String user_id;
+	private int order_total_price;
+	private LocalDateTime order_date;
+	private String pay_method;
+	private String order_name;
+	private String order_email;
+	private String order_tel;
+	private String order_zipcode;
+	private String order_addr;
+	private String order_addr_detail;
+	private String order_req;
 }
