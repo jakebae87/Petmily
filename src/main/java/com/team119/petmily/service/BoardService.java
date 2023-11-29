@@ -47,6 +47,10 @@ public interface BoardService {
 	int deleteFaq(FaqDTO dto);
 
 	ReviewDTO getReview(ReviewDTO dto);
+
+	int reviewUpdate(ReviewDTO dto);
+
+	int deleteReview(ReviewDTO dto);
 	
 	// Inquiry end
 

@@ -33,12 +33,24 @@
 					<td>${requestScope.review.review_count}</td>
 				</tr>
 				<tr>
+					<th>평점</th>
+					<td>${requestScope.review.review_point}</td>
+				</tr>
+				<tr>
 					<th>글내용</th>
 					<td>${requestScope.review.review_content}</td>
 				</tr>
 				<tr>
 					<th>작성일</th>
 					<td>${requestScope.review.review_regdate}</td>
+				</tr>
+				<tr>
+					<th>후기 이미지1</th>
+					<td><img alt="사진1" src="/${requestScope.review.review_image1}" width="100" height="120"></td>
+				</tr>
+				<tr>
+					<th>후기 이미지2</th>
+					<td><img alt="사진2" src="/${requestScope.review.review_image2}" width="100" height="120"></td>
 				</tr>
 			</table>
 		</c:if>

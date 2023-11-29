@@ -51,7 +51,6 @@ public class BoardController {
 
 	// --------------------SHOW BOARD LIST END--------------------
 
-	
 	// --------------------NOTICE CRUD--------------------
 
 	// Notice Detail
@@ -104,7 +103,6 @@ public class BoardController {
 
 	// --------------------NOTICE CRUD END--------------------
 
-	
 	// --------------------INQUIRY CRUD--------------------
 
 	// Inquiry Detail
@@ -121,7 +119,6 @@ public class BoardController {
 
 	// --------------------INQUIRY CRUD END--------------------
 
-	
 	// --------------------FAQ CRUD--------------------
 
 	// Faq Detail
@@ -140,42 +137,22 @@ public class BoardController {
 	@GetMapping(value = "/faqInsertForm")
 	public void faqInsert() {
 	}
-	
+
 	// --------------------FAQ CRUD END--------------------
-	
-	
-	
+
 	// --------------------REVIEW CRUD--------------------
-	
-	//Review Detail
+
+	// Review Detail
 	@GetMapping(value = "/reviewDetail")
 	public void selectReview(Model model, ReviewDTO dto) {
 		model.addAttribute("review", boardService.getReview(dto));
 	}
+
+	// Review UPDATE FORM
+	@GetMapping(value = "/reviewUpdateForm")
+	public void updateReview(Model model, ReviewDTO dto) {
+		model.addAttribute("review", boardService.getReview(dto));
+	}
+
 	// --------------------REVIEW CRUD END--------------------
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,15 +1,15 @@
 "use strict"
 
-// 1) Delete inquiry and reload list page
-function inquiryDelete(id) {
-	let url = "/inquiry/delete/" + id;
+// 1) Delete review and reload list page
+function reviewDelete(id) {
+	let url = "/review/delete/" + id;
 
 	if (confirm("삭제하시겠습니까?")) {
 		axios.delete(
 			url
 		).then(response => {
-			alert(`상품문의가 삭제 완료되었습니다.`);
-			inquiryList();
+			alert(`상품후기가 삭제 완료되었습니다.`);
+			reviewList();
 		}).catch(error => {
 			console.error(`에러 응답 = ${error.response},
 			error status = ${error.response.status},
@@ -18,23 +18,10 @@ function inquiryDelete(id) {
 	}
 }
 
-
-// 2) Show Inquiry List
-function inquiryList() {
-	axios.get(
-		'/board/inquiryList'
-	).then(response => {
-		document.getElementById('newPage').innerHTML = response.data;
-	}).catch(error => {
-		alert("error message :" + error.message);
-	})
-}
-
-
-// 3) Detail Review
+// 2) Detail Review
 function reviewDetail(id) {
 	const popup = window.open('/board/reviewDetail?review_id=' + id, 'popup',
-		'width=600, height=400');
+		'width=600, height=600');
 
 	const checkPopupClosed = setInterval(function () {
 		if (popup.closed) {
@@ -44,29 +31,24 @@ function reviewDetail(id) {
 	}, 1000); // 1초마다 확인
 }
 
-// 4) Update Inquiry answer
-function updateInquiryAnswer(id) {
-	let url = "/inquiry/update";
+// 3) Update Review
+function updateReview() {
+	let formData = new FormData(document.getElementById('updateReviewForm'));
 
 	if (confirm("수정하시겠습니까?")) {
-		axios({
-			url: url,
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			data: {
-				answer_content: document.getElementById('answer_content').value,
-				inquiry_id: id,
-			}
-
-		}).then(response => {
-			alert(`답변 수정 완료되었습니다.`);
-			window.close();
-			inquiryList();
-		}).catch(error => {
-			console.error(`에러 응답 = ${error.response},
-			error status = ${error.response.status},
-			error message = ${error.message}`);
-		});
+		axios.post(
+			'/review/update',
+			formData,
+			{
+				headers: { 'Content-Type': 'multipart/form-data' }
+			}).then(response => {
+				alert(`상품후기 수정 완료되었습니다.`);
+				window.close();
+				reviewList();
+			}).catch(error => {
+				if (error.response.status == '502') alert("입력 오류입니다.")
+				else alert("시스템 오류입니다." + error.message);
+			});
 	}
 }
 
@@ -98,6 +80,18 @@ function faqList() {
 function noticeList() {
 	axios.get(
 		'/board/noticeList'
+	).then(response => {
+		document.getElementById('newPage').innerHTML = response.data;
+	}).catch(error => {
+		alert("error message :" + error.message);
+	})
+}
+
+
+// ) Show Inquiry List
+function inquiryList() {
+	axios.get(
+		'/board/inquiryList'
 	).then(response => {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {

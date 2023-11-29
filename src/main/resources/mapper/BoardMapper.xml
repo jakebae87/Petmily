@@ -97,7 +97,16 @@
 		SELECT * FROM REVIEW WHERE REVIEW_ID = #{review_id}
 	</select>
 	
-	<!-- FAQ CRUD END-->
+	<update id="updateReview">
+		UPDATE REVIEW SET REVIEW_TITLE = #{review_title}, REVIEW_POINT = #{review_point}, REVIEW_CONTENT = #{review_content}, REVIEW_IMAGE1 = #{review_image1}, REVIEW_IMAGE2 = #{review_image2}
+		WHERE REVIEW_ID = #{review_id}
+	</update>
+	
+	<delete id="deleteReview">
+		DELETE FROM REVIEW WHERE REVIEW_ID = #{review_id}
+	</delete>
+	
+	<!-- REVIEW CRUD END-->
 </mapper>
 
 

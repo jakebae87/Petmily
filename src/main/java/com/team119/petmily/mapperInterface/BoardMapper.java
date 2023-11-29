@@ -41,4 +41,8 @@ public interface BoardMapper {
 
 	ReviewDTO getReview(ReviewDTO dto);
 
+	int updateReview(ReviewDTO dto);
+
+	int deleteReview(ReviewDTO dto);
+
 }
