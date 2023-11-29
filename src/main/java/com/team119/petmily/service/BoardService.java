@@ -6,6 +6,7 @@ import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.ReviewReplyDTO;
 
 public interface BoardService {
 
@@ -51,6 +52,8 @@ public interface BoardService {
 	int reviewUpdate(ReviewDTO dto);
 
 	int deleteReview(ReviewDTO dto);
+
+	List<ReviewReplyDTO> getReplyList(ReviewDTO dto);
 	
 	// Inquiry end
 

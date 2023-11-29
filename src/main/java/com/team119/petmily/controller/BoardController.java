@@ -12,6 +12,7 @@ import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.service.BoardService;
 
 import lombok.AllArgsConstructor;
@@ -146,6 +147,7 @@ public class BoardController {
 	@GetMapping(value = "/reviewDetail")
 	public void selectReview(Model model, ReviewDTO dto) {
 		model.addAttribute("review", boardService.getReview(dto));
+		model.addAttribute("reply", boardService.getReplyList(dto));
 	}
 
 	// Review UPDATE FORM

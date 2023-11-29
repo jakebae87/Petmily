@@ -9,6 +9,7 @@ import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.mapperInterface.BoardMapper;
 
 @Service
@@ -105,6 +106,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int deleteReview(ReviewDTO dto) {
 		return boardMapper.deleteReview(dto);
+	}
+
+	@Override
+	public List<ReviewReplyDTO> getReplyList(ReviewDTO dto) {
+		return boardMapper.getReplyList(dto);
 	}
 
 } // class

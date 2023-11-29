@@ -14,8 +14,8 @@
 	<div id="newPage">
 		<h2>[상품후기 상세페이지]</h2>
 		<button
-			onclick="location.href='reviewUpdateForm?review_id=${requestScope.review.review_id}'" id="crud">글수정
-		</button>
+			onclick="location.href='reviewUpdateForm?review_id=${requestScope.review.review_id}'"
+			id="crud">글수정</button>
 		<button id="crud" onclick="top.window.close()">창닫기</button>
 		<br> <br>
 		<c:if test="${not empty requestScope.review}">
@@ -46,13 +46,36 @@
 				</tr>
 				<tr>
 					<th>후기 이미지1</th>
-					<td><img alt="사진1" src="/${requestScope.review.review_image1}" width="100" height="120"></td>
+					<td><img alt="사진1" src="/${requestScope.review.review_image1}"
+						width="100" height="120"></td>
 				</tr>
 				<tr>
 					<th>후기 이미지2</th>
-					<td><img alt="사진2" src="/${requestScope.review.review_image2}" width="100" height="120"></td>
+					<td><img alt="사진2" src="/${requestScope.review.review_image2}"
+						width="100" height="120"></td>
 				</tr>
 			</table>
+		</c:if>
+		<br>
+		<c:if test="${not empty requestScope.reply}">
+			<hr><br>
+			<c:forEach var="s" items="${requestScope.reply }">
+				<table id="boardDetail">
+					<tr>
+						<th>작성자</th>
+						<td>${s.reply_writer}</td>
+					</tr>
+					<tr>
+						<th>댓글 내용</th>
+						<td>${s.reply_content}</td>
+					</tr>
+					<tr>
+						<th>댓글 작성일</th>
+						<td>${s.reply_regdate}</td>
+					</tr>
+				</table>
+				<br>
+			</c:forEach>
 		</c:if>
 	</div>
 

@@ -106,6 +106,13 @@
 		DELETE FROM REVIEW WHERE REVIEW_ID = #{review_id}
 	</delete>
 	
+	<select id="getReplyList" resultType="com.team119.petmily.domain.ReviewReplyDTO">
+		SELECT RR.REPLY_ID, RR.REPLY_WRITER, RR.REPLY_CONTENT, RR.REPLY_REGDATE
+		FROM REVIEW R LEFT JOIN REVIEW_REPLY RR
+		ON R.REVIEW_ID = RR.REVIEW_ID
+		WHERE R.REVIEW_ID = #{review_id};
+	</select>
+	
 	<!-- REVIEW CRUD END-->
 </mapper>
 
