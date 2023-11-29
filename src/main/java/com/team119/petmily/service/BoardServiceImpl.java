@@ -57,4 +57,44 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.deleteNotice(dto);
 	}
 
+	@Override
+	public InquiryDTO getInquiry(InquiryDTO dto) {
+		return boardMapper.getInquiry(dto);
+	}
+
+	@Override
+	public int updateInquiry(InquiryDTO dto) {
+		return boardMapper.updateInquiry(dto);
+	}
+
+	@Override
+	public int deleteInquiry(InquiryDTO dto) {
+		return boardMapper.deleteInquiry(dto);
+	}
+
+	@Override
+	public FaqDTO getFaq(FaqDTO dto) {
+		return boardMapper.getFaq(dto);
+	}
+
+	@Override
+	public int updateFaq(FaqDTO dto) {
+		return boardMapper.updateFaq(dto);
+	}
+
+	@Override
+	public int insertFaq(FaqDTO dto) {
+		return boardMapper.insertFaq(dto);
+	}
+
+	@Override
+	public int deleteFaq(FaqDTO dto) {
+		return boardMapper.deleteFaq(dto);
+	}
+
+	@Override
+	public ReviewDTO getReview(ReviewDTO dto) {
+		return boardMapper.getReview(dto);
+	}
+
 } // class

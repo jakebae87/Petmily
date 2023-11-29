@@ -6,27 +6,30 @@
 <title>Board List</title>
 <link rel="stylesheet" type="text/css" href="/resources/style/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="/resources/javascript/notice.js"></script>
+<script src="/resources/javascript/inquiry.js"></script>
 </head>
 <body>
 	<!-- -------------비동기 페이지------------- -->
 	<div id="newPage">
-		<h2>[공지사항 작성페이지]</h2>
+		<h2>[공지사항 수정페이지]</h2>
+		<button id="crud" onclick="history.back()">뒤로</button>
 		<button id="crud" onclick="top.window.close()">창닫기</button>
 		<br> <br>
-		<form action="noticeInsert" method="post">
+		<form action="inquiryUpdate" method="post">
 			<table id="boardDetail">
 				<tr>
-					<th>글제목</th>
-					<td><input type="text" id="notice_title" /></td>
+					<th>답변 내용</th>
+					<td><input type="text" id="answer_content"
+						value="${requestScope.inquiry.answer_content}"></td>
 				</tr>
 				<tr>
-					<th>글내용</th>
-					<td><input type="text" id="notice_content" /></td>
+					<th>답변 작성일</th>
+					<td>${requestScope.inquiry.answer_regdate}</td>
 				</tr>
 			</table>
 		</form>
-		<button id="crud" onclick="noticeInsert()">확인</button>
+		<button id="crud"
+			onclick="updateInquiryAnswer(${requestScope.inquiry.inquiry_id})">확인</button>
 	</div>
 
 	<!-- -------------비동기 페이지 끝------------- -->

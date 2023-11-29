@@ -4,6 +4,7 @@
 	namespace="com.team119.petmily.mapperInterface.BoardMapper">
 
 	<!-- BOADR LIST -->
+	
 	<select id="getNoticeList"
 		resultType="com.team119.petmily.domain.NoticeDTO">
 		SELECT * FROM NOTICE ORDER BY NOTICE_ID DESC;
@@ -47,7 +48,64 @@
 	<delete id="deleteNotice">
 		DELETE FROM NOTICE WHERE NOTICE_ID = #{notice_id}
 	</delete>
-
+	
 	<!-- NOTICE CRUD END -->
 
+
+	<!-- INQUIRY CRUD -->
+	
+	<select id="getInquiry"
+		resultType="com.team119.petmily.domain.InquiryDTO">
+		SELECT * FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
+	</select>
+
+	<update id="updateInquiry">
+		UPDATE INQUIRY SET ANSWER_CONTENT = #{answer_content}, ANSWER_REGDATE = CURRENT_TIMESTAMP WHERE INQUIRY_ID = #{inquiry_id}
+	</update>
+	
+	<delete id="deleteInquiry">
+		DELETE FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
+	</delete>
+	
+	<!-- INQUIRY CRUD END -->
+	
+	
+	<!-- FAQ CRUD -->
+	
+	<select id="getFaq" resultType="com.team119.petmily.domain.FaqDTO">
+		SELECT * FROM FAQ WHERE FAQ_ID = #{faq_id}
+	</select>
+	
+	<update id="updateFaq">
+		UPDATE FAQ SET FAQ_TITLE = #{faq_title}, QUESTION_TYPE = #{question_type}, FAQ_CONTENT = #{faq_content}, FAQ_REGDATE = CURRENT_TIMESTAMP WHERE FAQ_ID = #{faq_id}
+	</update>
+		
+	<insert id="insertFaq">
+		INSERT INTO FAQ (FAQ_TITLE, QUESTION_TYPE, FAQ_CONTENT) VALUES (#{faq_title},#{question_type},#{faq_content})
+	</insert>
+	
+	<delete id="deleteFaq">
+		DELETE FROM FAQ WHERE FAQ_ID = #{faq_id}
+	</delete>
+	
+	<!-- FAQ CRUD END-->
+	
+	
+	<!-- REVIEW CRUD-->
+	
+	<select id="getReview" resultType="com.team119.petmily.domain.ReviewDTO">
+		SELECT * FROM REVIEW WHERE REVIEW_ID = #{review_id}
+	</select>
+	
+	<!-- FAQ CRUD END-->
 </mapper>
+
+
+
+
+
+
+
+
+
+

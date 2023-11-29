@@ -25,4 +25,20 @@ public interface BoardMapper {
 
 	int deleteNotice(NoticeDTO dto);
 
+	InquiryDTO getInquiry(InquiryDTO dto);
+
+	int updateInquiry(InquiryDTO dto);
+
+	int deleteInquiry(InquiryDTO dto);
+
+	FaqDTO getFaq(FaqDTO dto);
+
+	int updateFaq(FaqDTO dto);
+
+	int insertFaq(FaqDTO dto);
+
+	int deleteFaq(FaqDTO dto);
+
+	ReviewDTO getReview(ReviewDTO dto);
+
 }

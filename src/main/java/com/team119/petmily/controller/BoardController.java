@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.team119.petmily.domain.FaqDTO;
+import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.service.BoardService;
 
 import lombok.AllArgsConstructor;
@@ -48,6 +51,7 @@ public class BoardController {
 
 	// --------------------SHOW BOARD LIST END--------------------
 
+	
 	// --------------------NOTICE CRUD--------------------
 
 	// Notice Detail
@@ -83,18 +87,7 @@ public class BoardController {
 	}
 
 	// Notice INSERT
-	@PostMapping(value = "/noticeInsert")
-	public String insert(Model model, NoticeDTO dto) {
-		String uri = "";
-
-		if (boardService.insertNotice(dto) > 0) {
-			uri = "redirect:noticeList";
-		} else {
-			model.addAttribute("notice", dto);
-			uri = "board/noticeInsert";
-		}
-		return uri;
-	}
+	// AXIOS 사용하여 비동기 방식으로 NOTICE 글작성
 
 	// Notice DELETE
 	@GetMapping(value = "/noticeDelete")
@@ -110,4 +103,79 @@ public class BoardController {
 	}
 
 	// --------------------NOTICE CRUD END--------------------
+
+	
+	// --------------------INQUIRY CRUD--------------------
+
+	// Inquiry Detail
+	@GetMapping(value = "/inquiryDetail")
+	public void selectInquiry(Model model, InquiryDTO dto) {
+		model.addAttribute("inquiry", boardService.getInquiry(dto));
+	}
+
+	// Inquiry UPDATE FORM
+	@GetMapping(value = "/inquiryUpdateForm")
+	public void updateInquiry(Model model, InquiryDTO dto) {
+		model.addAttribute("inquiry", boardService.getInquiry(dto));
+	}
+
+	// --------------------INQUIRY CRUD END--------------------
+
+	
+	// --------------------FAQ CRUD--------------------
+
+	// Faq Detail
+	@GetMapping(value = "/faqDetail")
+	public void selectFaq(Model model, FaqDTO dto) {
+		model.addAttribute("faq", boardService.getFaq(dto));
+	}
+
+	// Faq UPDATE FORM
+	@GetMapping(value = "/faqUpdateForm")
+	public void updateFaq(Model model, FaqDTO dto) {
+		model.addAttribute("faq", boardService.getFaq(dto));
+	}
+
+	// Faq INSERT FORM
+	@GetMapping(value = "/faqInsertForm")
+	public void faqInsert() {
+	}
+	
+	// --------------------FAQ CRUD END--------------------
+	
+	
+	
+	// --------------------REVIEW CRUD--------------------
+	
+	//Review Detail
+	@GetMapping(value = "/reviewDetail")
+	public void selectReview(Model model, ReviewDTO dto) {
+		model.addAttribute("review", boardService.getReview(dto));
+	}
+	// --------------------REVIEW CRUD END--------------------
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

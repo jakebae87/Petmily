@@ -21,6 +21,7 @@ public interface BoardService {
 	// Faq 전체 목록 조회
 	List<FaqDTO> getFaqList();
 
+	// Notice
 	NoticeDTO getNotice(NoticeDTO dto);
 	
 	int updateNotice(NoticeDTO dto);
@@ -28,5 +29,26 @@ public interface BoardService {
 	int insertNotice(NoticeDTO dto);
 
 	int deleteNotice(NoticeDTO dto);
+	// Notice end
+
+	// Inquiry
+	InquiryDTO getInquiry(InquiryDTO dto);
+	
+	int updateInquiry(InquiryDTO dto);
+
+	int deleteInquiry(InquiryDTO dto);
+
+	FaqDTO getFaq(FaqDTO dto);
+
+	int updateFaq(FaqDTO dto);
+
+	int insertFaq(FaqDTO dto);
+
+	int deleteFaq(FaqDTO dto);
+
+	ReviewDTO getReview(ReviewDTO dto);
+	
+	// Inquiry end
+
 
 }
