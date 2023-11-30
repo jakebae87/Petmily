@@ -96,3 +96,42 @@ a:visited {
 	padding: 5px 5px;
 }
 /* 게시글페이지 테이블 스타일 끝 */
+
+
+/* ------------------------------------------------------------------- */
+/* Product 테이블 스타일 */
+
+#pTableListArea,
+#resultArea1,
+#resultArea2,
+#resultArea1 th,
+#resultArea2 th,
+#resultArea1 td,
+#resultArea2 td {
+	text-align: center;
+}
+
+#resultArea1 th,
+#resultArea2 th {
+	padding: 5px 5px;
+	background-color: teal;
+	color: white;
+}
+
+#resultArea1 table,
+#resultArea2 table {
+	margin-left:auto; 
+    margin-right:auto;
+}
+
+#resultArea1 td > a,
+#resultArea2 td > a {
+	font-weight: bold;
+    color: #0080ff;
+}
+
+.addData {
+	padding: 5px 5px;
+	font-weight: bold;
+}
+/* Product 테이블 스타일 끝 */

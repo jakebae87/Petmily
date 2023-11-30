@@ -48,7 +48,6 @@
 	  </c:if>
 	</table>
 	</form>
-	
-	&nbsp;<a href="/home">Home</a>&nbsp;
+	<hr>
 </body>
 </html>

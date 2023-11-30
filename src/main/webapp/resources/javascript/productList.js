@@ -85,3 +85,21 @@ function eventf() {
 	document.getElementById('resultArea2').innerHTML="";
 	
 } // eventf
+
+
+// 하나의 상품 아이디에 대한 상품 이미지 테이블 리스트
+function showImages(id) {
+	let url = "/product/pImageList/" + id;
+	
+	axios.get(
+		url
+	).then(response => {
+		console.log("** showImages response 성공 **");
+		document.getElementById('resultArea1').innerHTML=response.data;
+	}).catch(err => {
+		alert("** showImages response 실패 => " + err.message);
+	});
+	
+	document.getElementById('resultArea2').innerHTML="";
+	
+} // showImages

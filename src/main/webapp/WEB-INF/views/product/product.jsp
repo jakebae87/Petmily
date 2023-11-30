@@ -37,7 +37,7 @@
 				<tr>
 					<td><a onclick="pDelete('${s.product_id}')" id="${s.product_id}">삭제</a></td>
 					<td><a onclick="pUpdate('${s.product_id}')" id="${s.product_id}">수정</a></td>
-					<td>${s.product_id}</td>
+					<td><a onclick="showImages('${s.product_id}')" id="${s.product_id}">${s.product_id}</a></td>
 					<td>${s.promotion_id}</td>
 					<td>${s.product_kind}</td>
 					<td>${s.product_category}</td>
@@ -60,9 +60,7 @@
 		</c:if>
 	</table>
 	
-	&nbsp;<a onclick="pInsertTable()">테이블 데이터 추가</a>&nbsp;
+	&nbsp;<a class="addData" onclick="pInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
-	
-	&nbsp;<a href="/home">Home</a>&nbsp;
 </body>
 </html>

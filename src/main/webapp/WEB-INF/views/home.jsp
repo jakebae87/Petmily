@@ -31,5 +31,7 @@
 	<div id="resultArea2"></div>
 	<div id="newPage">
 	</div>
+	
+	&nbsp;<a href="/home">[Home]</a>&nbsp;
 </body>
 </html>

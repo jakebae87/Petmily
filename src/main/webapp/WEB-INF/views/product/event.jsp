@@ -48,9 +48,7 @@
 		</c:if>
 	</table>
 	
-	&nbsp;<a onclick="eInsertTable()">테이블 데이터 추가</a>&nbsp;
+	&nbsp;<a class="addData" onclick="eInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
-	
-	&nbsp;<a href="/home">Home</a>&nbsp;
 </body>
 </html>

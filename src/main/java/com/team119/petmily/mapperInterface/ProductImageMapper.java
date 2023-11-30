@@ -8,6 +8,8 @@ public interface ProductImageMapper {
 	
 	List<ProductImageDTO> selectList();
 	
+	List<ProductImageDTO> selectListByID(ProductImageDTO dto);
+	
 	ProductImageDTO selectOne(ProductImageDTO dto);
 	
 	int insert(ProductImageDTO dto);

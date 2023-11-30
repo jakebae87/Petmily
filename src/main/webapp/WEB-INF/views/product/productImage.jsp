@@ -44,9 +44,7 @@
 		</c:if>
 	</table>
 	
-	&nbsp;<a onclick="piInsertTable()">테이블 데이터 추가</a>&nbsp;
+	&nbsp;<a class="addData" onclick="piInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
-	
-	&nbsp;<a href="/home">Home</a>&nbsp;
 </body>
 </html>

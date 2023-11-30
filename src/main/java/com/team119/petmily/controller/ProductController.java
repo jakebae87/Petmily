@@ -244,6 +244,14 @@ public class ProductController {
 		return "/product/productImage";
 	}
 	
+	@GetMapping("/pImageList/{ii}")
+	public String pImageListID(@PathVariable("ii") int id, ProductImageDTO dto, Model model) {
+		dto.setProduct_id(id);
+		model.addAttribute("pitable", piservice.selectListByID(dto));
+		log.info("** pImageListID 성공 **");
+		return "/product/productImage";
+	} // pImageListID
+	
 	@GetMapping("/piInsertForm")
 	public String piInsertForm(Model model) {
 		model.addAttribute("pitable", piservice.selectList());

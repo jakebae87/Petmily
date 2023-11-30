@@ -7,6 +7,10 @@
 		select * from PRODUCT_IMAGE
 	</select>
 	
+	<select id="selectListByID" resultType="com.team119.petmily.domain.ProductImageDTO">
+		select * from PRODUCT_IMAGE where product_id=#{product_id}
+	</select>
+	
 	<select id="selectOne" resultType="com.team119.petmily.domain.ProductImageDTO">
 		select * from PRODUCT_IMAGE where pimage_id=#{pimage_id}
 	</select>
