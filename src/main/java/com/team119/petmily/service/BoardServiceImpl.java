@@ -11,6 +11,7 @@ import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.mapperInterface.BoardMapper;
+import com.team119.petmily.pagination.Criteria;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -22,22 +23,64 @@ public class BoardServiceImpl implements BoardService {
 	public List<NoticeDTO> getNoticeList() {
 		return boardMapper.getNoticeList();
 	}
+	@Override
+	public List<NoticeDTO> getNoticePagedList(Criteria cri) {
+		return boardMapper.getNoticePagedList(cri);
+	}
+	@Override
+	public int noticeTotalCount() {
+		return boardMapper.noticeTotalCount();
+	}
+	
+	
 
 	@Override
 	public List<InquiryDTO> getInquiryList() {
 		return boardMapper.getInquiryList();
 	}
+	@Override
+	public List<InquiryDTO> getInquiryPagedList(Criteria cri) {
+		return boardMapper.getInquiryPagedList(cri);
+	}
+	@Override
+	public int inquiryTotalCount() {
+		return boardMapper.inquiryTotalCount();
+	}
 
+	
+	
 	@Override
 	public List<ReviewDTO> getReviewList() {
 		return boardMapper.getReviewList();
 	}
-
+	@Override
+	public List<ReviewDTO> getReviewPagedList(Criteria cri) {
+		return boardMapper.getReviewPagedList(cri);
+	}
+	@Override
+	public int reviewTotalCount() {
+		return boardMapper.reviewTotalCount();
+	}
+	
+	
+	
+	
+	
 	@Override
 	public List<FaqDTO> getFaqList() {
 		return boardMapper.getFaqList();
 	}
-
+	@Override
+	public List<FaqDTO> getFaqPagedList(Criteria cri) {
+		return boardMapper.getFaqPagedList(cri);
+	}
+	@Override
+	public int faqTotalCount() {
+		return boardMapper.faqTotalCount();
+	}
+	
+	
+	
 	@Override
 	public NoticeDTO getNotice(NoticeDTO dto) {
 		return boardMapper.getNotice(dto);

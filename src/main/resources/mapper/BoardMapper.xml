@@ -3,26 +3,82 @@
 <mapper
 	namespace="com.team119.petmily.mapperInterface.BoardMapper">
 
-	<!-- BOADR LIST -->
-	
+	<!-- NOTICE LIST -->
 	<select id="getNoticeList"
 		resultType="com.team119.petmily.domain.NoticeDTO">
 		SELECT * FROM NOTICE ORDER BY NOTICE_ID DESC;
 	</select>
 
+	<select id="getNoticePagedList"
+		resultType="com.team119.petmily.domain.NoticeDTO">
+		SELECT * FROM NOTICE
+		ORDER BY NOTICE_ID DESC
+		LIMIT #{sno},
+		#{rowsPerPage}
+	</select>
+
+	<select id="noticeTotalCount" resultType="int">
+		SELECT COUNT(*) FROM
+		NOTICE
+	</select>
+
+
+	<!-- INQUIRY LIST -->
 	<select id="getInquiryList"
 		resultType="com.team119.petmily.domain.InquiryDTO">
 		SELECT * FROM INQUIRY ORDER BY INQUIRY_ID DESC;
 	</select>
 
+	<select id="getInquiryPagedList"
+		resultType="com.team119.petmily.domain.InquiryDTO">
+		SELECT * FROM INQUIRY
+		ORDER BY INQUIRY_ID DESC
+		LIMIT #{sno},
+		#{rowsPerPage}
+	</select>
+
+	<select id="inquiryTotalCount" resultType="int">
+		SELECT COUNT(*) FROM
+		INQUIRY
+	</select>
+
+
+	<!-- REVIEW LIST -->
 	<select id="getReviewList"
 		resultType="com.team119.petmily.domain.ReviewDTO">
 		SELECT * FROM REVIEW ORDER BY REVIEW_ID DESC;
 	</select>
 
+	<select id="getReviewPagedList"
+		resultType="com.team119.petmily.domain.ReviewDTO">
+		SELECT * FROM REVIEW
+		ORDER BY REVIEW_ID DESC
+		LIMIT #{sno},
+		#{rowsPerPage}
+	</select>
+
+	<select id="reviewTotalCount" resultType="int">
+		SELECT COUNT(*) FROM
+		REVIEW
+	</select>
+
+	<!-- FAQ LIST -->
 	<select id="getFaqList"
 		resultType="com.team119.petmily.domain.FaqDTO">
 		SELECT * FROM FAQ ORDER BY FAQ_ID DESC;
+	</select>
+	
+	<select id="getFaqPagedList"
+		resultType="com.team119.petmily.domain.FaqDTO">
+		SELECT * FROM FAQ
+		ORDER BY FAQ_ID DESC
+		LIMIT #{sno},
+		#{rowsPerPage}
+	</select>
+
+	<select id="faqTotalCount" resultType="int">
+		SELECT COUNT(*) FROM
+		FAQ
 	</select>
 	<!-- BOADR LIST END -->
 
@@ -35,8 +91,10 @@
 	</select>
 
 	<update id="updateNotice">
-		UPDATE NOTICE SET NOTICE_TITLE = #{notice_title},
-		NOTICE_CONTENT = #{notice_content} WHERE NOTICE_ID = #{notice_id}
+		UPDATE NOTICE
+		SET NOTICE_TITLE = #{notice_title},
+		NOTICE_CONTENT = #{notice_content}
+		WHERE NOTICE_ID = #{notice_id}
 	</update>
 
 	<insert id="insertNotice">
@@ -48,72 +106,91 @@
 	<delete id="deleteNotice">
 		DELETE FROM NOTICE WHERE NOTICE_ID = #{notice_id}
 	</delete>
-	
+
 	<!-- NOTICE CRUD END -->
 
 
 	<!-- INQUIRY CRUD -->
-	
+
 	<select id="getInquiry"
 		resultType="com.team119.petmily.domain.InquiryDTO">
 		SELECT * FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
 	</select>
 
 	<update id="updateInquiry">
-		UPDATE INQUIRY SET ANSWER_CONTENT = #{answer_content}, ANSWER_REGDATE = CURRENT_TIMESTAMP WHERE INQUIRY_ID = #{inquiry_id}
+		UPDATE INQUIRY SET ANSWER_CONTENT =
+		#{answer_content}, ANSWER_REGDATE = CURRENT_TIMESTAMP WHERE INQUIRY_ID
+		= #{inquiry_id}
 	</update>
-	
+
 	<delete id="deleteInquiry">
 		DELETE FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
 	</delete>
-	
+
 	<!-- INQUIRY CRUD END -->
-	
-	
+
+
 	<!-- FAQ CRUD -->
-	
-	<select id="getFaq" resultType="com.team119.petmily.domain.FaqDTO">
+
+	<select id="getFaq"
+		resultType="com.team119.petmily.domain.FaqDTO">
 		SELECT * FROM FAQ WHERE FAQ_ID = #{faq_id}
 	</select>
-	
+
 	<update id="updateFaq">
-		UPDATE FAQ SET FAQ_TITLE = #{faq_title}, QUESTION_TYPE = #{question_type}, FAQ_CONTENT = #{faq_content}, FAQ_REGDATE = CURRENT_TIMESTAMP WHERE FAQ_ID = #{faq_id}
+		UPDATE FAQ
+		SET FAQ_TITLE = #{faq_title}, QUESTION_TYPE
+		= #{question_type},
+		FAQ_CONTENT = #{faq_content}, FAQ_REGDATE =
+		CURRENT_TIMESTAMP
+		WHERE FAQ_ID = #{faq_id}
 	</update>
-		
+
 	<insert id="insertFaq">
-		INSERT INTO FAQ (FAQ_TITLE, QUESTION_TYPE, FAQ_CONTENT) VALUES (#{faq_title},#{question_type},#{faq_content})
+		INSERT INTO FAQ (FAQ_TITLE, QUESTION_TYPE,
+		FAQ_CONTENT) VALUES (#{faq_title},#{question_type},#{faq_content})
 	</insert>
-	
+
 	<delete id="deleteFaq">
 		DELETE FROM FAQ WHERE FAQ_ID = #{faq_id}
 	</delete>
-	
-	<!-- FAQ CRUD END-->
-	
-	
-	<!-- REVIEW CRUD-->
-	
-	<select id="getReview" resultType="com.team119.petmily.domain.ReviewDTO">
+
+	<!-- FAQ CRUD END -->
+
+
+	<!-- REVIEW CRUD -->
+
+	<select id="getReview"
+		resultType="com.team119.petmily.domain.ReviewDTO">
 		SELECT * FROM REVIEW WHERE REVIEW_ID = #{review_id}
 	</select>
-	
+
 	<update id="updateReview">
-		UPDATE REVIEW SET REVIEW_TITLE = #{review_title}, REVIEW_POINT = #{review_point}, REVIEW_CONTENT = #{review_content}, REVIEW_IMAGE1 = #{review_image1}, REVIEW_IMAGE2 = #{review_image2}
-		WHERE REVIEW_ID = #{review_id}
+		UPDATE REVIEW
+		SET REVIEW_TITLE = #{review_title},
+		REVIEW_POINT = #{review_point},
+		REVIEW_CONTENT = #{review_content},
+		REVIEW_IMAGE1 = #{review_image1}, REVIEW_IMAGE2 = #{review_image2}
+		WHERE REVIEW_ID =
+		#{review_id}
 	</update>
-	
+
 	<delete id="deleteReview">
 		DELETE FROM REVIEW WHERE REVIEW_ID = #{review_id}
 	</delete>
-	
-	<select id="getReplyList" resultType="com.team119.petmily.domain.ReviewReplyDTO">
-		SELECT RR.REPLY_ID, RR.REPLY_WRITER, RR.REPLY_CONTENT, RR.REPLY_REGDATE
+
+	<select id="getReplyList"
+		resultType="com.team119.petmily.domain.ReviewReplyDTO">
+		SELECT RR.REPLY_ID, RR.REPLY_WRITER, RR.REPLY_CONTENT,
+		RR.REPLY_REGDATE
 		FROM REVIEW R LEFT JOIN REVIEW_REPLY RR
-		ON R.REVIEW_ID = RR.REVIEW_ID
+		ON R.REVIEW_ID
+		= RR.REVIEW_ID
 		WHERE R.REVIEW_ID = #{review_id};
 	</select>
-	
-	<!-- REVIEW CRUD END-->
+
+	<!-- REVIEW CRUD END -->
+
 </mapper>
 
 
