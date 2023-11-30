@@ -4,13 +4,14 @@
 function pTableListf(){
 	let resultHtml =
 	`<h3>PRODUCT Table List</h3>
-	&nbsp;<span class="textlink" onclick="pmProductf()">PROMOTION_PRODUCT</span>&nbsp;
-	&nbsp;<span class="textlink" onclick="productf()">PRODUCT</span>&nbsp;
-	&nbsp;<span class="textlink" onclick="pImagef()">PRODUCT_IMAGE</span>&nbsp;
-	&nbsp;<span class="textlink" onclick="eventf()">EVENT</span>&nbsp;
+	&nbsp;<a onclick="pmProductf()">PROMOTION_PRODUCT</a>&nbsp;
+	&nbsp;<a onclick="productf()">PRODUCT</a>&nbsp;
+	&nbsp;<a onclick="pImagef()">PRODUCT_IMAGE</a>&nbsp;
+	&nbsp;<a onclick="eventf()">EVENT</a>&nbsp;
 	<hr>
 	`;
 	document.getElementById('pTableListArea').innerHTML=resultHtml;
+	document.getElementById('newPage').innerHTML="";
 } // pTableListf
 
 

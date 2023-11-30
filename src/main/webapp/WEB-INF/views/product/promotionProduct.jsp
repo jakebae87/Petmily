@@ -30,8 +30,8 @@
 		<c:if test="${not empty requestScope.pmptable}">
 			<c:forEach var="s" items="${requestScope.pmptable}">
 				<tr>
-					<td><span class="textlink" onclick="pmpDelete('${s.promotion_id}')" id="${s.promotion_id}">삭제</span></td>
-					<td><span class="textlink" onclick="pmpUpdate('${s.promotion_id}')" id="${s.promotion_id}">수정</span></td>
+					<td><a onclick="pmpDelete('${s.promotion_id}')" id="${s.promotion_id}">삭제</a></td>
+					<td><a onclick="pmpUpdate('${s.promotion_id}')" id="${s.promotion_id}">수정</a></td>
 					<td>${s.promotion_id}</td>
 					<td>${s.promotion_name}</td>
 					<td><img alt="MyImage" src="/resources/uploadImages/${s.promotion_image}" width="60" height="40"></td>
@@ -50,10 +50,7 @@
 		</c:if>
 	</table>
 	
-	&nbsp;<span class="textlink" onclick="pmpInsertTable()">테이블 데이터 추가</span>&nbsp;
-	
-	<div id="content"></div>
-	<div id="content"></div>
+	&nbsp;<a onclick="pmpInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 	
 	&nbsp;<a href="/home">Home</a>&nbsp;

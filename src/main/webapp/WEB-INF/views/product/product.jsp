@@ -35,8 +35,8 @@
 		<c:if test="${not empty requestScope.ptable}">
 			<c:forEach var="s" items="${requestScope.ptable}">
 				<tr>
-					<td><span class="textlink" onclick="pDelete('${s.product_id}')" id="${s.product_id}">삭제</span></td>
-					<td><span class="textlink" onclick="pUpdate('${s.product_id}')" id="${s.product_id}">수정</span></td>
+					<td><a onclick="pDelete('${s.product_id}')" id="${s.product_id}">삭제</a></td>
+					<td><a onclick="pUpdate('${s.product_id}')" id="${s.product_id}">수정</a></td>
 					<td>${s.product_id}</td>
 					<td>${s.promotion_id}</td>
 					<td>${s.product_kind}</td>
@@ -60,10 +60,7 @@
 		</c:if>
 	</table>
 	
-	&nbsp;<span class="textlink" onclick="pInsertTable()">테이블 데이터 추가</span>&nbsp;
-	
-	<div id="content"></div>
-	<div id="content"></div>
+	&nbsp;<a onclick="pInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 	
 	&nbsp;<a href="/home">Home</a>&nbsp;

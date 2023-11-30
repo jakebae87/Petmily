@@ -29,8 +29,8 @@
 		<c:if test="${not empty requestScope.etable}">
 			<c:forEach var="s" items="${requestScope.etable}">
 				<tr>
-					<td><span class="textlink" onclick="eDelete('${s.event_id}')" id="${s.event_id}">삭제</span></td>
-					<td><span class="textlink" onclick="eUpdate('${s.event_id}')" id="${s.event_id}">수정</span></td>
+					<td><a onclick="eDelete('${s.event_id}')" id="${s.event_id}">삭제</a></td>
+					<td><a onclick="eUpdate('${s.event_id}')" id="${s.event_id}">수정</a></td>
 					<td>${s.event_id}</td>
 					<td>${s.event_name}</td>
 					<td>${s.event_description}</td>
@@ -48,10 +48,7 @@
 		</c:if>
 	</table>
 	
-	&nbsp;<span class="textlink" onclick="eInsertTable()">테이블 데이터 추가</span>&nbsp;
-	
-	<div id="content"></div>
-	<div id="content"></div>
+	&nbsp;<a onclick="eInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 	
 	&nbsp;<a href="/home">Home</a>&nbsp;

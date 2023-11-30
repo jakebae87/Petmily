@@ -27,8 +27,8 @@
 		<c:if test="${not empty requestScope.pitable}">
 			<c:forEach var="s" items="${requestScope.pitable}">
 				<tr>
-					<td><span class="textlink" onclick="piDelete('${s.pimage_id}')" id="${s.pimage_id}">삭제</span></td>
-					<td><span class="textlink" onclick="piUpdate('${s.pimage_id}')" id="${s.pimage_id}">수정</span></td>
+					<td><a onclick="piDelete('${s.pimage_id}')" id="${s.pimage_id}">삭제</a></td>
+					<td><a onclick="piUpdate('${s.pimage_id}')" id="${s.pimage_id}">수정</a></td>
 					<td>${s.pimage_id}</td>
 					<td>${s.product_id}</td>
 					<td><img alt="MyImage" src="/resources/uploadImages/${s.product_imagepath}" width="60" height="40"></td>
@@ -44,10 +44,7 @@
 		</c:if>
 	</table>
 	
-	&nbsp;<span class="textlink" onclick="piInsertTable()">테이블 데이터 추가</span>&nbsp;
-	
-	<div id="content"></div>
-	<div id="content"></div>
+	&nbsp;<a onclick="piInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 	
 	&nbsp;<a href="/home">Home</a>&nbsp;
