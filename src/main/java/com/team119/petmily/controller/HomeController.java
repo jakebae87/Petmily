@@ -10,4 +10,13 @@ public class HomeController {
 	public void home() {
 	}
 	
+	@GetMapping("/carttestform")
+	public String CartTestForm() {
+		return "/cartTestForm";
+	}
+	
+	@GetMapping("/userform")
+	public String userform() {
+		return "/user/Userform" ;
+	}//userform
 }

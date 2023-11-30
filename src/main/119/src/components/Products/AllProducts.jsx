@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
+<<<<<<< HEAD
 import axios from 'axios';
+=======
+>>>>>>> main
 
 import ProductItem from "./ProductItem";
 
@@ -25,6 +28,7 @@ const categoryTitles = {
 };
 
 function AllProducts({ addCart }) {
+<<<<<<< HEAD
     // test
     const [productData, setProductData] = useState([]);
 
@@ -51,6 +55,8 @@ function AllProducts({ addCart }) {
     const mytitle2 = categoryTitles[mycategory] || "";
 
     // -------------------------------
+=======
+>>>>>>> main
     const { kind, category } = useParams();
 
     const filteredKind = mockData.filter((item) => kind === "all" || item.kind === kind || item.kind === "all");
@@ -77,6 +83,7 @@ function AllProducts({ addCart }) {
 
     return (
         <div className="Products">
+<<<<<<< HEAD
             test :
             {productData.map((item) => (
                 <div key={item.product_id}>
@@ -86,6 +93,8 @@ function AllProducts({ addCart }) {
                 </div>
             ))}
 
+=======
+>>>>>>> main
             <div className="cateTitle">
                 <h1>{title1} {title2}</h1>
             </div>
