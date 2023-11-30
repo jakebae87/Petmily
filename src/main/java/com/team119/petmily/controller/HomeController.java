@@ -14,4 +14,9 @@ public class HomeController {
 	public String CartTestForm() {
 		return "/cartTestForm";
 	}
+	
+	@GetMapping("/userform")
+	public String userform() {
+		return "/user/Userform" ;
+	}//userform
 }

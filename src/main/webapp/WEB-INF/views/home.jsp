@@ -22,7 +22,7 @@
 	<h1>관리자페이지</h1>
 	<table id="mainTable">
 		<tr>
-			<th><a href="">USER</a></th>
+			<th><a href="/userform">USER</a></th>
 			<th><a onclick="pTableListf()">PRODUCT</a></th>
 			<th><a onclick="cartForm()">ORDER</a></th>
 			<th><a onclick="noticeList()">BOARD</a></th>
