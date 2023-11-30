@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team119.petmily.mapperInterface.ProductImageMapper">
+	
+	<select id="selectList" resultType="com.team119.petmily.domain.ProductImageDTO">
+		select * from PRODUCT_IMAGE
+	</select>
+	
+	<select id="selectListByID" resultType="com.team119.petmily.domain.ProductImageDTO">
+		select * from PRODUCT_IMAGE where product_id=#{product_id}
+	</select>
+	
+	<select id="selectOne" resultType="com.team119.petmily.domain.ProductImageDTO">
+		select * from PRODUCT_IMAGE where pimage_id=#{pimage_id}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO PRODUCT_IMAGE(product_id, product_imagepath, product_value1)
+		VALUE (#{product_id}, #{product_imagepath}, #{product_value1})
+	</insert>
+	
+	<update id="update">
+		UPDATE PRODUCT_IMAGE
+		SET product_imagepath=#{product_imagepath}, product_value1=#{product_value1}
+		where pimage_id=#{pimage_id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM PRODUCT_IMAGE WHERE pimage_id=#{pimage_id}
+	</delete>
+	
+</mapper>
