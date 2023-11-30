@@ -10,6 +10,9 @@
 <script src="/resources/javascript/inquiry.js"></script>
 <script src="/resources/javascript/faq.js"></script>
 <script src="/resources/javascript/review.js"></script>
+<script src="/resources/javascript/cart.js"></script>
+<script src="/resources/javascript/orderProduct.js"></script>
+<script src="/resources/javascript/orderDetail.js"></script>
 </head>
 <body>
 	<h1>관리자페이지</h1>
@@ -17,12 +20,13 @@
 		<tr>
 			<th><a href="">USER</a></th>
 			<th><a href="">PRODUCT</a></th>
-			<th><a href="">ORDER</a></th>
+			<th><a onclick="cartForm()">ORDER</a></th>
 			<th><a onclick="noticeList()">BOARD</a></th>
 		</tr>
 	</table>
 	<hr>
-	<div id="newPage">
-	</div>
+	<div id="newPage"></div>
+	<div id="resultArea1"></div>
+	<div id="resultArea2"></div>
 </body>
 </html>
