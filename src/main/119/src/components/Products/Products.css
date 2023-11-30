@@ -1,0 +1,61 @@
+.Products * {
+    list-style: none;
+    text-decoration: none;
+}
+
+.Products {
+    width: 1120px;
+    margin: auto;
+}
+
+.Products .active {
+    color: black;
+}
+
+/* ==================== product list area ==================== */
+.productList {
+    margin: 40px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: calc((100% - (100%/3.3*3))/2);
+}
+
+
+/* ==================== Classification with product category ==================== */
+.productClassification {
+    margin-bottom: 50px;
+}
+
+.productClassification a {
+    font-weight: bold;
+    color: silver;
+}
+
+.productClassification ul {
+    display: flex;
+    justify-content: space-around;
+}
+
+.productClassification a:hover {
+    color: black;
+}
+
+
+/* Pagenation */
+.Products .pagination {
+    padding: 40px;
+}
+
+.Products .pagination a {
+    cursor: pointer;
+    color: rgb(25, 50, 100);
+    border: 1px solid rgb(25, 50, 100);
+    font-weight: bold;
+}
+
+.pagination a.active {
+    color: aliceblue;
+    background-color: rgb(25, 50, 100);
+    font-weight: bold;
+}

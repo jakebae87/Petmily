@@ -1,0 +1,123 @@
+.Home * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+#mainWrap {
+    width: 1120px;
+    margin: auto;
+}
+
+
+/* ==================== image slider ==================== */
+.slides {
+    width: 100%;
+    height: 500px;
+    padding: 0;
+    margin: 0 auto;
+
+    display: block;
+    position: relative;
+}
+
+.slides input {
+    display: none;
+}
+
+.slideContainer {
+    display: block;
+}
+
+.slide {
+    width: 100%;
+    height: 500px;
+    top: 0;
+    opacity: 0;
+
+    display: block;
+    position: absolute;
+    transform: scale(0);
+    /* transition: all .3s ease-in-out; */
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+}
+
+.slideBtn label {
+    width: 200px;
+    height: 100%;
+    line-height: 500px;
+    cursor: pointer;
+
+    color: white;
+    background-color: silver;
+    font-size: 150px;
+    text-align: center;
+
+    display: none;
+    position: absolute;
+    opacity: 0;
+    /* transition: opacity .2s; */
+}
+
+.slide:hover+.slideBtn label {
+    opacity: 0.2;
+}
+
+.slideBtn label:hover {
+    opacity: 0.5;
+}
+
+.slideBtn .next {
+    right: 0;
+}
+
+input:checked+.slideContainer .slide {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.3s ease-in-out;
+}
+
+input:checked+.slideContainer .slideBtn label {
+    display: block;
+}
+
+.slideDotList {
+    width: 100%;
+    /* height: 10px; */
+    bottom: 10px;
+    text-align: center;
+
+    display: block;
+    position: absolute;
+}
+
+.slideDotList .slideDot {
+    width: 10px;
+    height: 10px;
+    /* top: -5px; */
+    margin: 0 4px;
+
+    background-color: silver;
+    border-radius: 100%;
+
+    display: inline-block;
+    position: relative;
+}
+
+.slideDotList .slideDot:hover {
+    cursor: pointer;
+    background-color: black;
+}
+
+input#img1:checked~.slideDotList label#imgDot1,
+input#img2:checked~.slideDotList label#imgDot2,
+input#img3:checked~.slideDotList label#imgDot3,
+input#img4:checked~.slideDotList label#imgDot4,
+input#img5:checked~.slideDotList label#imgDot5 {
+    background: black;
+}

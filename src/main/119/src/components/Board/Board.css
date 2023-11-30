@@ -1,0 +1,77 @@
+/* ==================== font setting ==================== */
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+.write {
+    width: 1120px;
+    margin: auto;
+}
+
+/* ======================게시글 선택, 평점, 등록====================== */
+.write>div+div {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.selectStarRegist {
+    width: 100%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.selectStarRegist select {
+    width: 40%;
+    text-align: center;
+    justify-content: center;
+}
+
+.write div form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 별 평점 */
+.productRating {
+    width: 20%;
+    border: 1px solid black;
+    margin-right: 20%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+/* 글 등록 버튼 */
+/* 목록 버튼 */
+#registButton input,
+#bottomBoard input {
+    text-align: center;
+    display: inline-block;
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    background-color: rgb(25, 50, 100);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* 목록 버튼 */
+#bottomBoard {
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* 내용 입력 부분 */
+.write form input {
+    margin-bottom: 15px;
+    width: 50%;
+    height: 40px;
+}

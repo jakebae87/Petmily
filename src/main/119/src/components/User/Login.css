@@ -1,0 +1,97 @@
+.Login * {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.Login {
+    /* font-size: 14px; */
+    margin: auto;
+    /* margin-top: 100px; */
+}
+.Login h1{
+    margin: 60px auto;
+    text-align: center;
+}
+
+.login_ {
+    
+    width: 400px;
+    padding: 0 40px 60px 40px;
+    box-sizing: border-box;
+    margin: auto;
+}
+
+.loginbox {
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border: solid 1px silver;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+}
+
+.Login hr {
+    border: solid 1px rgb(25, 50, 100);
+}
+
+
+.loginbox >input::placeholder {
+    color: #D2D2D2;
+}
+
+.loginBtn {
+    width: 100%;
+    height: 48px;
+    color: #ffffff;
+    padding: 0 10px;
+    font-size: 16px;
+    background-color: rgb(25, 50, 100);
+    border-radius: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.kakao {
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    color: #000000;
+    font-size: 16px;
+    background-color: yellow;
+    margin-top: 10px;
+}
+
+.naver {
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    color: #000000;
+    font-size: 16px;
+    background-color: green;
+}
+
+.login_ li {
+    text-decoration: none;
+    color: #9B9B9B;
+    font-size: 12.8px;
+    margin: 0;
+
+}
+
+.login_ >ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+}
