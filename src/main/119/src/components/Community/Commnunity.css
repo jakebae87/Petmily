@@ -1,0 +1,243 @@
+/* ==================== font setting ==================== */
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* ======================커뮤니티 리스트====================== */
+
+.commnunityList ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    white-space: nowrap;
+}
+
+.commnunityList ul li {
+    display: inline-block;
+    border: 1px black solid;
+    border-radius: 6px;
+    margin: 0 30px;
+}
+
+.commnunityList ul li a {
+    text-align: center;
+    display: inline-block;
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    background-color: rgb(25, 50, 100);
+    color: white;
+}
+
+/* 글쓰기 버튼 설정 */
+.board_write {
+    /* display: inline-block; */
+    align-items: end;
+}
+
+.board_write a {
+    text-align: center;
+    border-radius: 6px;
+    display: inline-block;
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    background-color: rgb(25, 50, 100);
+    color: white
+}
+
+/* ======================커뮤니티 리스트 끝====================== */
+
+
+
+/* ======================게시글 테이블 설정====================== */
+
+.attr1 {
+    width: 200px;
+}
+
+.attr2,
+.attr3,
+.attr4 {
+    width: 30px;
+}
+
+.boardList {
+    width: 1120px;
+    margin: auto;
+}
+
+.boardList table {
+    margin-top: 60px;
+    text-align: center;
+    width: 100%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-left: 0;
+    border-right: 0;
+    white-space: nowrap;
+}
+
+.boardList table tr {
+    border-top: 1px solid black;
+}
+
+.boardList table th {
+    font-size: 24px;
+    padding: 20px;
+}
+
+/* ======================게시글 테이블 설정 끝====================== */
+
+
+
+/* ======================게시글 제목 리스트 구조 설정====================== */
+.titleBox ul {
+    display: flex;
+}
+
+/* 상품후기 제목 사진 */
+.titleBox ul>li {
+    align-self: left;
+}
+
+/* 상품후기 상품명과 글제목 */
+.titleBox ul>li+li {
+    align-self: center;
+    margin-left: 30px;
+}
+
+/* 상품후기 사진 */
+.boardList table tr td div img {
+    width: 100px;
+    height: 100px;
+    border: 1px outset;
+}
+
+/* 상품후기 사진 hover effect */
+.boardList table tr td div img:hover {
+    transform: scale(1.4);
+}
+
+/* 제목 왼쪽 정렬 */
+.boardList table tr td:nth-of-type(1) {
+    text-align: left;
+}
+
+.boardList table tr td {
+    padding: 20px;
+}
+
+/* ======================글 제목 리스트 구조 설정 끝====================== */
+
+
+
+/* ======================상품문의/상품후기 검색====================== */
+.search {
+    width: 1120px;
+    margin: auto;
+    text-align: center;
+    padding: 60px;
+}
+
+.search form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 평점과 카테고리 선택 영역설정 */
+.searchConditions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+/* 평점과 카테고리의 위치 설정 */
+.searchConditions>div {
+    grid-column: 2/3;
+}
+
+/* 검색어 입력과 검색 버튼 영역 설정 */
+.searchInput {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+/* 검색어 입력창과 검색버튼 위치 */
+.searchInput>div:nth-child(1) {
+    grid-column: 2/3;
+    align-self: center;
+}
+
+.searchInput>div:nth-child(1)>input:nth-child(1) {
+    width: 40%;
+}
+
+
+/* ======================상품문의/상품후기 검색 끝====================== */
+
+
+
+/* ======================상품문의/상품후기 사이즈(너비)====================== */
+
+/* 검색기간 너비 */
+.searchConditions>div>select:nth-child(1) {
+    width: 35%;
+}
+
+/* 검색범위 너비 */
+.searchConditions>div>select:nth-child(2) {
+    width: 35%;
+}
+
+/* 검색어 입력창 너비 */
+.searchInput>div:nth-child(1)>input:nth-child(1) {
+    width: 60%;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+/* 검색버튼 너비  */
+.searchInput>div:nth-child(1)>input:nth-child(2) {
+    width: 10%;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+/* 검색기간, 검색범위의 텍스트 설정 */
+.search select {
+    height: 40px;
+    text-align: center;
+}
+
+/* ======================상품문의/상품후기 사이즈(너비) 끝====================== */
+
+
+
+/* ======================페이지네이션====================== */
+
+.pagination {
+    width: 1120px;
+    margin: auto;
+    text-align: center;
+    padding: 40px;
+}
+
+.pagination a {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+/* 상품후기 리스트에서 사진과 상품명 앞에 . 없애기 */
+.titleBox ul {
+    list-style: none;
+}
