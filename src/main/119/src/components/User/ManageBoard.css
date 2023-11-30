@@ -1,0 +1,148 @@
+.ManageBoard {
+  margin: 0 auto;
+}
+
+.myBoardList {
+  width: 1120px;
+  margin: auto;
+}
+
+.boardattr1,
+.boardattr2,
+.boardattr3,
+.boardattr4 {
+  width: 150px;
+}
+
+.myBoardList table {
+  margin-top: 60px;
+  text-align: center;
+  width: 100%;
+  border: 1px solid black;
+  border-collapse: collapse;
+  border-left: 0;
+  border-right: 0;
+  white-space: nowrap;
+}
+
+.myBoardList table tr {
+  border-top: 1px solid black;
+}
+
+.myBoardList table th {
+  font-size: 24px;
+  padding: 20px;
+}
+
+/* 글자 밑줄 삭제 */
+.myBoardList table a {
+  text-decoration: none;
+  color: black;
+}
+
+.myBoardList table tr td {
+  padding: 20px;
+}
+
+/* 상품문의/상품후기 검색 */
+.search {
+  width: 1120px;
+  margin: auto;
+  text-align: center;
+  padding: 60px;
+}
+
+.search form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 평점과 카테고리 선택 영역설정 */
+.searchConditions {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+/* 평점과 카테고리의 위치 설정 */
+.searchConditions div:nth-child(1) {
+  grid-column: 2/3;
+}
+
+/* 삭제버튼 */
+.searchConditions div:nth-child(2) {
+  grid-column: 3/4;
+}
+
+/* 검색어 입력과 검색 버튼 영역 설정 */
+.searchInput {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+/* 검색어 입력창과 검색버튼 위치 */
+.searchInput > div:nth-child(1) {
+  grid-column: 2/3;
+  align-self: center;
+}
+
+.searchInput > div:nth-child(1) > input:nth-child(1) {
+  width: 40%;
+}
+
+/* 검색기간 너비 */
+.searchConditions > div > select:nth-child(1) {
+  width: 35%;
+}
+
+/* 검색범위 너비 */
+.searchConditions > div > select:nth-child(2) {
+  width: 35%;
+}
+
+/* 검색어 입력창 너비 */
+.searchInput > div:nth-child(1) > input:nth-child(1) {
+  width: 60%;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+/* 검색버튼 너비  */
+.searchInput > div:nth-child(1) > input:nth-child(2) {
+  width: 10%;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+/* 검색기간, 검색범위의 텍스트 설정 */
+.search select {
+  height: 40px;
+  text-align: center;
+}
+
+/* 삭제버튼 */
+.deleteBoard {
+  cursor: pointer;
+  width: 60px;
+  height: 25px;
+  border: 0;
+  background-color: #808080;
+  color: white;
+}
+
+.pagination {
+  width: 1120px;
+  margin: auto;
+  text-align: center;
+  padding: 40px;
+}
+
+.pagination a {
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+}

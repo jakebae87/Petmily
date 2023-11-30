@@ -1,0 +1,159 @@
+.MyPage * {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 부제목 */
+.mypageTitleArea {
+  width: 1120px;
+  margin: 60px auto 10px;
+}
+
+.mypageTitleArea h1 {
+  text-align: center;
+  margin: 60px auto;
+}
+
+.mypageTitleArea div {
+  font-weight: bold;
+}
+
+.mypageTitleArea div span {
+  font-weight: normal;
+}
+
+/* 주문/배송현황 */
+.myOrder {
+  display: flex;
+  width: 1120px;
+  margin: auto;
+  margin-bottom: 30px;
+  border: 3px solid silver;
+  position: relative;
+}
+
+.myOrder > div {
+  margin: auto;
+  text-align: center;
+  width: 20%;
+}
+
+.myOrder a {
+  text-decoration: none;
+}
+.cancelExchangeRefund {
+  border-left: 1px dashed gray;
+}
+
+/* > 기호 */
+.beforePay::after {
+  content: ">";
+  font-size: 50px;
+  position: absolute;
+  color: gainsboro;
+  left: 19%;
+  top: 15%;
+}
+
+.setDelivery::after {
+  content: ">";
+  font-size: 50px;
+  position: absolute;
+  color: gainsboro;
+  left: 39%;
+  top: 15%;
+}
+
+.delivering::after {
+  content: ">";
+  font-size: 50px;
+  position: absolute;
+  color: gainsboro;
+  left: 59%;
+  top: 15%;
+}
+
+/* 주문 현황 왼쪽 숫자 */
+.myOrder > div > div > span {
+  font-size: 50px;
+  line-height: 50px;
+}
+.myOrder span a {
+  color: black;
+}
+
+.myOrder > div > div + div {
+  margin-top: 10px;
+}
+
+.cancelExchangeRefund > ul {
+  list-style: none;
+}
+
+/* 주문 현황 글씨 */
+.myOrder > div > div + div,
+.cancelExchangeRefund > ul span {
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.cancelExchangeRefund li {
+  margin: 10px;
+}
+
+/* 하단 배너 */
+.shopMain {
+  width: 1120px;
+  height: 250px;
+  margin: auto;
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.shopMain a {
+  text-decoration: none;
+}
+
+.shopMain p {
+  text-align: center;
+  word-break: keep-all;
+}
+
+.orderList,
+.profil,
+.board,
+.cart {
+  width: 210px;
+  height: 220px;
+  padding: 10px;
+  border: 3px solid silver;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: black;
+  white-space: wrap;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.orderListImg img {
+  width: 65px;
+  height: 60px;
+}
+
+.orderList img {
+  padding-left: 16px;
+}
+
+.board img {
+  padding-left: 15px;
+}
+
+.cart img {
+  padding-right: 10px;
+}
