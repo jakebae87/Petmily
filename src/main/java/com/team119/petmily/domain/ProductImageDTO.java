@@ -1,5 +1,7 @@
 package com.team119.petmily.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductImageDTO {
-	private int pimage_ID;
+	private int pimage_id;
 	private int product_id;
 	private String product_imagepath;
+	private MultipartFile uploadfilef;
 	private String product_value1;
 }

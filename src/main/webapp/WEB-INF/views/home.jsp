@@ -13,20 +13,26 @@
 <script src="/resources/javascript/cart.js"></script>
 <script src="/resources/javascript/orderProduct.js"></script>
 <script src="/resources/javascript/orderDetail.js"></script>
+<script src="/resources/javascript/productList.js"></script>
+<script src="/resources/javascript/productInsert.js"></script>
+<script src="/resources/javascript/productUpdate.js"></script>
+<script src="/resources/javascript/productDelete.js"></script>
 </head>
 <body>
 	<h1>관리자페이지</h1>
 	<table id="mainTable">
 		<tr>
 			<th><a href="">USER</a></th>
-			<th><a href="">PRODUCT</a></th>
+			<th><a onclick="pTableListf()">PRODUCT</a></th>
 			<th><a onclick="cartForm()">ORDER</a></th>
 			<th><a onclick="noticeList()">BOARD</a></th>
 		</tr>
 	</table>
 	<hr>
 	<div id="newPage"></div>
+	<div id="pTableListArea"></div>
 	<div id="resultArea1"></div>
 	<div id="resultArea2"></div>
+	&nbsp;<a href="/home">[Home]</a>&nbsp;
 </body>
 </html>

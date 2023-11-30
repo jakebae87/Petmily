@@ -61,7 +61,7 @@ function noticeList() {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {
 		alert("error message :" + error.message);
-	})
+	});
 }
 
 
