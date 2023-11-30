@@ -1,0 +1,63 @@
+/* ==================== individual product area ==================== */
+.ProductItem * {
+    margin: 0;
+    padding: 0;
+}
+
+.ProductItem {
+    width: calc(100% / 3.3);
+    margin-bottom: 40px;
+}
+
+.ProductItem > div {
+    margin: 0 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ProductItem>a img {
+    width: 100%;
+    height: 300px;
+
+    box-sizing: border-box;
+    border: 1px solid silver;
+}
+
+.ProductItem .productName a {
+    color: rgb(25, 50, 100);
+}
+
+.ProductItem .productName,
+.ProductItem .productPrice {
+    padding: 2.5px 0;
+    font-weight: bold;
+}
+
+.ProductItem .productPrice sup {
+    color: red;
+}
+
+.ProductItem .productComments {
+    font-size: 0.8em;
+}
+
+.ProductItem .productComments span {
+    color: red;
+}
+
+.ProductItem .discount {
+    text-decoration: line-through;
+    color: gray;
+}
+
+/* ==================== goto cart image ==================== */
+.ProductItem .gotoCart button {
+    background-color: white;
+    border: none;
+}
+
+.ProductItem .gotoCart img {
+    width: 30px;
+    height: 30px;
+    margin: 2.5px 0;
+}

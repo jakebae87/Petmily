@@ -1,0 +1,54 @@
+.OrderList * {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 제목 */
+.orderListtitleArea {
+  width: 1120px;
+  margin: 60px auto;
+}
+
+.orderListtitleArea h1 {
+  text-align: center;
+  margin: 60px auto;
+}
+
+.orderListtitleArea {
+  width: 1120px;
+  margin: auto;
+}
+
+.listTitle {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+/* 주문내역 */
+.orderListInfo {
+  width: 1120px;
+  margin: auto;
+  border: 1px solid gray;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.orderListInfo tbody,
+.orderListInfo tfoot {
+  border-top: 1px solid black;
+}
+
+.orderListInfo tr:not(:first-child) {
+  border-top: 1px solid black;
+}
+
+/* 이미지 */
+.orderListImage img {
+  width: 100px;
+}
+
+/* 주문내역 폭 */
+.orderListInfo tbody td {
+  height: 100px;
+}
