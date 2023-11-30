@@ -1,6 +1,9 @@
 package com.team119.petmily.domain;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +16,12 @@ public class EventDTO {
 	private int event_id;
 	private String event_name;
 	private String event_description;
-	private LocalDateTime event_start;
-	private LocalDateTime event_end;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date event_start;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date event_end;
+	
 	private String event_imagepath;
+	private MultipartFile uploadfilef;
 }

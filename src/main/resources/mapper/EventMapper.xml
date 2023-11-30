@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team119.petmily.mapperInterface.EventMapper">
+	
+	<select id="selectList" resultType="com.team119.petmily.domain.EventDTO">
+		select * from EVENT
+	</select>
+	
+	<select id="selectOne" resultType="com.team119.petmily.domain.EventDTO">
+		select * from EVENT where event_id=#{event_id}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO EVENT(event_name, event_description, event_start, event_end, event_imagepath)
+		VALUE (#{event_name}, #{event_description}, #{event_start}, #{event_end}, #{event_imagepath})
+	</insert>
+	
+	<update id="update">
+		UPDATE EVENT
+		SET event_name=#{event_name}, event_description=#{event_description}, event_start=#{event_start}, event_end=#{event_end}, event_imagepath=#{event_imagepath}
+		where event_id=#{event_id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM EVENT WHERE event_id=#{event_id}
+	</delete>
+	
+</mapper>
