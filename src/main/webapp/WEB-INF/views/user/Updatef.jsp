@@ -24,7 +24,7 @@
 				<th bgcolor="aqua">Password</th>
 				<td><input type="password" name="user_password" id="password"
 					placeholder="영어, 숫자, 특수문자" size="20"
-					value="${requestScope.banana.user_password}"><span class="textlink" onclick="newpwf()">비밀번호 변경</span><br> <span
+					value="${requestScope.banana.user_password}"><br> <span
 					id="pMessage" class="eMessage"></span></td>
 			</tr>
 			<tr height="40">
