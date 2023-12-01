@@ -84,15 +84,7 @@ public class CartController {
 		ResponseEntity<?> result = null;
 		
 		cservice.insert(user_id, product_id, product_cnt);
-		
-		// => Service 처리
-//		if (cservice.insert(user_id, product_id, product_cnt) != null) {
-//			result = ResponseEntity.status(HttpStatus.OK).body("장바구니에 상품 추가 성공");
-//			log.info("** cartInsert HttpStatus.OK => " + HttpStatus.OK);
-//		} else {
-//			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("장바구니에 상품 추가 실패");
-//			log.info("** cartInsert HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
-//		}
+
 		return result;
 	}
 	

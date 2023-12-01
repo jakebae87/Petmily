@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import React from "react";
+import axios from "axios";
 import CartItem from "./CartItem";
 
 export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder }) {
-
   // 체크된 상품 가격
   const totalPrice = () => {
     const selectedTotalPrice = checkedItems.reduce((total, itemId) => {
@@ -76,12 +76,18 @@ export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity
                 <th colSpan="7">
                   <span>상품구매금액 </span>
                   <strong>
-                    <span className="productPrice">{totalPrice().toLocaleString()}</span>원
+                    <span className="productPrice">
+                      {totalPrice().toLocaleString()}
+                    </span>
+                    원
                   </strong>
                   <span className="deliveryPrice"> + 배송비 3,000원 = </span>
                   <span>합계 : </span>
                   <strong>
-                    <span className="cartPrice">{(totalPrice() + 3000).toLocaleString()}</span>원
+                    <span className="cartPrice">
+                      {(totalPrice() + 3000).toLocaleString()}
+                    </span>
+                    원
                   </strong>
                 </th>
               </tr>
@@ -90,10 +96,22 @@ export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity
         </div>
         <div className="cartOrder">
           <Link to={`/user/order`}>
-            <button className="allOrder" onClick={() => { allOrder(); }}>전체상품주문</button>
+            <button
+              className="allOrder"
+              onClick={() => {
+                allOrder();
+              }}
+            >
+              전체상품주문
+            </button>
           </Link>
           <Link to={`/user/order`}>
-            <button className="selectOrder" onClick={() => { selectedOrder(); }}>
+            <button
+              className="selectOrder"
+              onClick={() => {
+                selectedOrder();
+              }}
+            >
               선택상품주문
             </button>
           </Link>
