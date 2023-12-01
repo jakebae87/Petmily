@@ -7,12 +7,13 @@ import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.pagination.Criteria;
 
 public interface BoardService {
 
 	// Notice 전체 목록 조회
-	List<NoticeDTO> getNoticeList();
+	List<NoticeDTO> getNoticeList(SearchDTO searchDTO);
 
 	// Inquiry 전체 목록 조회
 	List<InquiryDTO> getInquiryList();

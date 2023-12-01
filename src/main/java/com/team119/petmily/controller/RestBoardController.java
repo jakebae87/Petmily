@@ -2,28 +2,55 @@ package com.team119.petmily.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.service.BoardService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @org.springframework.web.bind.annotation.RestController
 @AllArgsConstructor
-public class RestController {
+@Log4j2
+public class RestBoardController {
 	BoardService boardService;
+
+	@GetMapping(value = "/notice/list")
+	public ResponseEntity<?> noticeList(SearchDTO searchDTO) {
+		System.out.println("searchPeriod: " + searchDTO.getSearchPeriod());
+		System.out.println("searchCriteria: " + searchDTO.getSearchCriteria());
+		System.out.println("searchWord: " + searchDTO.getSearchWord());
+		ResponseEntity<?> result = null;
+
+		List<NoticeDTO> list = boardService.getNoticeList(searchDTO);
+		System.out.println(list);
+
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Notice List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Notice List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
 
 	@PostMapping(value = "/notice/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void noticeInsert(@RequestBody NoticeDTO dto) {
@@ -99,19 +126,19 @@ public class RestController {
 
 		return result;
 	}
-	
+
 	@DeleteMapping(value = "/review/delete/{id}")
 	public ResponseEntity<?> reviewDelete(@PathVariable("id") int id, ReviewDTO dto) {
 		ResponseEntity<?> result = null;
-		
+
 		dto.setReview_id(id);
-		
-		if(boardService.deleteReview(dto) > 0) {
+
+		if (boardService.deleteReview(dto) > 0) {
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 삭제 완료");
-		}else {
+		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 삭제 실패");
 		}
-		
+
 		return result;
 	}
 }

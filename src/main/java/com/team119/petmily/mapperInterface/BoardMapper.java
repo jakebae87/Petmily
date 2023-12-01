@@ -7,11 +7,12 @@ import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.pagination.Criteria;
 
 public interface BoardMapper {
 
-	List<NoticeDTO> getNoticeList();
+	List<NoticeDTO> getNoticeList(SearchDTO searchDTO);
 	List<NoticeDTO> getNoticePagedList(Criteria cri);
 	int noticeTotalCount();
 	

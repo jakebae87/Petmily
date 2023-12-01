@@ -10,6 +10,7 @@ import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.mapperInterface.BoardMapper;
 import com.team119.petmily.pagination.Criteria;
 
@@ -20,9 +21,10 @@ public class BoardServiceImpl implements BoardService {
 	BoardMapper boardMapper;
 
 	@Override
-	public List<NoticeDTO> getNoticeList() {
-		return boardMapper.getNoticeList();
+	public List<NoticeDTO> getNoticeList(SearchDTO searchDTO) {
+		return boardMapper.getNoticeList(searchDTO);
 	}
+	
 	@Override
 	public List<NoticeDTO> getNoticePagedList(Criteria cri) {
 		return boardMapper.getNoticePagedList(cri);

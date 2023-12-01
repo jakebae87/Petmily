@@ -26,12 +26,11 @@ public class BoardController {
 	BoardService boardService;
 
 	// --------------------SHOW NOTICE LIST--------------------
-
 	// Notice List
-	@GetMapping(value = "/noticeList")
-	public void noticeList(Model model) {
-		model.addAttribute("notice", boardService.getNoticeList());
-	}
+//	@GetMapping(value = "/noticeList")
+//	public void noticeList(Model model) {
+//		model.addAttribute("notice", boardService.getNoticeList());
+//	}
 	
 	// Notice Paging List
 	@GetMapping(value = "/noticePagingList")

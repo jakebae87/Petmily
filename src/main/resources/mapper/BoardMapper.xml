@@ -4,9 +4,24 @@
 	namespace="com.team119.petmily.mapperInterface.BoardMapper">
 
 	<!-- NOTICE LIST -->
-	<select id="getNoticeList"
-		resultType="com.team119.petmily.domain.NoticeDTO">
-		SELECT * FROM NOTICE ORDER BY NOTICE_ID DESC;
+	<select id="getNoticeList" resultType="com.team119.petmily.domain.NoticeDTO">
+		SELECT *
+		FROM NOTICE
+		WHERE (#{searchPeriod} IS NULL OR
+		    CASE 
+		        WHEN 'week' = #{searchPeriod} THEN NOTICE_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
+		        WHEN 'month' = #{searchPeriod} THEN NOTICE_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+		        WHEN 'firstQuarter' = #{searchPeriod} THEN NOTICE_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+		        ELSE 1=1
+		    END)
+		AND (#{searchCriteria} IS NULL OR
+		    CASE 
+		        WHEN 'subject' = #{searchCriteria} THEN LOWER(NOTICE_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        WHEN 'content' = #{searchCriteria} THEN LOWER(NOTICE_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        WHEN 'writer' = #{searchCriteria} THEN LOWER(NOTICE_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        ELSE 1=1
+		    END)
+		ORDER BY NOTICE_REGDATE DESC;
 	</select>
 
 	<select id="getNoticePagedList"
@@ -67,7 +82,7 @@
 		resultType="com.team119.petmily.domain.FaqDTO">
 		SELECT * FROM FAQ ORDER BY FAQ_ID DESC;
 	</select>
-	
+
 	<select id="getFaqPagedList"
 		resultType="com.team119.petmily.domain.FaqDTO">
 		SELECT * FROM FAQ
