@@ -65,7 +65,42 @@ public class RestBoardController {
 
 		return result;
 	}
+	
+	@GetMapping(value = "/faq/list")
+	public ResponseEntity<?> faqList(SearchDTO searchDTO) {
+		ResponseEntity<?> result = null;
 
+		List<FaqDTO> list = boardService.getFaqList(searchDTO);
+
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Faq List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Faq List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/faqDetail/{id}")
+	public ResponseEntity<?> faqDetail(@PathVariable("id") int id,FaqDTO dto) {
+		dto.setFaq_id(id);
+		ResponseEntity<?> result = null;
+		
+		FaqDTO faq = boardService.getFaq(dto);
+		
+		if (faq != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(faq);
+			log.info("Notice Detail HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Notice Detail HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+	
 	@PostMapping(value = "/notice/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void noticeInsert(@RequestBody NoticeDTO dto) {
 		boardService.insertNotice(dto);

@@ -33,7 +33,7 @@ function Notice() {
     const [searchWord, setSearchWord] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-    const [searchInput, setSearchInput] = useState(""); // 새로운 상태 추가
+    const [searchInput, setSearchInput] = useState("");
 
     const handleSearch = (e) => {
         e.preventDefault();

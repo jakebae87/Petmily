@@ -90,10 +90,10 @@ public class BoardController {
 	// --------------------SHOW REVIEW LIST--------------------	
 
 	// Faq List
-	@GetMapping(value = "/faqList")
-	public void faqList(Model model) {
-		model.addAttribute("faq", boardService.getFaqList());
-	}
+//	@GetMapping(value = "/faqList")
+//	public void faqList(Model model) {
+//		model.addAttribute("faq", boardService.getFaqList());
+//	}
 	
 	// Faq Paging List
 		@GetMapping(value = "/faqPagingList")

@@ -69,8 +69,8 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
-	public List<FaqDTO> getFaqList() {
-		return boardMapper.getFaqList();
+	public List<FaqDTO> getFaqList(SearchDTO searchDTO) {
+		return boardMapper.getFaqList(searchDTO);
 	}
 	@Override
 	public List<FaqDTO> getFaqPagedList(Criteria cri) {

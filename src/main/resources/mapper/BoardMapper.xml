@@ -78,9 +78,24 @@
 	</select>
 
 	<!-- FAQ LIST -->
-	<select id="getFaqList"
-		resultType="com.team119.petmily.domain.FaqDTO">
-		SELECT * FROM FAQ ORDER BY FAQ_ID DESC;
+	<select id="getFaqList" resultType="com.team119.petmily.domain.FaqDTO">
+		SELECT *
+		FROM FAQ
+		WHERE (#{searchPeriod} IS NULL OR
+		    CASE 
+		        WHEN 'week' = #{searchPeriod} THEN FAQ_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
+		        WHEN 'month' = #{searchPeriod} THEN FAQ_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+		        WHEN 'firstQuarter' = #{searchPeriod} THEN FAQ_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+		        ELSE 1=1
+		    END)
+		AND (#{searchCriteria} IS NULL OR
+		    CASE 
+		        WHEN 'subject' = #{searchCriteria} THEN LOWER(FAQ_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        WHEN 'content' = #{searchCriteria} THEN LOWER(FAQ_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        WHEN 'writer' = #{searchCriteria} THEN LOWER(FAQ_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        ELSE 1=1
+		    END)
+		ORDER BY FAQ_REGDATE DESC;
 	</select>
 
 	<select id="getFaqPagedList"

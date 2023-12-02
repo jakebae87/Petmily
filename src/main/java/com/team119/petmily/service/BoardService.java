@@ -22,7 +22,7 @@ public interface BoardService {
 	List<ReviewDTO> getReviewList();
 
 	// Faq 전체 목록 조회
-	List<FaqDTO> getFaqList();
+	List<FaqDTO> getFaqList(SearchDTO searchDTO);
 	
 	
 	

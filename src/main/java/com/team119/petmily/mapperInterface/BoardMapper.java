@@ -25,7 +25,7 @@ public interface BoardMapper {
 	int reviewTotalCount();
 	
 
-	List<FaqDTO> getFaqList();
+	List<FaqDTO> getFaqList(SearchDTO searchDTO);
 	List<FaqDTO> getFaqPagedList(Criteria cri);
 	int faqTotalCount();
 
