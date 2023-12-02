@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function Pagination({ totalPages, currentPage, onPageChange }) {
@@ -100,7 +99,7 @@ function Notice() {
                     {/* 데이터 매핑 */}
                     {paginatedData().map((n) =>
                         <tr key={n.notice_id}>
-                            <td><Link to={`/${n.notice_id}`}>{n.notice_title}</Link></td>
+                            <td><Link to={`./${n.notice_id}`}>{n.notice_title}</Link></td>
                             <td>{n.notice_writer}</td>
                             <td>{n.notice_regdate}</td>
                         </tr>

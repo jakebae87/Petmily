@@ -33,13 +33,9 @@ public class RestBoardController {
 
 	@GetMapping(value = "/notice/list")
 	public ResponseEntity<?> noticeList(SearchDTO searchDTO) {
-		System.out.println("searchPeriod: " + searchDTO.getSearchPeriod());
-		System.out.println("searchCriteria: " + searchDTO.getSearchCriteria());
-		System.out.println("searchWord: " + searchDTO.getSearchWord());
 		ResponseEntity<?> result = null;
 
 		List<NoticeDTO> list = boardService.getNoticeList(searchDTO);
-		System.out.println(list);
 
 		if (list != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(list);
@@ -47,6 +43,24 @@ public class RestBoardController {
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 			log.info("Notice List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/noticeDetail/{id}")
+	public ResponseEntity<?> noticeDetail(@PathVariable("id") int id,NoticeDTO dto) {
+		dto.setNotice_id(id);
+		ResponseEntity<?> result = null;
+		
+		NoticeDTO notice = boardService.getNotice(dto);
+		
+		if (notice != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(notice);
+			log.info("Notice Detail HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Notice Detail HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		}
 
 		return result;
