@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.domain.SearchDTO;
@@ -37,8 +38,8 @@ public class BoardServiceImpl implements BoardService {
 	
 
 	@Override
-	public List<InquiryDTO> getInquiryList() {
-		return boardMapper.getInquiryList();
+	public List<InquiryDTO> getInquiryList(SearchDTO searchDTO) {
+		return boardMapper.getInquiryList(searchDTO);
 	}
 	@Override
 	public List<InquiryDTO> getInquiryPagedList(Criteria cri) {
@@ -156,6 +157,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<ReviewReplyDTO> getReplyList(ReviewDTO dto) {
 		return boardMapper.getReplyList(dto);
+	}
+
+	@Override
+	public List<ProductDTO> getProduct(String name) {
+		return boardMapper.getProduct(name);
 	}
 
 } // class

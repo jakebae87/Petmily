@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.service.BoardService;
@@ -49,12 +50,12 @@ public class RestBoardController {
 	}
 
 	@GetMapping(value = "/noticeDetail/{id}")
-	public ResponseEntity<?> noticeDetail(@PathVariable("id") int id,NoticeDTO dto) {
+	public ResponseEntity<?> noticeDetail(@PathVariable("id") int id, NoticeDTO dto) {
 		dto.setNotice_id(id);
 		ResponseEntity<?> result = null;
-		
+
 		NoticeDTO notice = boardService.getNotice(dto);
-		
+
 		if (notice != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(notice);
 			log.info("Notice Detail HttpStatus => " + HttpStatus.OK);
@@ -65,7 +66,7 @@ public class RestBoardController {
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/faq/list")
 	public ResponseEntity<?> faqList(SearchDTO searchDTO) {
 		ResponseEntity<?> result = null;
@@ -84,12 +85,12 @@ public class RestBoardController {
 	}
 
 	@GetMapping(value = "/faqDetail/{id}")
-	public ResponseEntity<?> faqDetail(@PathVariable("id") int id,FaqDTO dto) {
+	public ResponseEntity<?> faqDetail(@PathVariable("id") int id, FaqDTO dto) {
 		dto.setFaq_id(id);
 		ResponseEntity<?> result = null;
-		
+
 		FaqDTO faq = boardService.getFaq(dto);
-		
+
 		if (faq != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(faq);
 			log.info("Notice Detail HttpStatus => " + HttpStatus.OK);
@@ -100,7 +101,58 @@ public class RestBoardController {
 
 		return result;
 	}
-	
+
+	@GetMapping(value = "/inquiry/list")
+	public ResponseEntity<?> inquiryList(SearchDTO searchDTO) {
+		ResponseEntity<?> result = null;
+
+		List<InquiryDTO> list = boardService.getInquiryList(searchDTO);
+
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Inquiry List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Inquiry List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/inquiryDetail/{id}")
+	public ResponseEntity<?> inquiryDetail(@PathVariable("id") int id, InquiryDTO dto) {
+		dto.setInquiry_id(id);
+		ResponseEntity<?> result = null;
+
+		InquiryDTO inquiry = boardService.getInquiry(dto);
+
+		if (inquiry != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(inquiry);
+			log.info("Inquiry Detail HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Inquiry Detail HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/product/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProduct(@RequestParam("name") String name) {
+		ResponseEntity<?> result = null;
+		List<ProductDTO> product = boardService.getProduct(name);
+
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			log.info("Product Search HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Search HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
 	@PostMapping(value = "/notice/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void noticeInsert(@RequestBody NoticeDTO dto) {
 		boardService.insertNotice(dto);

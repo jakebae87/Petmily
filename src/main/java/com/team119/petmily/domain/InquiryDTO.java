@@ -14,6 +14,7 @@ public class InquiryDTO {
 	private int inquiry_id;
 	private String inquiry_title;
 	private String inquiry_writer;
+	private int product_id;
 	private int inquiry_count;
 	private String inquiry_content;
 	private Date inquiry_regdate;

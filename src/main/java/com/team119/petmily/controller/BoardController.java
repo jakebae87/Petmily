@@ -48,10 +48,10 @@ public class BoardController {
 	// --------------------SHOW INQUIRY LIST--------------------
 	
 	// Inquiry List
-	@GetMapping(value = "/inquiryList")
-	public void inquiryList(Model model) {
-		model.addAttribute("inquiry", boardService.getInquiryList());
-	}
+//	@GetMapping(value = "/inquiryList")
+//	public void inquiryList(Model model) {
+//		model.addAttribute("inquiry", boardService.getInquiryList());
+//	}
 	
 	// Inquiry Paging List
 		@GetMapping(value = "/inquiryPagingList")

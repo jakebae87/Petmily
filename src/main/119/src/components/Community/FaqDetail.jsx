@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 export default function DetailDetail() {
 
     const { id } = useParams();
-    const [faq, setNotice] = useState({
+    const [faq, setFaq] = useState({
         faq_title: '',
         faq_writer: '',
         faq_regdate: '',
@@ -17,7 +17,7 @@ export default function DetailDetail() {
         axios
             .get('/faqDetail/' + id)
             .then((response) => {
-                setNotice(response.data);
+                setFaq(response.data);
             })
             .catch((error) => {
                 alert(`선택한 데이터가 없습니다.`);
