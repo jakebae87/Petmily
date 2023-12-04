@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import React from 'react';
+import axios from 'axios';
 
 function Signup() {
+
 
     // const onKeyDown = (e) => {
     //     if (e.keyCode === 13) {
@@ -167,7 +169,7 @@ function Signup() {
     }
     //모든항목 입력 검사
     const onSubmit = (e) => {
-        if (name === '' || id === '' || pw === '' || pw2 === '' || email === '' || number === '' ||number2===''|| birthyear === '' || birthmonth === '' | birthday === '') {
+        if (name === '' || id === '' || pw === '' || pw2 === '' || email === '' || number === '' || number2 === '' || birthyear === '' || birthmonth === '' | birthday === '') {
             alert('모든 항목을 입력해 주세요');
             e.preventDefault();
             return;
@@ -176,9 +178,28 @@ function Signup() {
             e.preventDefault();
             return;
         } else {
-            alert('회원가입이 완료 되었습니다');
+
+            const userDTO = {
+                user_name: name,
+                user_id: id,
+                user_password: pw,
+                user_email: email,
+                user_phone: `010-${number}-${number2}`,
+                user_birthday: `${birthyear}-${birthmonth}-${birthday}`,
+
+            };
+
+            axios.post('/rsuser/Signup', userDTO)
+                .then(response => {
+                    alert(response.data);
+                })
+                .catch(error => {
+                    console.error('회원가입 실패:', error);
+                    alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+                });
         }
     }
+
 
 
 
