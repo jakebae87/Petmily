@@ -153,6 +153,21 @@ public class RestBoardController {
 		return result;
 	}
 
+	@PostMapping(value = "/inquiry/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> inquiryInsert(@RequestBody InquiryDTO dto) {
+		ResponseEntity<?> result = null;
+		
+		if (boardService.insertInquiry(dto) > 0) {
+			result = ResponseEntity.status(HttpStatus.OK).body("상품문의 글작성");
+			log.info("Insert new Inquiry HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품문의 글작성 실패");
+			log.info("Insert new Inquiry HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+	
 	@PostMapping(value = "/notice/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void noticeInsert(@RequestBody NoticeDTO dto) {
 		boardService.insertNotice(dto);
@@ -166,6 +181,11 @@ public class RestBoardController {
 	@PostMapping(value = "/inquiry/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void inquiryUpdate(@RequestBody InquiryDTO dto) {
 		boardService.updateInquiry(dto);
+	}
+	
+	@PostMapping(value = "/inquiry/updateBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void updateBoardInquiry(@RequestBody InquiryDTO dto) {
+		boardService.updateBoardInquiry(dto);
 	}
 
 	@DeleteMapping(value = "/inquiry/delete/{id}")

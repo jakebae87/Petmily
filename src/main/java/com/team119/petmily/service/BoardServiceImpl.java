@@ -164,4 +164,14 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getProduct(name);
 	}
 
+	@Override
+	public int insertInquiry(InquiryDTO dto) {
+		return boardMapper.insertInquiry(dto);
+	}
+
+	@Override
+	public int updateBoardInquiry(InquiryDTO dto) {
+		return boardMapper.updateBoardInquiry(dto);
+	}
+
 } // class

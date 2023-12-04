@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 export default function InquiryDetail() {
 
@@ -9,12 +9,29 @@ export default function InquiryDetail() {
         inquiry_title: '',
         inquiry_writer: '',
         product_id: '',
+        product_name: '',
         inquiry_regdate: '',
         inquiry_count: '',
         inquiry_content: '',
         answer_content: '',
         answer_regdate: ''
     });
+
+    const navigate = useNavigate();
+
+    function inquiryDelete() {
+        let url = '/inquiry/delete/' + id;
+        axios.delete(
+            url
+        ).then(response => {
+            alert('공지사항이 삭제 되었습니다.');
+            navigate('/community/inquiry');
+        }).catch(error => {
+            console.error(`에러 응답 = ${error.response},
+			error status = ${error.response.status},
+			error message = ${error.message}`);
+        })
+    }
 
     useEffect(() => {
         axios
@@ -72,7 +89,7 @@ export default function InquiryDetail() {
                     <tr>
                         <th scope="row">상품명</th>
                         <td>
-                            <Link to={`/productdetail/${inquiry.product_id}`}>product에서 받아온 상품명</Link>
+                            <Link to={`/productdetail/${inquiry.product_id}`}>{inquiry.product_name }</Link>
                         </td>
                     </tr>
                     <tr>
@@ -87,6 +104,8 @@ export default function InquiryDetail() {
                 </table><br /><br />
                 <Answer/>
                 <div id="bottomBoard">
+                    <Link to={`/board/inquiryUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
+                    <input onClick={inquiryDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
                     <Link to="/community/inquiry"><input type="button" value="목록" /></Link>
                 </div>
             </div>

@@ -40,7 +40,10 @@
 
 	<!-- INQUIRY LIST -->
 	<select id="getInquiryList" resultType="com.team119.petmily.domain.InquiryDTO">
-		SELECT *
+		SELECT INQUIRY.*, 
+		(SELECT P.PRODUCT_NAME 
+	     FROM PRODUCT P 
+	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
 		FROM INQUIRY
 		WHERE (#{searchPeriod} IS NULL OR
 		    CASE 
@@ -71,6 +74,11 @@
 		SELECT COUNT(*) FROM
 		INQUIRY
 	</select>
+	
+	<insert id="insertInquiry">
+		INSERT INTO INQUIRY (INQUIRY_TITLE, PRODUCT_ID, INQUIRY_WRITER, INQUIRY_CONTENT) VALUES
+		(#{inquiry_title},#{product_id},'관리자',#{inquiry_content})
+	</insert>
 
 
 	<!-- REVIEW LIST -->
@@ -159,7 +167,11 @@
 
 	<select id="getInquiry"
 		resultType="com.team119.petmily.domain.InquiryDTO">
-		SELECT * FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
+		SELECT INQUIRY.*, 
+		(SELECT P.PRODUCT_NAME 
+	     FROM PRODUCT P 
+	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME 
+		FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
 	</select>
 
 	<update id="updateInquiry">
@@ -167,6 +179,13 @@
 		#{answer_content}, ANSWER_REGDATE = CURRENT_TIMESTAMP WHERE INQUIRY_ID
 		= #{inquiry_id}
 	</update>
+
+	<update id="updateBoardInquiry">
+		UPDATE INQUIRY SET INQUIRY_TITLE = #{inquiry_title}, PRODUCT_ID = #{product_id}, INQUIRY_CONTENT = #{inquiry_content}
+		WHERE INQUIRY_ID = #{inquiry_id}
+	</update>
+	
+	
 
 	<delete id="deleteInquiry">
 		DELETE FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
