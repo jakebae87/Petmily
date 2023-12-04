@@ -1,12 +1,15 @@
 package com.team119.petmily.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDTO {
    
    private String user_id;
@@ -18,4 +21,5 @@ public class UserDTO {
    private String zipcode;
    private String addr;
    private String addr_detail;
+
 }

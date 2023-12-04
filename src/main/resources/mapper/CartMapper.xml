@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team119.petmily.mapperInterface.CartMapper">
+
+	<!-- 1. selectList -->
+	<select id="selectList" resultType="com.team119.petmily.domain.CartDTO">
+		select * from cart order by user_id asc
+	</select>
+	
+	<!-- 2. selectOne: Detail -->
+	<select id="selectOne" resultType="com.team119.petmily.domain.CartDTO">
+		select * from cart where user_id = #{user_id} and product_id = #{product_id}
+	</select>
+
+	<!-- 3. delete -->
+	<delete id="delete">
+		delete from cart where user_id = #{user_id} and product_id = #{product_id}
+	</delete>
+	
+	<!-- 4. insert -->
+<!-- 	<insert id="insert"> -->
+<!-- 		insert into cart -->
+<!-- 		values (#{user_id}, #{product_id}, #{product_cnt}) -->
+<!-- 	</insert> -->
+	<select id="getQuantity" resultType="java.lang.Integer">
+        SELECT product_cnt FROM cart WHERE user_id = #{param1} AND product_id = #{param2}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO cart (user_id, product_id, product_cnt)
+        VALUES (#{param1}, #{param2}, #{param3})
+        ON DUPLICATE KEY UPDATE product_cnt = product_cnt + #{param3}
+    </insert>
+	
+	<!-- 5. update -->
+	<update id="update">
+		update cart set
+		user_id=#{user_id}, product_id=#{product_id}, product_cnt=#{product_cnt}
+		where user_id = #{user_id} and product_id = #{product_id}
+	</update>
+	
+	<!-- ** Board_SearchCri_Paging 
+	=> ver02_MySql
+		-> 검색조건: title에 Spring이 포함된 글목록
+		select * from board
+		where title LIKE '%Spring%'
+		order by root desc, step asc
+		limit #{sno}, #{rowsPerPage}
+	=> 해결
+		-> title : cri의 searchType 컬럼 -> ${searchType}
+		-> '%Spring%' : cri의 keyword 
+						-> % + #{keyword} + %
+						-> MySql 문법은 불편 : CONCAT('%',#{keyword},'%')
+						-> Mybatis 구문이 편리
+	=> search SQL 
+		-> % 기호의 문자열 연결 처리
+		-> LIKE 조건문		
+	--> 
+	<sql id="search">
+		<!-- 1) CONCAT('%',#{keyword},'%') 처리 -->
+		<if test="keyword!=null">
+			<bind name="keyVal" value="'%'+keyword+'%'"/>
+		</if>
+		<!-- 2) LIKE 조건문 -->
+		<choose>
+			<when test="searchType!=null and searchType!='all'">
+				and ${searchType} LIKE #{keyVal} )
+			</when>	
+			<when test="searchType=='all' and keyword!=null">
+				and ( user_id LIKE #{keyVal}
+				      OR product_id LIKE #{keyVal} ) )
+			</when>
+			<otherwise>)</otherwise>
+		</choose>
+	</sql>
+	<select id="searchCri" resultType="com.team119.petmily.domain.CartDTO">
+		select * from cart
+			where ( product_id >0 <include refid="search"></include>
+			order by user_id asc
+			limit #{sno}, #{rowsPerPage}
+	</select>
+	<select id="searchTotalCount" resultType="int">
+		select count(*) from cart
+			where ( product_id >0 <include refid="search"></include>
+	</select>
+	
+	<!-- ** Board_Cri_Paging ********************************
+		=> ver01_MySql
+			limit a, b ( a개 제외하고 a+1 부터 b개 )  적용 -->
+	<select id="bcriList" resultType="com.team119.petmily.domain.CartDTO">
+		select * from cart
+		order by user_id asc
+		limit #{sno}, #{rowsPerPage}
+	</select>
+	<select id="criTotalCount" resultType="int">
+		select count(*) from cart order
+	</select>
+	
+	<!-- ******************************************************* -->
+</mapper>

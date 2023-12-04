@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team119.petmily.mapperInterface.OrderDetailMapper">
+
+	<!-- 1. selectList -->
+	<select id="selectList" resultType="com.team119.petmily.domain.OrderDetailDTO">
+		select * from order_detail order by order_detail_key asc;
+	</select>
+		
+	<!-- 2. selectOne: Detail -->
+	<select id="selectOne" resultType="com.team119.petmily.domain.OrderDetailDTO">
+		select * from order_detail where order_detail_key=#{order_detail_key}
+	</select>
+
+	<!-- 3. delete -->
+	<delete id="delete">
+		delete from order_detail where order_detail_key=#{order_detail_key}
+	</delete>
+	
+	<!-- 4. insert -->
+	<insert id="insert">
+		insert into order_detail (order_key, product_id, product_cnt,
+		product_kind_price, delivery_status)
+		values(#{order_key}, #{product_id}, #{product_cnt},
+		#{product_kind_price}, #{delivery_status});
+	</insert>
+	
+	<!-- 5. update -->
+	<update id="update">
+		update order_detail set order_key=#{order_key}, delivery_status=#{delivery_status}
+		where order_key=#{order_key}
+	</update>
+	
+	<!-- ** Board_SearchCri_Paging 
+	=> ver02_MySql
+		-> 검색조건: title에 Spring이 포함된 글목록
+		select * from board
+		where title LIKE '%Spring%'
+		order by root desc, step asc
+		limit #{sno}, #{rowsPerPage}
+	=> 해결
+		-> title : cri의 searchType 컬럼 -> ${searchType}
+		-> '%Spring%' : cri의 keyword 
+						-> % + #{keyword} + %
+						-> MySql 문법은 불편 : CONCAT('%',#{keyword},'%')
+						-> Mybatis 구문이 편리
+	=> search SQL 
+		-> % 기호의 문자열 연결 처리
+		-> LIKE 조건문		
+	--> 
+	<sql id="search">
+		<!-- 1) CONCAT('%',#{keyword},'%') 처리 -->
+		<if test="keyword!=null">
+			<bind name="keyVal" value="'%'+keyword+'%'"/>
+		</if>
+		<!-- 2) LIKE 조건문 -->
+		<choose>
+			<when test="searchType!=null and searchType!='all'">
+				and ${searchType} LIKE #{keyVal} )
+			</when>	
+			<when test="searchType=='all' and keyword!=null">
+				and ( order_detail_key LIKE #{keyVal}
+				      OR order_key LIKE #{keyVal} ) )
+			</when>
+			<otherwise>)</otherwise>
+		</choose>
+	</sql>
+	<select id="searchCri" resultType="com.team119.petmily.domain.OrderDetailDTO">
+		select * from order_detail
+			where ( order_detail_key >0 <include refid="search"></include>
+			order by order_detail_key asc
+			limit #{sno}, #{rowsPerPage}
+	</select>
+	<select id="searchTotalCount" resultType="int">
+		select count(*) from order_detail
+			where ( order_detail_key >0 <include refid="search"></include>
+	</select>
+	
+	<!-- ** Board_Cri_Paging ********************************
+		=> ver01_MySql
+			limit a, b ( a개 제외하고 a+1 부터 b개 )  적용 -->
+	<select id="bcriList" resultType="com.team119.petmily.domain.OrderDetailDTO">
+		select * from order_detail
+		order by order_detail_key asc
+		limit #{sno}, #{rowsPerPage}
+	</select>
+	<select id="criTotalCount" resultType="int">
+		select count(*) from order_detail
+	</select>
+	
+	<!-- ******************************************************* -->
+</mapper>  

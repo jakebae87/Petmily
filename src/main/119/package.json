@@ -14,6 +14,10 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+<<<<<<< HEAD
+=======
+  "proxy":"http://localhost:8080",
+>>>>>>> 51a11fd129897a089fbfb01d894228caf502a48a
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -22,7 +26,10 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
+<<<<<<< HEAD
   "proxy": "http://localhost:8080",
+=======
+>>>>>>> 51a11fd129897a089fbfb01d894228caf502a48a
   "eslintConfig": {
     "extends": [
       "react-app",

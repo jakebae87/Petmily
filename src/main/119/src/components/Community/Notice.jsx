@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
@@ -68,6 +69,13 @@ function Notice() {
         const endIndex = startIndex + itemsPerPage;
         return notice.slice(startIndex, endIndex);
     };
+=======
+import { Link } from "react-router-dom";
+
+import SearchedNotices from "./SearchedNotices";
+
+export default function Notice() {
+>>>>>>> 51a11fd129897a089fbfb01d894228caf502a48a
 
     return (
         <div className="Notice">
@@ -82,6 +90,7 @@ function Notice() {
                     <li><Link to="/community/review">상품후기</Link></li>
                     <li><Link to="/community/faq">자주묻는질문</Link></li>
                 </ul>
+<<<<<<< HEAD
             </div>
 
             <div className="boardList">
@@ -150,3 +159,46 @@ function Notice() {
 }
 
 export default Notice;
+=======
+            </div> {/* commnunityList */}
+
+            <SearchedNotices />
+
+            <div name="search" className="search">
+                <form action="#">
+                    <div className="searchConditions">
+                        <div>
+                            <select name="searchPeriod">
+                                <option value="all">전체</option>
+                                <option value="week">일주일</option>
+                                <option value="month">한달</option>
+                                <option value="firstQuarter">세달</option>
+                            </select>
+                            <select name="searchCriteria">
+                                <option value="subject">제목</option>
+                                <option value="content">내용</option>
+                                <option value="writer">글쓴이</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="searchInput">
+                        <div>
+                            <input className="searchWord" name="searchWord" type="text" />
+                            <input type="submit" value="검색" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div className="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">&raquo;</a>
+            </div>
+        </div>
+    )
+}
+
+>>>>>>> 51a11fd129897a089fbfb01d894228caf502a48a

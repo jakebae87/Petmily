@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team119.petmily.mapperInterface.UserMapper">
 
+
 	
-</mapper>
+	<select id="UserList" resultType="com.team119.petmily.domain.UserDTO">
+		select * from user where user_id=#{user_id}
+	</select>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<!-- 1. selectList -->
+	<select id="selectList" resultType="com.team119.petmily.domain.UserDTO">
+		select * from user
+	</select>
+
+	<!-- 2. selectOne: Detail -->
+	<select id="selectOne" resultType="com.team119.petmily.domain.UserDTO">
+		select * from user where user_id=#{user_id}
+	</select>
+	
+	<insert id="insert">
+    INSERT INTO user (user_id, user_password, user_name, user_email, user_birthday, user_phone)
+    VALUES (
+        #{user_id}, #{user_password}, #{user_name}, #{user_email}, #{user_birthday}, #{user_phone}
+    )
+</insert>
+	
+
+	<update id="update">
+		update user set
+		<if test="user_password!=null">
+			user_password=#{user_password}
+		</if> 
+		<if test="user_password==null">
+			user_name=#{user_name}, user_email=#{user_email}, user_birthday=#{user_birthday}, user_phone=#{user_phone}, zipcode=#{zipcode}, 
+			addr=#{addr}, addr_detail=#{addr_detail} 
+			</if>
+		where user_id=#{user_id}
+	</update>
+	
+	<!-- 5. delete -->
+	<delete id="delete">
+		delete from user where user_id=#{user_id}
+	</delete>
+	<!-- 아이디찾기 -->
+	 <select id="findIdByNameAndEmail" resultType="String">
+        SELECT user_id
+        FROM user
+        WHERE user_name = #{user_name}
+        AND user_email = #{user_email}
+    </select>
+    
+		<!-- 비밀번호 찾기 -->
+	 <select id="findIdByIdAndEmail" resultType="String">
+        SELECT user_password
+        FROM user
+        WHERE user_id = #{user_id}
+        AND user_email = #{user_email}
+    </select>
+  
+    
+</mapper>  
