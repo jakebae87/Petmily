@@ -25,7 +25,7 @@
 			<tr height="40">
 				<td bgcolor="Linen">각상품수량</td>
 				<td><input type="number" name="product_cnt" placeholder="각상품수량"
-					size="20"></td>
+					value="1" size="20"></td>
 			</tr>
 			<tr>
 				<td colspan=2>

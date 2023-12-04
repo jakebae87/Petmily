@@ -62,7 +62,8 @@ function cartInsert() {
 				{headers:{"Content-Type":"multipart/form-data"}
 	}).then( response => {
 				alert(`** response.data:${response.data}`);
-				location.reload(); // 화면 새로고침
+				// 장바구니 리스트로 이동
+				cartList();
 	}).catch( err => {
 				if ( err.response.status=='502' ) alert("~~ 입력 오류!! 다시하세요 ~~");  				
 				else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
@@ -76,11 +77,8 @@ function cDelete(user_id, product_id) {
 	let url = "/cart/cdelete/" + user_id + "/" + product_id;
 	axios.delete(url).then(response => {
 		alert(response.data);
-		document.getElementById(user_id && product_id).innerHTML = "Deleted";
-		document.getElementById(user_id && product_id).style.color = "Gray";
-		document.getElementById(user_id && product_id).style.fontWeight = "Bold";
-		document.getElementById(user_id && product_id).classList.remove('textlink');
-		document.getElementById(user_id && product_id).removeAttribute('onclick');
+		// 장바구니 리스트로 이동
+		cartList();
 	}).catch(err => {
 		if (err.response.status) alert(err.response.data);
 		else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);

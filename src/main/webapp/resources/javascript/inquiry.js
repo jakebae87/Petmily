@@ -9,7 +9,7 @@ function inquiryDelete(id) {
 			url
 		).then(response => {
 			alert(`상품문의가 삭제 완료되었습니다.`);
-			inquiryList();
+			inquiryPagingList('/board/inquiryPagingList'); // 목록 새로고침
 		}).catch(error => {
 			console.error(`에러 응답 = ${error.response},
 			error status = ${error.response.status},
@@ -19,19 +19,7 @@ function inquiryDelete(id) {
 }
 
 
-// 2) Show Inquiry List
-function inquiryList() {
-	axios.get(
-		'/board/inquiryList'
-	).then(response => {
-		document.getElementById('newPage').innerHTML = response.data;
-	}).catch(error => {
-		alert("error message :" + error.message);
-	})
-}
-
-
-// 3) Detail Inquiry
+// 2) Detail Inquiry
 function inquiryDetail(id) {
 	const popup = window.open('/board/inquiryDetail?inquiry_id=' + id, 'popup',
 		'width=600, height=400');
@@ -39,12 +27,12 @@ function inquiryDetail(id) {
 	const checkPopupClosed = setInterval(function () {
 		if (popup.closed) {
 			clearInterval(checkPopupClosed);
-			inquiryList(); // 목록 새로고침
+			inquiryPagingList('/board/inquiryPagingList'); // 목록 새로고침
 		}
 	}, 1000); // 1초마다 확인
 }
 
-// 4) Update Inquiry answer
+// 3) Update Inquiry answer
 function updateInquiryAnswer(id) {
 	let url = "/inquiry/update";
 
@@ -61,7 +49,7 @@ function updateInquiryAnswer(id) {
 		}).then(response => {
 			alert(`답변 수정 완료되었습니다.`);
 			window.close();
-			inquiryList();
+			inquiryPagingList('/board/inquiryPagingList'); // 목록 새로고침
 		}).catch(error => {
 			console.error(`에러 응답 = ${error.response},
 			error status = ${error.response.status},
@@ -71,33 +59,40 @@ function updateInquiryAnswer(id) {
 }
 
 
-// ) Show Review List
-function reviewList() {
+// ) Show Pagination Notice List
+function noticePagingList(url) {
 	axios.get(
-		'/board/reviewList'
+		url
 	).then(response => {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {
 		alert("error message :" + error.message);
 	})
 }
-
-// ) Show Faq List
-function faqList() {
+// ) Show Pagination Inquiry List
+function inquiryPagingList(url) {
 	axios.get(
-		'/board/faqList'
+		url
 	).then(response => {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {
 		alert("error message :" + error.message);
 	})
 }
-
-
-// ) Show Notice List
-function noticeList() {
+// ) Show Pagination Review List
+function reviewPagingList(url) {
 	axios.get(
-		'/board/noticeList'
+		url
+	).then(response => {
+		document.getElementById('newPage').innerHTML = response.data;
+	}).catch(error => {
+		alert("error message :" + error.message);
+	})
+}
+// ) Show Pagination Faq List
+function faqPagingList(url) {
+	axios.get(
+		url
 	).then(response => {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
+import axios from 'axios';
 
 import ProductItem from "./ProductItem";
-
-// Mock Data
-import mockData from "../MockData/MockData_Products";
 
 const kindTitles = {
     all: "",
@@ -24,10 +22,24 @@ const categoryTitles = {
 };
 
 function AllProducts({ addCart }) {
+    const [productData, setProductData] = useState([]);
+
+    useEffect(() => {
+        axios.get('/rsproduct/productList')
+            .then((response) => {
+                setProductData(response.data);
+                console.log(`** productList 서버연결 성공 =>`, response.data);
+            })
+            .catch((err) => {
+                alert(`** productList 서버연결 실패 => ${err.message}`);
+            });
+    }, []);
+
+    
     const { kind, category } = useParams();
 
-    const filteredKind = mockData.filter((item) => kind === "all" || item.kind === kind || item.kind === "all");
-    const filteredData = filteredKind.filter((item) => category === "all" || item.category === category);
+    const filteredKind = productData.filter((item) => kind === "all" || item.product_kind === kind || item.product_kind === "all");
+    const filteredData = filteredKind.filter((item) => category === "all" || item.product_category === category);
 
     const title1 = kindTitles[kind] || "";
     const title2 = categoryTitles[category] || "";
@@ -75,7 +87,7 @@ function AllProducts({ addCart }) {
 
             <div className="productList">
                 {currentItems.map((item) => (
-                    <ProductItem key={item.id} it={item} addCart={addCart} />
+                    <ProductItem key={item.product_id} it={item} addCart={addCart} />
                 ))}
             </div>
 

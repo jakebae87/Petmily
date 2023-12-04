@@ -180,7 +180,8 @@
 }
 
 .deliveryInfo textarea {
-  width: 70%;
+  height: 100%;
+  width: 50%;
 }
 
 .emailAlert {

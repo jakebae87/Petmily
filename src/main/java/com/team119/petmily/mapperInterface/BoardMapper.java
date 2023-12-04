@@ -5,18 +5,30 @@ import java.util.List;
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
+import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.pagination.Criteria;
 
 public interface BoardMapper {
 
-	List<NoticeDTO> getNoticeList();
+	List<NoticeDTO> getNoticeList(SearchDTO searchDTO);
+	List<NoticeDTO> getNoticePagedList(Criteria cri);
+	int noticeTotalCount();
 	
-	List<InquiryDTO> getInquiryList();
+	List<InquiryDTO> getInquiryList(SearchDTO searchDTO);
+	List<InquiryDTO> getInquiryPagedList(Criteria cri);
+	int inquiryTotalCount();
 	
 	List<ReviewDTO> getReviewList();
+	List<ReviewDTO> getReviewPagedList(Criteria cri);
+	int reviewTotalCount();
+	
 
-	List<FaqDTO> getFaqList();
+	List<FaqDTO> getFaqList(SearchDTO searchDTO);
+	List<FaqDTO> getFaqPagedList(Criteria cri);
+	int faqTotalCount();
 
 	NoticeDTO getNotice(NoticeDTO dto);
 
@@ -47,5 +59,7 @@ public interface BoardMapper {
 	int deleteReview(ReviewDTO dto);
 
 	List<ReviewReplyDTO> getReplyList(ReviewDTO dto);
+	
+	List<ProductDTO> getProduct(String name);
 
 }

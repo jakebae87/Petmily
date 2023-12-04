@@ -15,7 +15,7 @@
 
 	<!-- 3. delete -->
 	<delete id="delete">
-		delete from order_detail where order_detail_key=#{order_detail_key}
+		delete from order_detail where order_key=#{order_key}
 	</delete>
 	
 	<!-- 4. insert -->
