@@ -12,7 +12,8 @@ import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ReviewDTO;
-import com.team119.petmily.domain.ReviewReplyDTO;
+import com.team119.petmily.pagination.Criteria;
+import com.team119.petmily.pagination.PageMaker;
 import com.team119.petmily.service.BoardService;
 
 import lombok.AllArgsConstructor;
@@ -24,33 +25,87 @@ public class BoardController {
 
 	BoardService boardService;
 
-	// --------------------SHOW BOARD LIST--------------------
-
+	// --------------------SHOW NOTICE LIST--------------------
 	// Notice List
-	@GetMapping(value = "/noticeList")
-	public void noticeList(Model model) {
-		model.addAttribute("notice", boardService.getNoticeList());
-	}
+//	@GetMapping(value = "/noticeList")
+//	public void noticeList(Model model) {
+//		model.addAttribute("notice", boardService.getNoticeList());
+//	}
+	
+	// Notice Paging List
+	@GetMapping(value = "/noticePagingList")
+	public void noticePagingList(Model model, Criteria cri, PageMaker pageMaker) {
+		cri.setSnoEno();
+		model.addAttribute("notice", boardService.getNoticePagedList(cri));
 
+		pageMaker.setCri(cri);
+		pageMaker.setTotalRowsCount(boardService.noticeTotalCount());
+		model.addAttribute("pageMaker", pageMaker);
+	}
+	// --------------------SHOW NOTICE LIST END--------------------
+
+	
+	// --------------------SHOW INQUIRY LIST--------------------
+	
 	// Inquiry List
-	@GetMapping(value = "/inquiryList")
-	public void inquiryList(Model model) {
-		model.addAttribute("inquiry", boardService.getInquiryList());
-	}
+//	@GetMapping(value = "/inquiryList")
+//	public void inquiryList(Model model) {
+//		model.addAttribute("inquiry", boardService.getInquiryList());
+//	}
+	
+	// Inquiry Paging List
+		@GetMapping(value = "/inquiryPagingList")
+		public void inquiryPagingList(Model model, Criteria cri, PageMaker pageMaker) {
+			cri.setSnoEno();
+			model.addAttribute("inquiry", boardService.getInquiryPagedList(cri));
 
+			pageMaker.setCri(cri);
+			pageMaker.setTotalRowsCount(boardService.inquiryTotalCount());
+			model.addAttribute("pageMaker", pageMaker);
+		}
+	// --------------------SHOW INQUIRY LIST END--------------------
+
+		
+	// --------------------SHOW REVIEW LIST--------------------	
+		
 	// Review List
 	@GetMapping(value = "/reviewList")
 	public void reviewList(Model model) {
 		model.addAttribute("review", boardService.getReviewList());
 	}
+	
+	// Review Paging List
+	@GetMapping(value = "/reviewPagingList")
+	public void reviewPagingList(Model model, Criteria cri, PageMaker pageMaker) {
+		cri.setSnoEno();
+		model.addAttribute("review", boardService.getReviewPagedList(cri));
+
+		pageMaker.setCri(cri);
+		pageMaker.setTotalRowsCount(boardService.reviewTotalCount());
+		model.addAttribute("pageMaker", pageMaker);
+	}
+	// --------------------SHOW REVIEW LIST END--------------------	
+	
+	
+	// --------------------SHOW REVIEW LIST--------------------	
 
 	// Faq List
-	@GetMapping(value = "/faqList")
-	public void faqList(Model model) {
-		model.addAttribute("faq", boardService.getFaqList());
-	}
+//	@GetMapping(value = "/faqList")
+//	public void faqList(Model model) {
+//		model.addAttribute("faq", boardService.getFaqList());
+//	}
+	
+	// Faq Paging List
+		@GetMapping(value = "/faqPagingList")
+		public void faqPagingList(Model model, Criteria cri, PageMaker pageMaker) {
+			cri.setSnoEno();
+			model.addAttribute("faq", boardService.getFaqPagedList(cri));
 
-	// --------------------SHOW BOARD LIST END--------------------
+			pageMaker.setCri(cri);
+			pageMaker.setTotalRowsCount(boardService.faqTotalCount());
+			model.addAttribute("pageMaker", pageMaker);
+		}
+	// --------------------SHOW REVIEW LIST END--------------------	
 
 	// --------------------NOTICE CRUD--------------------
 

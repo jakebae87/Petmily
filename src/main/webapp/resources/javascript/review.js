@@ -9,7 +9,7 @@ function reviewDelete(id) {
 			url
 		).then(response => {
 			alert(`상품후기가 삭제 완료되었습니다.`);
-			reviewList();
+			reviewPagingList('/board/reviewPagingList'); // 목록 새로고침
 		}).catch(error => {
 			console.error(`에러 응답 = ${error.response},
 			error status = ${error.response.status},
@@ -26,7 +26,7 @@ function reviewDetail(id) {
 	const checkPopupClosed = setInterval(function () {
 		if (popup.closed) {
 			clearInterval(checkPopupClosed);
-			reviewList(); // 목록 새로고침
+			reviewPagingList('/board/reviewPagingList'); // 목록 새로고침
 		}
 	}, 1000); // 1초마다 확인
 }
@@ -44,7 +44,7 @@ function updateReview() {
 			}).then(response => {
 				alert(`상품후기 수정 완료되었습니다.`);
 				window.close();
-				reviewList();
+				reviewPagingList('/board/reviewPagingList'); // 목록 새로고침
 			}).catch(error => {
 				if (error.response.status == '502') alert("입력 오류입니다.")
 				else alert("시스템 오류입니다." + error.message);
@@ -52,46 +52,40 @@ function updateReview() {
 	}
 }
 
-
-// ) Show Review List
-function reviewList() {
+// ) Show Pagination Notice List
+function noticePagingList(url) {
 	axios.get(
-		'/board/reviewList'
+		url
 	).then(response => {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {
 		alert("error message :" + error.message);
 	})
 }
-
-// ) Show Faq List
-function faqList() {
+// ) Show Pagination Inquiry List
+function inquiryPagingList(url) {
 	axios.get(
-		'/board/faqList'
+		url
 	).then(response => {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {
 		alert("error message :" + error.message);
 	})
 }
-
-
-// ) Show Notice List
-function noticeList() {
+// ) Show Pagination Review List
+function reviewPagingList(url) {
 	axios.get(
-		'/board/noticeList'
+		url
 	).then(response => {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {
 		alert("error message :" + error.message);
 	})
 }
-
-
-// ) Show Inquiry List
-function inquiryList() {
+// ) Show Pagination Faq List
+function faqPagingList(url) {
 	axios.get(
-		'/board/inquiryList'
+		url
 	).then(response => {
 		document.getElementById('newPage').innerHTML = response.data;
 	}).catch(error => {
