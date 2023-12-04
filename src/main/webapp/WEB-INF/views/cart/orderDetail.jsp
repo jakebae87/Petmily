@@ -46,7 +46,7 @@
 					<td>${s.product_cnt}</td>
 					<td>${s.product_kind_price}</td>
 					<td>${s.delivery_status}</td>
-					<td><span class="textlink" onclick="odDelete('${s.order_detail_key}')" id="${s.order_detail_key}">삭제</span></td>
+					<td><span class="textlink" onclick="odDelete('${s.order_key}')" id="${s.order_key}">삭제</span></td>
 				</tr>
 			</c:forEach>
 		</c:if>
