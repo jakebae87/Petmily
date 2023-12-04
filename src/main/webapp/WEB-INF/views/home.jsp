@@ -4,7 +4,7 @@
 <html>
 <head>
 <title>Administrator Page</title>
-<link rel="stylesheet" type="text/css" href="/resources/style/style.css"/>
+<link rel="stylesheet" type="text/css" href="/resources/style/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/resources/javascript/notice.js"></script>
 <script src="/resources/javascript/inquiry.js"></script>
@@ -24,8 +24,9 @@
 		<tr>
 			<th><a href="/userform">USER</a></th>
 			<th><a onclick="pTableListf()">PRODUCT</a></th>
-			<th><a onclick="cartForm()">ORDER</a></th>
-			<th><a onclick="noticeList()">BOARD</a></th>
+			<th><a href="">ORDER</a></th>
+			<th><a onclick="noticePagingList('/board/noticePagingList')">BOARD</a></th>
+			<!-- <th><a onclick="noticeList()">BOARD</a></th> -->
 		</tr>
 	</table>
 	<hr>

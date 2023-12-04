@@ -1,13 +1,27 @@
 import { Link } from 'react-router-dom'
 import { useState } from "react";
+import axios from "axios";
 
 const ProductItem = ({ it, addCart }) => {
-    const [quantity, setQuantity] = useState(1);
+    // 장바구니 추가
+    function cartInsertP(a) {    
+	let url="/rscart/cartInsertP/" + a;
+	
+    axios.post(url)
+        .then((response) => {
+				alert(`** response.data:${response.data}`);
+				window.location.reload(); // 화면 새로고침
+	}).catch( err => {
+				if ( err.response.status ) alert("~~ 입력 오류!! 다시하세요 ~~");  				
+				else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+	});
+}
+    // const [quantity, setQuantity] = useState(1);
 
-    const handleAddCart = () => {
-        addCart({ ...it, quantity: quantity });
-        setQuantity(1);
-    };
+    // const handleAddCart = () => {
+    //     addCart({ ...it, quantity: quantity });
+    //     setQuantity(1);
+    // };
 
     let discountedPrice = it.product_price;
     let discountStr = "";
@@ -38,10 +52,8 @@ const ProductItem = ({ it, addCart }) => {
                     )}
                 </div>
                 <div className="gotoCart">
-                    <button onClick={() => handleAddCart(it)} >
-                        <Link to={`/user/cart`}>
-                            <img src={process.env.PUBLIC_URL + '/Images/cart.png'} alt="장바구니사진" />
-                        </Link>
+                    <button onClick={() => cartInsertP(it.product_id)} >
+                        <img src={process.env.PUBLIC_URL + '/Images/cart.png'} alt="장바구니사진" />
                     </button>
                 </div>
             </div>

@@ -1,7 +1,74 @@
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import { Link } from "react-router-dom";
-import SearchedInquiry from "./SearchedInquiry";
 
-export default function Inquiry() {
+function Pagination({ totalPages, currentPage, onPageChange }) {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+        pages.push(
+            <a
+                key={i}
+                href="#"
+                className={i === currentPage ? 'active' : ''}
+                onClick={() => onPageChange(i)}
+            >
+                {i}
+            </a>
+        );
+    }
+
+    return (
+        <div className="pagination">
+            <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>&laquo;</button>
+            {pages}
+            <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>&raquo;</button>
+        </div>
+    );
+}
+
+function Inquiry() {
+    const [inquiry, setInquiry] = useState([]);
+    const [searchPeriod, setSearchPeriod] = useState("all");
+    const [searchCriteria, setSearchCriteria] = useState("subject");
+    const [searchWord, setSearchWord] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const [searchInput, setSearchInput] = useState("");
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setInquiry([]); // 검색 결과 초기화
+        setSearchPeriod(e.target.searchPeriod.value);
+        setSearchCriteria(e.target.searchCriteria.value);
+        setSearchWord(e.target.searchWord.value); // 검색어 업데이트
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('/inquiry/list', {
+                    params: {
+                        searchPeriod,
+                        searchCriteria,
+                        searchWord,
+                    }
+                });
+                setInquiry(response.data);
+            } catch (error) {
+                alert(`자료가 없습니다.`);
+            }
+        };
+        fetchData();
+    }, [searchPeriod, searchCriteria, searchWord]);
+
+
+
+    const paginatedData = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return inquiry.slice(startIndex, endIndex);
+    };
+
     return (
         <div className="Inquiry">
             <div className="cateTitle">
@@ -16,44 +83,72 @@ export default function Inquiry() {
                 </ul>
             </div>
 
-            <SearchedInquiry />
+            <div className="boardList">
+                <table>
+                    <colgroup>
+                        <col className="attr1" />
+                        <col className="attr2" />
+                        <col className="attr3" />
+                    </colgroup>
+                    <tr>
+                        <th>제목</th>
+                        <th>글쓴이</th>
+                        <th>작성일</th>
+                    </tr>
+                    {/* 데이터 매핑 */}
+                    {paginatedData().map((i) =>
+                        <tr key={i.inquiry_id}>
+                            <td><Link to={`./${i.inquiry_id}`}>{i.inquiry_title}</Link></td>
+                            <td>{i.inquiry_writer}</td>
+                            <td>{i.inquiry_regdate}</td>
+                        </tr>
+                    )}
+                </table>
+                {/* 페이지네이션 UI */}
+                <Pagination
+                    totalPages={Math.ceil(inquiry.length / itemsPerPage)}
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                />
+                <div name="search" className="search">
+                    <form onSubmit={handleSearch}>
+                        <div className="searchConditions">
+                            <div>
+                                <select name="searchPeriod">
+                                    <option value="all">전체</option>
+                                    <option value="week">일주일</option>
+                                    <option value="month">한달</option>
+                                    <option value="firstQuarter">세달</option>
+                                </select>
+                                <select name="searchCriteria">
+                                    <option value="subject">제목</option>
+                                    <option value="content">내용</option>
+                                    <option value="writer">글쓴이</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="searchInput">
+                            <div>
+                                <input
+                                    className="searchWord"
+                                    name="searchWord"
+                                    type="text"
+                                    value={searchInput}
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                />
+                                <input type="submit" value="검색" />
+                            </div>
+                            <div className="board_write">
+                                <Link to="/board/inquiry">글쓰기</Link>
+                            </div> 
+                        </div>
+                    </form>
+                </div>
 
-            <div className="search">
-                <form action="#">
-                    <div className="searchConditions">
-                        <div>
-                            <select name="searchPeriod">
-                                <option value="all">전체</option>
-                                <option value="week">일주일</option>
-                                <option value="month">한달</option>
-                                <option value="firstQuarter">세달</option>
-                            </select>
-                            <select name="searchCriteria">
-                                <option value="subject">제목</option>
-                                <option value="content">내용</option>
-                                <option value="writer">글쓴이</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="searchInput">
-                        <div>
-                            <input className="searchWord" name="searchWord" type="text" />
-                            <input type="submit" value="검색" />
-                        </div>
-                        <div className="board_write">
-                            <Link to="/board/inquiry">글쓰기</Link>
-                        </div>
-                    </div>
-                </form>
-            </div>
 
-            <div className="pagination">
-                <a href="#">&laquo;</a>
-                <a href="#">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">&raquo;</a>
             </div>
         </div>
-    )
+    );
 }
+
+export default Inquiry;

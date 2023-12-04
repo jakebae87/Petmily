@@ -57,8 +57,9 @@
 			</table>
 		</c:if>
 		<br>
+		<!-- reply 있는 경우에만 나타내기 -->
+		<hr><br>
 		<c:if test="${not empty requestScope.reply}">
-			<hr><br>
 			<c:forEach var="s" items="${requestScope.reply }">
 				<table id="boardDetail">
 					<tr>

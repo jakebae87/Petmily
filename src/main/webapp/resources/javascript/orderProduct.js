@@ -41,7 +41,8 @@ function orderProductInsert() {
 				{headers:{"Content-Type":"multipart/form-data"}
 	}).then( response => {
 				alert(`** response.data:${response.data}`);
-				location.reload(); // 화면 새로고침
+				// 주문내역 리스트로 이동
+				orderList();
 	}).catch( err => {
 				if ( err.response.status=='502' ) alert("~~ 입력 오류!! 다시하세요 ~~");  				
 				else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
@@ -78,7 +79,8 @@ function orderProductUpdate() {
 				{headers:{"Content-Type":"multipart/form-data"}
 	}).then( response => {
 				alert(`** response.data:${response.data}`);
-				location.reload(); // 화면 새로고침
+				// 주문내역 리스트로 이동
+				orderList();
 	}).catch( err => {
 				if ( err.response.status=='502' ) alert("~~ 입력 오류!! 다시하세요 ~~");  				
 				else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
@@ -92,11 +94,8 @@ function opDelete(order_key) {
 	let url = "/cart/opdelete/" + order_key;
 	axios.delete(url).then(response => {
 		alert(response.data);
-		document.getElementById(order_key).innerHTML = "Deleted";
-		document.getElementById(order_key).style.color = "Gray";
-		document.getElementById(order_key).style.fontWeight = "Bold";
-		document.getElementById(order_key).classList.remove('textlink');
-		document.getElementById(order_key).removeAttribute('onclick');
+		// 주문내역 리스트로 이동
+		orderList();
 	}).catch(err => {
 		if (err.response.status == '502') alert(err.response.data);
 		else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);

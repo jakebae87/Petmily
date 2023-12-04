@@ -18,8 +18,9 @@ public interface CartMapper {
 	
 	// insert: Join
 //	int insert(CartDTO vo);
-	Integer getQuantity(String user_id, int product_id);
+//	Integer getQuantity(String user_id, int product_id);
 	void insert(String user_id, int product_id, int product_cnt);
+	int insertP(int product_id);
 		
 	// update
 	int update(CartDTO vo);

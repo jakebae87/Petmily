@@ -23,12 +23,12 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 public class RestProductController {
-	
+
 	PromotionProductService pmpservice;
 	ProductService pservice;
 	ProductImageService piservice;
 	EventService eservice;
-	
+
 	@GetMapping("/checkdata")
 	// => React Connect Test
 	public String hello() {
