@@ -22,10 +22,12 @@ const categoryTitles = {
 };
 
 function AllProducts({ addCart }) {
+    const { kind, category } = useParams();
     const [productData, setProductData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => {
-        axios.get('/rsproduct/productList')
+    const getData = () => {
+        axios.get(`/rsproduct/productList/${kind}/${category}`)
             .then((response) => {
                 setProductData(response.data);
                 console.log(`** productList 서버연결 성공 =>`, response.data);
@@ -33,28 +35,17 @@ function AllProducts({ addCart }) {
             .catch((err) => {
                 alert(`** productList 서버연결 실패 => ${err.message}`);
             });
-    }, []);
+    };
 
-    
-    const { kind, category } = useParams();
-
-    const filteredKind = productData.filter((item) => kind === "all" || item.product_kind === kind || item.product_kind === "all");
-    const filteredData = filteredKind.filter((item) => category === "all" || item.product_category === category);
-
-    const title1 = kindTitles[kind] || "";
-    const title2 = categoryTitles[category] || "";
-
-    // 페이지네이션
     useEffect(() => {
         setCurrentPage(1);
+        getData();
     }, [kind, category]);
 
     const itemsPerPage = 9;
-    const [currentPage, setCurrentPage] = useState(1);
-
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = productData.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -63,7 +54,7 @@ function AllProducts({ addCart }) {
     return (
         <div className="Products">
             <div className="cateTitle">
-                <h1>{title1} {title2}</h1>
+                <h1>{kindTitles[kind] || ""} {categoryTitles[category] || ""}</h1>
             </div>
             <hr />
 
@@ -99,7 +90,7 @@ function AllProducts({ addCart }) {
                     </a>
                 )}
 
-                {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }).map((_, index) => (
+                {Array.from({ length: Math.ceil(productData.length / itemsPerPage) }).map((_, index) => (
                     <a
                         key={index}
                         onClick={() => paginate(index + 1)}
@@ -109,7 +100,7 @@ function AllProducts({ addCart }) {
                     </a>
                 ))}
 
-                {currentPage < Math.ceil(filteredData.length / itemsPerPage) && (
+                {currentPage < Math.ceil(productData.length / itemsPerPage) && (
                     <a className="next-page" onClick={() => paginate(currentPage + 1)}>
                         다음 페이지
                     </a>

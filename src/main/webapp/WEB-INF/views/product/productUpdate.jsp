@@ -21,13 +21,9 @@
 		<tr><th>PROMOTION_ID (FK)</th>
 			<td>
 				<select name="promotion_id" id="promotion_id">
-					<option value="${requestScope.ptable.promotion_id}" selected>${requestScope.ptable.promotion_id}</option>
-					<option value="10">10: 일반상품</option>
-					<option value="1">1: 프로모션1</option>
-					<option value="2">2: 프로모션2</option>
-					<option value="3">3: 프로모션3</option>
-					<option value="4">4: 프로모션4</option>
-					<option value="5">5: 프로모션5</option>
+				    <c:forEach var="p" items="${requestScope.pmptable}">
+				        <option value="${p.promotion_id}"<c:if test="${p.promotion_id eq 10}"> selected</c:if>>${p.promotion_id}: ${p.promotion_name}</option>
+				    </c:forEach>
 				</select>
 			</td>
 		</tr>

@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 
 import ProductItem from "./ProductItem";
 
-// Mock Data
-import mockData from "../MockData/MockData_Products";
-
 function DiscountedProducts({ addCart }) {
-    const filteredData = mockData.filter(item => {
-        return item.discount;
-    });
+    const [discountedProductData, setDiscountedProductData] = useState([]);
+
+    useEffect(() => {
+        axios.get('/rsproduct/discountedProductList')
+            .then((response) => {
+                setDiscountedProductData(response.data);
+                console.log(`** discountedProductList 서버연결 성공 =>`, response.data);
+            })
+            .catch((err) => {
+                alert(`** discountedProductList 서버연결 실패 => ${err.message}`);
+            });
+    }, []);
 
     return (
         <div className="Products">
@@ -18,7 +25,7 @@ function DiscountedProducts({ addCart }) {
             <hr />
 
             <div className="productList">
-                {filteredData.map((item) => (<ProductItem key={item.id} it={item} addCart={addCart} />))}
+                {discountedProductData.map((item) => (<ProductItem key={item.id} it={item} addCart={addCart} />))}
             </div>
         </div>
     );

@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 
 import ProductItem from "./ProductItem";
 
-// Mock Data
-import mockData from "../MockData/MockData_Products";
-
 function PopularProducts({ addCart }) {
-    const tempData = [...mockData];
-    const filteredData = tempData.sort((max, min) => (min.cntOfsales - max.cntOfsales));
+    const [popularProductData, setPopularProductData] = useState([]);
+
+    useEffect(() => {
+        axios.get('/rsproduct/popularProductList')
+            .then((response) => {
+                setPopularProductData(response.data);
+                console.log(`** popularProductList 서버연결 성공 =>`, response.data);
+            })
+            .catch((err) => {
+                alert(`** popularProductList 서버연결 실패 => ${err.message}`);
+            });
+    }, []);
 
     return (
         <div className="Products">
@@ -17,9 +25,7 @@ function PopularProducts({ addCart }) {
             <hr />
 
             <div className="productList">
-                {filteredData.map((item, idx) => {
-                    if (idx < 5) return (<ProductItem key={item.id} it={item} addCart={addCart} />);
-                })}
+                {popularProductData.map((item) => (<ProductItem key={item.id} it={item} addCart={addCart} />))}
             </div>
         </div>
     );

@@ -1,37 +1,39 @@
 import "./Home.css";
-//import React from "react";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import ImageSlider from "./ImageSlider";
 import Introduce from "./Introduce";
 
-import mockData from "../MockData/MockData_Home";
+const IntroduceData = [
+    {
+        id: 0,
+        title: '신상품',
+        content: '펫밀리에서 새롭게 선보이는 제품을 소개합니다.',
+        url: "/products/newproducts"
+    },
+    {
+        id: 1,
+        title: '인기상품',
+        content: '펫밀리에서 가장 많이 판매되는 제품을 소개합니다.',
+        url: "/products/popularproducts"
+    },
+    {
+        id: 2,
+        title: '할인상품',
+        content: '할인 중인 상품입니다.',
+        url: "/products/discountedproducts"
+    }
+];
 
 function Home({ addCart }) {
 
-    const [data, setData] = useState('');
-
-    // => 실행과 동시에 처음 한번 서버요청
-    useEffect(() => {
-        axios
-            .get('/rsproduct/checkdata')
-            .then((response) => {
-                setData(response.data);
-                console.log(`** checkdata 서버연결 성공 => ${response.data}`);
-            }).catch((err) => {
-                alert(`** checkdata 서버연결 실패 => ${err.message}`);
-            });
-    }, []);
-
     return (
         <div className="Home">
-            from Server Data : {data}
-
             <ImageSlider />
 
             <div id="mainWrap">
-                {mockData.map((item, index) => (<Introduce props={[item, index]} addCart={addCart} />))}
+                {IntroduceData.map((item, index) => (<Introduce props={[item, index]} addCart={addCart} />))}
             </div>
         </div>
     );
