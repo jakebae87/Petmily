@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartDTO {
+public class CartDTO extends ProductDTO {
 	private String user_id;
 	private int product_id;
 	private int product_cnt;

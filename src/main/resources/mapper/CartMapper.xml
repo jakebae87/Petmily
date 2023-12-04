@@ -4,8 +4,13 @@
 <mapper namespace="com.team119.petmily.mapperInterface.CartMapper">
 
 	<!-- 1. selectList -->
+<!-- 	<select id="selectList" resultType="com.team119.petmily.domain.CartDTO"> -->
+<!-- 		select * from cart order by user_id asc -->
+<!-- 	</select> -->
 	<select id="selectList" resultType="com.team119.petmily.domain.CartDTO">
-		select * from cart order by user_id asc
+		select c.user_id, c.product_id, c.product_cnt, p.product_name, p.product_price, p.product_mainimagepath
+		from cart c inner Join product p
+		on c.product_id = p.product_id
 	</select>
 	
 	<!-- 2. selectOne: Detail -->
@@ -23,14 +28,24 @@
 <!-- 		insert into cart -->
 <!-- 		values (#{user_id}, #{product_id}, #{product_cnt}) -->
 <!-- 	</insert> -->
-	<select id="getQuantity" resultType="java.lang.Integer">
-        SELECT product_cnt FROM cart WHERE user_id = #{param1} AND product_id = #{param2}
-    </select>
+<!-- 	<select id="getQuantity" resultType="java.lang.Integer"> -->
+<!--         SELECT product_cnt FROM cart WHERE user_id = #{param1} AND product_id = #{param2} -->
+<!--     </select> -->
 
     <insert id="insert">
         INSERT INTO cart (user_id, product_id, product_cnt)
         VALUES (#{param1}, #{param2}, #{param3})
         ON DUPLICATE KEY UPDATE product_cnt = product_cnt + #{param3}
+    </insert>
+
+    <insert id="insertP">
+        INSERT INTO cart (user_id, product_id)
+		(
+		select user_id, product_id
+		from user cross join product
+		where product_id=#{product_id}
+		)
+		ON DUPLICATE KEY UPDATE product_cnt = product_cnt + 1
     </insert>
 	
 	<!-- 5. update -->

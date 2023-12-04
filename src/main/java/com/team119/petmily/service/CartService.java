@@ -18,8 +18,9 @@ public interface CartService {
 
 	// ** insert(장바구니 상품 추가)
 //	int insert(CartDTO dto);
-	Integer getQuantity(String user_id, int product_id);
+//	Integer getQuantity(String user_id, int product_id);
 	void insert(String user_id, int product_id, int product_cnt);
+	int insertP(int product_id);
 	
 	// ** update(장바구니 수정)
 	int update(CartDTO dto);

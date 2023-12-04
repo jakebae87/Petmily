@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
@@ -70,21 +69,11 @@ function Inquiry() {
         return inquiry.slice(startIndex, endIndex);
     };
 
-=======
-import { Link } from "react-router-dom";
-import SearchedInquiry from "./SearchedInquiry";
-
-export default function Inquiry() {
->>>>>>> 51a11fd129897a089fbfb01d894228caf502a48a
     return (
         <div className="Inquiry">
             <div className="cateTitle">
                 <h1>상품문의</h1>
             </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> 51a11fd129897a089fbfb01d894228caf502a48a
             <div className="commnunityList">
                 <ul>
                     <li><Link to="/community/notice">공지사항</Link></li>
@@ -94,7 +83,6 @@ export default function Inquiry() {
                 </ul>
             </div>
 
-<<<<<<< HEAD
             <div className="boardList">
                 <table>
                     <colgroup>
@@ -164,46 +152,3 @@ export default function Inquiry() {
 }
 
 export default Inquiry;
-=======
-            <SearchedInquiry />
-
-            <div className="search">
-                <form action="#">
-                    <div className="searchConditions">
-                        <div>
-                            <select name="searchPeriod">
-                                <option value="all">전체</option>
-                                <option value="week">일주일</option>
-                                <option value="month">한달</option>
-                                <option value="firstQuarter">세달</option>
-                            </select>
-                            <select name="searchCriteria">
-                                <option value="subject">제목</option>
-                                <option value="content">내용</option>
-                                <option value="writer">글쓴이</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="searchInput">
-                        <div>
-                            <input className="searchWord" name="searchWord" type="text" />
-                            <input type="submit" value="검색" />
-                        </div>
-                        <div className="board_write">
-                            <Link to="/board/inquiry">글쓰기</Link>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div className="pagination">
-                <a href="#">&laquo;</a>
-                <a href="#">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">&raquo;</a>
-            </div>
-        </div>
-    )
-}
->>>>>>> 51a11fd129897a089fbfb01d894228caf502a48a
