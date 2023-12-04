@@ -1,5 +1,12 @@
-const EventItem = ({ id, title, content, startDate, endDate, progress, img }) => {
+const EventItem = ({ it }) => {
+    let progress = "";
     let isGoing = "";
+
+    const date = new Date();
+
+    if (date < it.event_start) { progress = "beforeOpen"; }
+    else if (date <= it.event_end) { progress = "onGoing"; }
+    else { progress = "closed"; }
 
     switch (progress) {
         case "beforeOpen": isGoing = "진행전"; break;
@@ -11,18 +18,17 @@ const EventItem = ({ id, title, content, startDate, endDate, progress, img }) =>
     return (
         <div className={`events ${progress}`}>
             <div>
-                <img src={img} alt="이벤트 사진" />
+                <img src={it.event_imagepath} alt="이벤트 사진" />
 
                 <div>
-                    <p className="eventTitle">{title}</p>
-                    <p className="eventContent">{content}</p>
+                    <p className="eventTitle">{it.event_name}</p>
+                    <p className="eventContent">{it.event_description}</p>
 
                     <div className="eventInfo">
                         <span>
                             {isGoing}
-                            {console.log(progress)}
                         </span>
-                        <h5>{startDate.toLocaleDateString()} ~ {endDate.toLocaleDateString()}</h5>
+                        {/* <h5>{it.event_start.toLocaleDateString()} ~ {it.event_end.toLocaleDateString()}</h5> */}
                     </div>
                 </div>
             </div>

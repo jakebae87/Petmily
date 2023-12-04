@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
-<<<<<<< HEAD
 import axios from 'axios';
-=======
->>>>>>> main
 
 import ProductItem from "./ProductItem";
-
-// Mock Data
-import mockData from "../MockData/MockData_Products";
 
 const kindTitles = {
     all: "",
@@ -28,39 +22,24 @@ const categoryTitles = {
 };
 
 function AllProducts({ addCart }) {
-<<<<<<< HEAD
-    // test
     const [productData, setProductData] = useState([]);
 
-    // useEffect를 통해 컴포넌트가 마운트될 때 서버에서 상품 데이터를 가져오도록 설정
     useEffect(() => {
-        // 서버에서 데이터를 가져오는 코드 작성
         axios.get('/rsproduct/productList')
             .then((response) => {
-                // 서버로부터 받아온 데이터를 상태에 저장
                 setProductData(response.data);
                 console.log(`** productList 서버연결 성공 =>`, response.data);
             })
             .catch((err) => {
                 alert(`** productList 서버연결 실패 => ${err.message}`);
             });
-    }, []); // 두 번째 매개변수로 빈 배열을 전달하여 컴포넌트가 마운트될 때 한 번만 실행
+    }, []);
 
-    const { mykind, mycategory } = useParams();
-
-    const myfilteredKind = mockData.filter((item) => mykind === "all" || item.kind === mykind || item.kind === "all");
-    const myfilteredData = filteredKind.filter((item) => mycategory === "all" || item.category === mycategory);
-
-    const mytitle1 = kindTitles[mykind] || "";
-    const mytitle2 = categoryTitles[mycategory] || "";
-
-    // -------------------------------
-=======
->>>>>>> main
+    
     const { kind, category } = useParams();
 
-    const filteredKind = mockData.filter((item) => kind === "all" || item.kind === kind || item.kind === "all");
-    const filteredData = filteredKind.filter((item) => category === "all" || item.category === category);
+    const filteredKind = productData.filter((item) => kind === "all" || item.product_kind === kind || item.product_kind === "all");
+    const filteredData = filteredKind.filter((item) => category === "all" || item.product_category === category);
 
     const title1 = kindTitles[kind] || "";
     const title2 = categoryTitles[category] || "";
@@ -83,18 +62,6 @@ function AllProducts({ addCart }) {
 
     return (
         <div className="Products">
-<<<<<<< HEAD
-            test :
-            {productData.map((item) => (
-                <div key={item.product_id}>
-                    <p>{item.product_name}</p>
-                    <p>{item.product_description}</p>
-                    {/* 추가적으로 필요한 정보들을 렌더링 */}
-                </div>
-            ))}
-
-=======
->>>>>>> main
             <div className="cateTitle">
                 <h1>{title1} {title2}</h1>
             </div>
@@ -120,7 +87,7 @@ function AllProducts({ addCart }) {
 
             <div className="productList">
                 {currentItems.map((item) => (
-                    <ProductItem key={item.id} it={item} addCart={addCart} />
+                    <ProductItem key={item.product_id} it={item} addCart={addCart} />
                 ))}
             </div>
 

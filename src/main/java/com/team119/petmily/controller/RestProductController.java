@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.team119.petmily.domain.EventDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.service.EventService;
 import com.team119.petmily.service.ProductImageService;
@@ -39,5 +40,11 @@ public class RestProductController {
     public ResponseEntity<List<ProductDTO>> productList() {
         List<ProductDTO> productList = pservice.selectList();
         return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+	
+	@GetMapping("/eventList")
+    public ResponseEntity<List<EventDTO>> eventList() {
+        List<EventDTO> eventList = eservice.selectList();
+        return new ResponseEntity<>(eventList, HttpStatus.OK);
     }
 }

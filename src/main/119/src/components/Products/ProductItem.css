@@ -33,6 +33,11 @@
     font-weight: bold;
 }
 
+.ProductItem .originalPrice {
+    color: darkgray;
+    text-decoration: line-through;
+}
+
 .ProductItem .productPrice sup {
     color: red;
 }

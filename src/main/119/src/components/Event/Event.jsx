@@ -1,10 +1,27 @@
 import "./Event.css";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import axios from 'axios';
+
 import EventItem from "./EventItem";
-import { useState } from "react";
 
 import mockData from "../MockData/MockData_Event";
 
 function Event() {
+    
+    const [eventData, setEventDataData] = useState([]);
+
+    useEffect(() => {
+        axios.get('/rsproduct/eventList')
+            .then((response) => {
+                setEventDataData(response.data);
+                console.log(`** eventList 서버연결 성공 =>`, response.data);
+            })
+            .catch((err) => {
+                alert(`** eventList 서버연결 실패 => ${err.message}`);
+            });
+    }, []);
+
     const [selectedFilter, setSelectedFilter] = useState("all");
     const handleFilterChange = (e) => {
         setSelectedFilter(e.target.value);
@@ -12,19 +29,21 @@ function Event() {
 
     const date = new Date();
 
-    mockData.map(item => {
-        if (date < item.startDate) { return item.progress = "beforeOpen"; }
-        else if (date <= item.endDate) { return  item.progress = "onGoing"; }
-        else { return item.progress = "closed"; }
-    });
-
-    const filteredData = mockData.filter(item => {
+    const filteredData = eventData.filter(item => {
         if (selectedFilter === "all") { return true; }
-        if (selectedFilter === "onGoing") { return date >= item.startDate && date <= item.endDate; }
-        if (selectedFilter === "closed") { return date > item.endDate; }
-        if (selectedFilter === "beforeOpen") { return date < item.startDate; }
+        if (selectedFilter === "onGoing") { return date >= item.event_start && date <= item.event_end; }
+        if (selectedFilter === "closed") { return date > item.event_end; }
+        if (selectedFilter === "beforeOpen") { return date < item.event_start; }
         return true;
     });
+
+    // const filteredData = mockData.filter(item => {
+    //     if (selectedFilter === "all") { return true; }
+    //     if (selectedFilter === "onGoing") { return date >= item.startDate && date <= item.endDate; }
+    //     if (selectedFilter === "closed") { return date > item.endDate; }
+    //     if (selectedFilter === "beforeOpen") { return date < item.startDate; }
+    //     return true;
+    // });
 
     return (
         <div className="Event">
@@ -44,7 +63,7 @@ function Event() {
             </div>
 
             <div id="eventList">
-                {filteredData.map(it => (<EventItem key={it.id} {...it} />))}
+                {filteredData.map(item => (<EventItem key={item.event_id} it={item} />))}
             </div>
         </div>
     );

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductDTO extends PromotionProductDTO {
 	private int product_id;
 	private int promotion_id;
 	private String product_kind;
