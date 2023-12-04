@@ -24,7 +24,8 @@
 		<tr>
 			<th><a href="/userform">USER</a></th>
 			<th><a onclick="pTableListf()">PRODUCT</a></th>
-			<th><a href="">ORDER</a></th>
+
+			<th><a onclick="cartForm()">ORDER</a></th>
 			<th><a onclick="noticePagingList('/board/noticePagingList')">BOARD</a></th>
 			<!-- <th><a onclick="noticeList()">BOARD</a></th> -->
 		</tr>
@@ -34,6 +35,7 @@
 	<div id="pTableListArea"></div>
 	<div id="resultArea1"></div>
 	<div id="resultArea2"></div>
-	&nbsp;<a href="/home">[Home]</a>&nbsp;
+	&nbsp;
+	<a href="/home">[Home]</a>&nbsp;
 </body>
 </html>

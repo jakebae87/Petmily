@@ -9,30 +9,29 @@ function Login() {
     const [userId, setUserId] = useState('');
     const [userPassword, setUserPassword] = useState('');
 
-    const onSubmit = async (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post('/rsuser/Login', {
-                user_id: userId,
-                user_password: userPassword,
+        let url = "/rsuser/Login";
+
+        const data = {
+            user_id: userId,
+            user_password: userPassword
+        };
+
+        axios.post(url, data, { headers: { 'Content-Type': 'application/json' } })
+            .then(response => {
+                alert(`** response : id=${response.data.user_id}, password=${response.data.user_password}`);
+                navigate("/User/Cart");
+            })
+            .catch(err => {
+                console.error(`** err.response=${err.response}, err.response.status=${err.response.status}, err.message=${err.message}`);
+                if (err.response.status == 401) {
+                    alert("~~ id 또는 password 오류!! 다시하세요 ~~");
+                } else {
+                    alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+                }
             });
-
-            const data = response.data;
-            if (data) {
-                console.log(data); // 서버에서 보낸 데이터 출력
-                alert("로그인 성공");
-                navigate("/");
-
-            } else {
-                alert("로그인 실패");
-                // 로그인이 실패했을 때의 처리
-            }
-        } catch (error) {
-            console.error('로그인 오류:', error);
-            alert("로그인 요청 실패");
-            // 요청 실패 시 처리
-        }
     }
     const NaverLogin = () => {
         const NAVER_CLIENT_ID = 'X8MsAj1qeOGBGpWCrM5B';

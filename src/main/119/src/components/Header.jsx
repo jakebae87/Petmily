@@ -6,7 +6,9 @@ import PetmilyLogo from '../assets/Images/Petmily_logo.png';
 import glassLogo from '../assets/Images/magnifying-glass-30.png';
 
 function Header() {
+    
     const navigate = useNavigate();
+
 
     const handleEnterPress = (e) => {
         navigate("/products/searchedproducts");
