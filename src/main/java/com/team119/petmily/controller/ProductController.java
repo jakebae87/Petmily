@@ -2,6 +2,7 @@ package com.team119.petmily.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -147,6 +148,7 @@ public class ProductController {
 	
 	@GetMapping("/pInsertForm")
 	public String pInsertForm(Model model) {
+		model.addAttribute("pmptable", pmpservice.selectList());
 		model.addAttribute("ptable", pservice.selectList());
 		log.info("** pInsertForm 성공 **");
 		return "/product/productInsert";
@@ -186,6 +188,7 @@ public class ProductController {
 	@GetMapping("/pUpdateForm/{ii}")
 	public String pUpdateForm(@PathVariable("ii") int id, ProductDTO dto, Model model) {
 		dto.setProduct_id(id);
+		model.addAttribute("pmptable", pmpservice.selectList());
 		model.addAttribute("ptable", pservice.selectOne(dto));
 		log.info("** pUpdateForm 성공 **");
 		return "/product/productUpdate";
