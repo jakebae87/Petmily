@@ -58,14 +58,24 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public int insertP(int product_id) {
-		return mapper.insertP(product_id);
+	public void insertP(String user_id, int product_id) {
+		mapper.insertP(user_id, product_id);
 	}
 
 	// ** update
 	@Override
 	public int update(CartDTO dto) {
 		return mapper.update(dto);
+	}
+	
+	// ** 수량 변경
+	@Override
+	public void upCnt(String user_id, int product_id) {
+		mapper.upCnt(user_id, product_id);
+	}
+	@Override
+	public void downCnt(String user_id, int product_id) {
+		mapper.downCnt(user_id, product_id);
 	}
 
 	// ** Paging

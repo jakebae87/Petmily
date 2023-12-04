@@ -20,12 +20,19 @@ public interface CartService {
 //	int insert(CartDTO dto);
 //	Integer getQuantity(String user_id, int product_id);
 	void insert(String user_id, int product_id, int product_cnt);
-	int insertP(int product_id);
+	void insertP(String user_id, int product_id);
 	
 	// ** update(장바구니 수정)
 	int update(CartDTO dto);
 	
+	// ** 수량 변경
+	void upCnt(String user_id, int product_id);
+	void downCnt(String user_id, int product_id);
+
 	// ** Paging
 	List<CartDTO> bcriList(SearchCriteria cri); // 출력할 Data만 select
 	int criTotalCount(SearchCriteria cri); // 출력대상인 전체 rows 갯수
+
+
+
 }

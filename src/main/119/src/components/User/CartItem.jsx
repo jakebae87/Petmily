@@ -4,6 +4,7 @@ import axios from "axios";
 const CartItem = ({
   cartItems,
   onDelete,
+  addCart,
   checkedItems,
   checkChange,
   increQuantity,
@@ -43,6 +44,44 @@ const CartItem = ({
       });
   }
 
+  // cartCntUp(장바구니 수량 +1)
+  function upCnt(product_id) {
+    let url = "/rscart/cartCntUp/" + product_id;
+
+    axios
+      .post(url)
+      .then((response) => {
+        alert(response.data);
+        // 페이지 새로고침
+        window.location.reload();
+      })
+      .catch((err) => {
+        if (err.response.status) alert(err.response.data);
+        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+      });
+  }
+
+  // cartCntDown(장바구니 수량 -1)
+  function downCnt(product_id) {
+    let url = "/rscart/cartCntDown/" + product_id;
+
+    axios
+      .post(url)
+      .then((response) => {
+        alert(response.data);
+        // 페이지 새로고침
+        window.location.reload();
+      })
+      .catch((err) => {
+        if (err.response.status) alert(err.response.data);
+        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+      });
+  }
+
+  console.log("checkedItems =" + checkedItems);
+  console.log("cartItems = " + cartItems);
+  
+
   return (
     <tbody>
       {Data.map((item) => (
@@ -50,14 +89,17 @@ const CartItem = ({
           <td>
             <input
               type="checkbox"
-              checked={checkedItems.includes(item.id)}
-              onChange={(e) => checkChange(e, item.id)}
+              checked={checkedItems.includes(item.product_id)}
+              onChange={(e) => checkChange(e, item.product_id)}
             />
           </td>
           <td>
             <div className="cartImage">
               <img
-                src={process.env.PUBLIC_URL + `/Images/products/${item.product_mainimagepath}`}
+                src={
+                  process.env.PUBLIC_URL +
+                  `/Images/products/${item.product_mainimagepath}`
+                }
                 alt={item.product_mainimagepath}
               />
             </div>
@@ -72,7 +114,7 @@ const CartItem = ({
             <button
               className="decreQuantity"
               onClick={() => {
-                decreQuantity(item);
+                downCnt(item.product_id);
               }}
             >
               ▽
@@ -81,14 +123,16 @@ const CartItem = ({
             <button
               className="increQuantity"
               onClick={() => {
-                increQuantity(item);
+                upCnt(item.product_id);
               }}
             >
               △
             </button>
           </td>
           <td>
-            <span>{(item.product_price * item.product_cnt).toLocaleString()}</span>
+            <span>
+              {(item.product_price * item.product_cnt).toLocaleString()}
+            </span>
           </td>
           <td>
             <button

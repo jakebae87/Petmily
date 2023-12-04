@@ -24,7 +24,7 @@
 		<tr>
 			<th><a href="/userform">USER</a></th>
 			<th><a onclick="pTableListf()">PRODUCT</a></th>
-			<th><a href="">ORDER</a></th>
+			<th><a onclick="cartForm()">ORDER</a></th>
 			<th><a onclick="noticePagingList('/board/noticePagingList')">BOARD</a></th>
 			<!-- <th><a onclick="noticeList()">BOARD</a></th> -->
 		</tr>

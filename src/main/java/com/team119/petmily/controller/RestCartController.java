@@ -2,6 +2,8 @@ package com.team119.petmily.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -64,10 +66,20 @@ public class RestCartController {
 	}
 
 	// ** 리액트 홈 장바구니 추가 Post
-	@PostMapping(value = "/cartInsertP/{ii}")
-	public ResponseEntity<?> cartInsertP(@PathVariable("ii") int product_id) {		
+	@PostMapping(value = "/cartInsertP/{jj}")
+	public ResponseEntity<?> cartInsertP(HttpSession session, @PathVariable("jj") int product_id) {
 	    try {
-	        cservice.insertP(product_id);
+	        // 세션에서 로그인 아이디를 가져오기
+	        String user_id = (String) session.getAttribute("loginID");
+	        
+	        // user_id null
+	        if (user_id == null) {
+	            return new ResponseEntity<String>("로그인 해주세요.", HttpStatus.UNAUTHORIZED);
+	        }
+
+	        // 세션에서 가져온 로그인 아이디와 상품 ID를 사용하여 처리
+	        cservice.insertP(user_id, product_id);
+
 	        return new ResponseEntity<String>("Success", HttpStatus.OK);
 	    } catch (Exception e) {
 	        log.error("Error in cartInsertP", e);
@@ -75,15 +87,56 @@ public class RestCartController {
 	    }
 	}
 	
+	// 리액트 장바구니 수량 Up 아이콘
+	@PostMapping(value = "/cartCntUp/{jj}")
+	public ResponseEntity<?> cartCntUp(HttpSession session, @PathVariable("jj") int product_id) {
+	    try {
+	        // 세션에서 로그인 아이디를 가져오기
+	        String user_id = (String) session.getAttribute("loginID");
+	        
+	        // user_id null
+	        if (user_id == null) {
+	            return new ResponseEntity<String>("로그인 해주세요.", HttpStatus.UNAUTHORIZED);
+	        }
+
+	        // 세션에서 가져온 로그인 아이디와 상품 ID를 사용하여 처리
+	        cservice.upCnt(user_id, product_id);
+
+	        return new ResponseEntity<String>("수량 증가", HttpStatus.OK);
+	    } catch (Exception e) {
+	        log.error("Error in cartCntUp", e);
+	        return new ResponseEntity<String>("Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	// 리액트 장바구니 수량 Down 아이콘
+	@PostMapping(value = "/cartCntDown/{jj}")
+	public ResponseEntity<?> cartCntDown(HttpSession session, @PathVariable("jj") int product_id) {
+		try {
+			// 세션에서 로그인 아이디를 가져오기
+			String user_id = (String) session.getAttribute("loginID");
+			
+			// user_id null
+			if (user_id == null) {
+				return new ResponseEntity<String>("로그인 해주세요.", HttpStatus.UNAUTHORIZED);
+			}
+			
+			// 세션에서 가져온 로그인 아이디와 상품 ID를 사용하여 처리
+			cservice.downCnt(user_id, product_id);
+			
+			return new ResponseEntity<String>("수량 감소", HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("Error in cartCntDown", e);
+			return new ResponseEntity<String>("Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	// ===============================================================
+	
 	@GetMapping("/orderproductList")
 	public ResponseEntity<List<OrderProductDTO>> orderProductList() {
 		List<OrderProductDTO> OrderProductList = opservice.selectList();
 		return new ResponseEntity<>(OrderProductList, HttpStatus.OK);
 	}
 	
-	@GetMapping("/userList")
-	public ResponseEntity<List<UserDTO>> userList() {
-		List<UserDTO> UserList = uservice.selectList();
-		return new ResponseEntity<>(UserList, HttpStatus.OK);
-	}
+	// ===============================================================
 }

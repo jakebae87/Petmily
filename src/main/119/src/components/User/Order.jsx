@@ -10,8 +10,8 @@ export default function Order({ orderItems, deleteOrder }) {
     );
   };
 
-  // SpringBoot test
-  const [userData, setuserData] = useState([]);
+  // 로그인한 회원정보
+  const [loginUser, setLoginUser] = useState([]);
   // true: 주문자 정보와 동일, false: 새로운 배송지
   const [useSameAddress, setUseSameAddress] = useState(true);
   // 회원이름
@@ -27,19 +27,14 @@ export default function Order({ orderItems, deleteOrder }) {
 
   // 회원 리스트 불러오기
   useEffect(() => {
-    axios
-      .get("/rscart/userList")
-      .then((response) => {
-        setuserData(response.data);
-        console.log(`** checkdata 서버연결 성공 =>`, response.data);
-      })
-      .catch((err) => {
-        alert(`** checkdata 서버연결 실패 => ${err.message}`);
-      });
-  }, []);
+    const userFromSession = JSON.parse(sessionStorage.getItem("loginID"));
 
-  // 선택된 사용자 정보
-  const selectedUser = userData.length > 0 ? userData[0] : {};
+    if (userFromSession) {
+      setLoginUser(userFromSession);
+    } else {
+      alert("로그인하세요");
+    }
+  }, []);
 
   return (
     <div>
@@ -127,7 +122,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         type="text"
                         id="name"
                         name="name"
-                        value={selectedUser.user_name}
+                        value={setLoginUser.user_name}
                         required
                       />
                     </td>
@@ -143,7 +138,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         type="text"
                         id="firstPhoneNumber"
                         name="firstPhoneNumber"
-                        value={selectedUser.user_phone}
+                        value={loginUser.user_phone}
                         size="10"
                       />
                       {/* <input
@@ -185,7 +180,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         <input
                           type="text"
                           name="email_id"
-                          value={selectedUser.user_email}
+                          value={loginUser.user_email}
                           size="20"
                           required
                         />
@@ -233,11 +228,11 @@ export default function Order({ orderItems, deleteOrder }) {
                           checked={useSameAddress}
                           onChange={() => {
                             setUseSameAddress(true);
-                            setOrderName(selectedUser.user_name);
-                            setOrderPhone(selectedUser.user_phone);
-                            setOrderZipcode(selectedUser.zipcode);
-                            setOrderAddr(selectedUser.addr);
-                            setOrderAddrD(selectedUser.addr_detail);
+                            setOrderName(loginUser.user_name);
+                            setOrderPhone(loginUser.user_phone);
+                            setOrderZipcode(loginUser.zipcode);
+                            setOrderAddr(loginUser.addr);
+                            setOrderAddrD(loginUser.addr_detail);
                           }}
                         />
                         &nbsp;

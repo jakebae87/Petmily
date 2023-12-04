@@ -29,7 +29,7 @@ function Main() {
     const [cartItems, setCartItems] = useState([]);
     // 장바구니 체크된 상품
     const [checkedItems, setCheckedItems] = useState(
-      cartItems.map((cart) => cart.id)
+      cartItems.map((cart) => cart.product_id)
     );
     // 주문페이지 상품
     const [orderItems, setOrderItems] = useState([]);
@@ -54,7 +54,7 @@ function Main() {
         setCartItems(cartItems.filter((cartItems) => cartItems.id !== it.id));
     };
     
-    //
+    // 주문 상품 삭제
     const deleteOrder = (it) => {
         setOrderItems(orderItems.filter((orderItems) => orderItems.id !== it.id));
     };
@@ -82,11 +82,11 @@ function Main() {
     };
 
     // 각 상품 체크
-    const checkChange = (event, itemId) => {
-      if (event.target.checked) {
-        setCheckedItems([...checkedItems, itemId]);
+    const checkChange = (e, productId) => {
+      if (e.target.checked) {
+        setCheckedItems([...checkedItems, productId]);
       } else {
-        setCheckedItems(checkedItems.filter((cartId) => cartId !== itemId));
+        setCheckedItems(checkedItems.filter((cartId) => cartId !== productId));
       }
     };
 
@@ -94,7 +94,7 @@ function Main() {
     const allCheck = (checked) => {
       if (checked) {
         const cartIdArray = [];
-        cartItems.map((cart) => cartIdArray.push(cart.id));
+        checkedItems.map((cart) => cartIdArray.push(cart.product_id));
         setCheckedItems(cartIdArray);
       } else {
         setCheckedItems([]);
@@ -103,58 +103,69 @@ function Main() {
 
     // 장바구니 전체상품 주문
     const allOrder = () => {
-        setOrderItems(cartItems);
+        setOrderItems(checkedItems);
     };
 
     // 장바구니 체크(선택)상품만 주문
     const selectedOrder = () => {
-      const selectedOrderItems = cartItems.filter((cart) =>
+      const selectedOrderItems = checkedItems.filter((cart) =>
         checkedItems.includes(cart.id)
       );
         setOrderItems(selectedOrderItems);
     };
 
     return (
-        <div className="Main">
-            <Routes>
-                {/* Home */}
-                <Route path="/" element={<Home addCart={addCart} />} />
+      <div className="Main">
+        <Routes>
+          {/* Home */}
+          <Route path="/" element={<Home addCart={addCart} />} />
 
-                {/* Products */}
-                <Route path="/products/*" element={<Products
-                    addCart={addCart}
-                    increQuantity={increQuantity}
-                    decreQuantity={decreQuantity}
-                />} />
+          {/* Products */}
+          <Route
+            path="/products/*"
+            element={
+              <Products
+                addCart={addCart}
+                increQuantity={increQuantity}
+                decreQuantity={decreQuantity}
+              />
+            }
+          />
 
-                {/* Policy */}
-                <Route path="/policy/*" element={<Policy />} />
+          {/* Policy */}
+          <Route path="/policy/*" element={<Policy />} />
 
-                {/* User */}
-                <Route path="/user/*" element={<User
-                    cartItems={cartItems}
-                    onDelete={deleteCart}
-                    deleteOrder={deleteOrder}
-                    increQuantity={increQuantity}
-                    decreQuantity={decreQuantity}
-                    checkedItems={checkedItems}
-                    orderItems={orderItems}
-                    allOrder={allOrder}
-                    selectedOrder={selectedOrder}
-                    allCheck={allCheck}
-                    checkChange={checkChange}
-                />} />
+          {/* User */}
+          <Route
+            path="/user/*"
+            element={
+              <User
+                cartItems={cartItems}
+                addCart={addCart}
+                onDelete={deleteCart}
+                deleteOrder={deleteOrder}
+                increQuantity={increQuantity}
+                decreQuantity={decreQuantity}
+                checkedItems={checkedItems}
+                orderItems={orderItems}
+                allOrder={allOrder}
+                selectedOrder={selectedOrder}
+                allCheck={allCheck}
+                checkChange={checkChange}
+              />
+            }
+          />
 
-                {/* Community */}
-                <Route path="/community/*" element={<Community />} />
+          {/* Community */}
+          <Route path="/community/*" element={<Community />} />
 
-                {/* Board */}
-                <Route path="/board/*" element={<Board />} />
+          {/* Board */}
+          <Route path="/board/*" element={<Board />} />
 
-                {/* Event */}
-                <Route path="/event" element={<Event />} />
-            </Routes>
-        </div>
+          {/* Event */}
+          <Route path="/event" element={<Event />} />
+        </Routes>
+      </div>
     );
 }
 
