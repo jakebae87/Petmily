@@ -1,27 +1,34 @@
 import './Introduce.css'
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+
 import ProductItem from '../Products/ProductItem';
-import mockData from '../MockData/MockData_Products';
 
 function Introduce({ props, addCart }) {
-    const [filteredData, setFilteredData] = useState([]);
+    const [productData, setProductData] = useState([]);
+
+    let url = '';
 
     useEffect(() => {
-        const tempData = [...mockData];
-        const PopularProducts = tempData.sort((max, min) => (min.cntOfsales - max.cntOfsales));
-        const NewProducts = mockData.filter(item => item.new);
-        const DiscountedProducts = mockData.filter(item => item.discount);
-
         if (props[1] === 0) {
-            setFilteredData(NewProducts);
+            url = 'newProductList';
         }
         else if (props[1] === 1) {
-            setFilteredData(PopularProducts);
+            url = 'popularProductList';
         }
         else {
-            setFilteredData(DiscountedProducts);
+            url = 'discountedProductList';
         }
+
+        axios.get(`/rsproduct/${url}`)
+            .then((response) => {
+                setProductData(response.data);
+                console.log(`** productData 서버연결 성공 =>`, response.data);
+            })
+            .catch((err) => {
+                alert(`** productData 서버연결 실패 => ${err.message}`);
+            });
     }, [props]);
 
     return (
@@ -38,7 +45,7 @@ function Introduce({ props, addCart }) {
             </div>
 
             <div className="productList">
-                {filteredData.map((item, idx) => {
+                {productData.map((item, idx) => {
                     if (idx < 3) return (<ProductItem key={item.id} it={item} addCart={addCart} />);
                 })}
             </div>

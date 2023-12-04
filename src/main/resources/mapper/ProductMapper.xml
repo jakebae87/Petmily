@@ -2,20 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team119.petmily.mapperInterface.ProductMapper">
-	
 	<!-- <select id="selectList" resultType="com.team119.petmily.domain.ProductDTO">
 		select * from PRODUCT
 	</select> -->
 	
 	<select id="selectList" resultType="com.team119.petmily.domain.ProductDTO">
-		select p.promotion_id, p.product_kind, p.product_category, p.product_name, p.product_description, p.product_price, p.product_stock, p.product_sales, p.product_mainimagepath, p.product_rating, pmp.promotion_discount
-		from PRODUCT as p
-		join PROMOTION_PRODUCT as pmp
-		on p.promotion_id = pmp.promotion_id;
+		SELECT p.*, pmp.promotion_image, pmp.promotion_discount
+		FROM PRODUCT as p
+		JOIN PROMOTION_PRODUCT as pmp
+		ON p.promotion_id = pmp.promotion_id
+	</select>
+	
+	<select id="selectPromotionInfoList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT *
+	    FROM PROMOTION_PRODUCT
+	    WHERE promotion_id IN (1, 2, 3, 4, 5)
+	</select>
+	
+	<select id="selectPromotionList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, pmp.promotion_discount
+	    FROM PRODUCT AS p
+	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+	    WHERE p.promotion_id = #{p.promotion_id}
+	</select>
+    
+	<select id="selectedList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, pmp.promotion_discount
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		WHERE (#{param1} = 'all' OR p.product_kind = #{param1})
+		AND (#{param2} = 'all' OR p.product_category = #{param2})
+	</select>
+	
+	<select id="selectThisWeekList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, pmp.promotion_discount
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		WHERE WEEK(p.product_regdate) = WEEK(CURDATE())
+	</select>
+	
+	<select id="selectPopularList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, pmp.promotion_discount
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		WHERE p.product_sales >= 50
+		ORDER BY p.product_sales DESC
+	</select>
+	
+	<select id="selectDiscountedList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, pmp.promotion_discount
+	    FROM PRODUCT AS p
+	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+	    WHERE pmp.promotion_discount > 0
+	</select>
+	
+	<select id="selectSearchedList" resultType="com.team119.petmily.domain.ProductDTO">		
+		SELECT p.*, pmp.promotion_discount
+	    FROM PRODUCT AS p
+	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+	    WHERE p.product_name LIKE CONCAT('%', #{searchKeyword}, '%')
 	</select>
 	
 	<select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
-		select * from PRODUCT where product_id=#{product_id}
+		SELECT * FROM PRODUCT WHERE product_id=#{product_id}
 	</select>
 	
 	<insert id="insert">
@@ -32,5 +81,4 @@
 	<delete id="delete">
 		DELETE FROM PRODUCT WHERE product_id=#{product_id}
 	</delete>
-	
 </mapper>

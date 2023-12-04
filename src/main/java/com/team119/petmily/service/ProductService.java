@@ -8,6 +8,20 @@ public interface ProductService {
 	
 	List<ProductDTO> selectList();
 	
+	List<ProductDTO> selectPromotionInfoList();
+	
+	List<ProductDTO> selectPromotionList(int id);
+	
+	List<ProductDTO> selectedList(String kind, String category);
+	
+	List<ProductDTO> selectThisWeekList();
+	
+	List<ProductDTO> selectPopularList();
+	
+	List<ProductDTO> selectDiscountedList();
+	
+	List<ProductDTO> selectSearchedList(String searchKeyword);
+	
 	ProductDTO selectOne(ProductDTO dto);
 	
 	int insert(ProductDTO dto);

@@ -1,15 +1,22 @@
-import React from "react";
 import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import ProductItem from "./ProductItem";
-
-// Mock Data
-import mockData from "../MockData/MockData_Products";
 
 function PromotionProducts({ addCart }) {
     const { id } = useParams();
-    const product = mockData.filter((item) => item.promotion === parseInt(id));
+    const [promotionProductData, setPromotionProductData] = useState([]);
 
-    console.log(id);
+    useEffect(() => {
+        axios.get(`/rsproduct/promotionProductList/${id}`)
+            .then((response) => {
+                setPromotionProductData(response.data);
+                console.log(`** promotionProductList 서버연결 성공 =>`, response.data);
+            })
+            .catch((err) => {
+                alert(`** promotionProductList 서버연결 실패 => ${err.message}`);
+            });
+    }, []);
 
     return (
         <div className="Products">
@@ -19,7 +26,7 @@ function PromotionProducts({ addCart }) {
             <hr />
 
             <div className="productList">
-                {product.map((item) => (<ProductItem key={item.id} it={item} addCart={addCart} />))}
+                {promotionProductData.map((item) => (<ProductItem key={item.id} it={item} addCart={addCart} />))}
             </div>
         </div>
     );

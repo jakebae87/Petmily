@@ -21,6 +21,41 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
+	public List<ProductDTO> selectPromotionInfoList() {
+		return mapper.selectPromotionInfoList();
+	}
+	
+	@Override
+	public List<ProductDTO> selectPromotionList(int id) {
+		return mapper.selectPromotionList(id);
+	}
+	
+	@Override
+	public List<ProductDTO> selectedList(String kind, String category) {
+		return mapper.selectedList(kind, category);
+	}
+	
+	@Override
+	public List<ProductDTO> selectThisWeekList() {
+		return mapper.selectThisWeekList();
+	}
+	
+	@Override
+	public List<ProductDTO> selectPopularList() {
+		return mapper.selectPopularList();
+	}
+	
+	@Override
+	public List<ProductDTO> selectDiscountedList() {
+		return mapper.selectDiscountedList();
+	}
+	
+	@Override
+	public List<ProductDTO> selectSearchedList(String searchKeyword) {
+		return mapper.selectSearchedList(searchKeyword);
+	}
+	
+	@Override
 	public ProductDTO selectOne(ProductDTO dto) {
 		return mapper.selectOne(dto);
 	}
