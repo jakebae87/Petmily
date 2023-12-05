@@ -18,6 +18,7 @@ export default function InquiryDetail() {
     });
 
     const navigate = useNavigate();
+    let contents = inquiry.inquiry_content;
 
     function inquiryDelete() {
         let url = '/inquiry/delete/' + id;
@@ -44,7 +45,9 @@ export default function InquiryDetail() {
             });
     }, []);
 
-    const contents = inquiry.inquiry_content.split('\n').map((it) => <p>{it}</p>);
+    if (contents != null) {
+        contents = inquiry.inquiry_content.split('\n').map((it) => <p>{it}</p>);
+    }
 
     function Answer() {
         if (inquiry.answer_content != null) {
@@ -89,7 +92,7 @@ export default function InquiryDetail() {
                     <tr>
                         <th scope="row">상품명</th>
                         <td>
-                            <Link to={`/products/productdetail/${inquiry.product_id}`}>{inquiry.product_name }</Link>
+                            <Link to={`/products/productdetail/${inquiry.product_id}`}>{inquiry.product_name}</Link>
                         </td>
                     </tr>
                     <tr>
@@ -100,9 +103,9 @@ export default function InquiryDetail() {
 
                         </td>
                     </tr>
-                    
+
                 </table><br /><br />
-                <Answer/>
+                <Answer />
                 <div id="bottomBoard">
                     <Link to={`/board/inquiryUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
                     <input onClick={inquiryDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />

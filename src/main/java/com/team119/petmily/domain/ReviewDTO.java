@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReviewDTO {
+public class ReviewDTO extends ProductDTO{
 
 	private int review_id;
+	private int product_id;
 	private String review_writer;
 	private String review_title;
 	private int review_point;

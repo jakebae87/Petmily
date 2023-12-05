@@ -168,6 +168,66 @@ public class RestBoardController {
 		return result;
 	}
 	
+	@GetMapping(value = "/review/list")
+	public ResponseEntity<?> reviewList(SearchDTO searchDTO) {
+		ResponseEntity<?> result = null;
+
+		List<ReviewDTO> list = boardService.getReviewList(searchDTO);
+		System.out.println(list);
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Review List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Review List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+	
+	@GetMapping(value = "/reviewDetail/{id}")
+	public ResponseEntity<?> reviewDetail(@PathVariable("id") int id, ReviewDTO dto) {
+		dto.setReview_id(id);
+		ResponseEntity<?> result = null;
+
+		ReviewDTO review = boardService.getReview(dto);
+
+		if (review != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(review);
+			log.info("Review Detail HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Review Detail HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+	
+	@PostMapping(value = "/review/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public void reviewInsert(@RequestParam("review_title") String reviewTitle,
+            @RequestParam("review_image1") MultipartFile reviewImage,
+            @RequestParam("review_point") int reviewPoint,
+            @RequestParam("review_content") String reviewContent
+    ) {
+        // 받아온 데이터로 원하는 작업 수행
+        
+        // 예시로 받은 데이터 로그로 출력
+        System.out.println("Review Title: " + reviewTitle);
+        System.out.println("Review Image: " + reviewImage.getOriginalFilename());
+        System.out.println("Review Point: " + reviewPoint);
+        System.out.println("Review Content: " + reviewContent);
+		
+//		if (boardService.insertReview(dto) > 0) {
+//			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 글작성");
+//			log.info("Insert new Review HttpStatus => " + HttpStatus.OK);
+//		} else {
+//			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 글작성 실패");
+//			log.info("Insert new Review HttpStatus => " + HttpStatus.BAD_GATEWAY);
+//		}
+
+	}
+	
+	
 	@PostMapping(value = "/notice/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void noticeInsert(@RequestBody NoticeDTO dto) {
 		boardService.insertNotice(dto);

@@ -84,6 +84,10 @@ public interface BoardService {
 
 	int updateBoardInquiry(InquiryDTO dto);
 
+	List<ReviewDTO> getReviewList(SearchDTO searchDTO);
+
+	int insertReview(ReviewDTO dto);
+
 	// Review end
 
 

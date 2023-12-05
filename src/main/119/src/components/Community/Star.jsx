@@ -20,7 +20,7 @@ function Star({ star }) { // 정수 타입의 매개변수를 Review.js로부터
 
   useEffect(() => {
     showStars(receivedStar);
-  }, []); //첫 렌더링 이후 업데이트시 리랜더링 금지
+  }, [receivedStar]); //첫 렌더링 이후 업데이트시 리랜더링 금지
 
   return (
     <div>

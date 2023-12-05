@@ -53,9 +53,15 @@ public class BoardServiceImpl implements BoardService {
 	
 	
 	@Override
+	public List<ReviewDTO> getReviewList(SearchDTO searchDTO) {
+		return boardMapper.getReviewList(searchDTO);
+	}
+	
+	@Override
 	public List<ReviewDTO> getReviewList() {
 		return boardMapper.getReviewList();
 	}
+	
 	@Override
 	public List<ReviewDTO> getReviewPagedList(Criteria cri) {
 		return boardMapper.getReviewPagedList(cri);
@@ -173,5 +179,13 @@ public class BoardServiceImpl implements BoardService {
 	public int updateBoardInquiry(InquiryDTO dto) {
 		return boardMapper.updateBoardInquiry(dto);
 	}
+
+	@Override
+	public int insertReview(ReviewDTO dto) {
+		return boardMapper.insertReview(dto);
+	}
+
+
+
 
 } // class
