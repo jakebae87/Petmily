@@ -60,6 +60,8 @@ public class RestProductController {
     public ResponseEntity<List<ProductDTO>> productList(
     		@PathVariable("param1") String kind, @PathVariable("param2") String category) {
         List<ProductDTO> productList = pservice.selectedList(kind, category);
+        System.out.println("param1"+kind);
+        System.out.println("param2"+category);
         return new ResponseEntity<>(productList, HttpStatus.OK);
     } //productList
 	
