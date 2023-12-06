@@ -21,9 +21,9 @@
 	</select>
 	
 	<insert id="insert">
-    INSERT INTO user (user_id, user_password, user_name, user_email, user_birthday, user_phone)
+    INSERT INTO user (user_id, user_password, user_name, user_email, user_birthday, user_phone, zipcode, addr, addr_detail)
     VALUES (
-        #{user_id}, #{user_password}, #{user_name}, #{user_email}, #{user_birthday}, #{user_phone}
+        #{user_id}, #{user_password}, #{user_name}, #{user_email}, #{user_birthday}, #{user_phone}, #{zipcode}, #{addr}, #{addr_detail}
     )
 </insert>
 	
@@ -51,7 +51,7 @@
     </select>
     
 		<!-- 비밀번호 찾기 -->
-	 <select id="findIdByIdAndEmail" resultType="String">
+	 <select id="findpwByIdAndEmail" resultType="String">
         SELECT user_password
         FROM user
         WHERE user_id = #{user_id}

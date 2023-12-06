@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
 	public UserDTO selectOne(UserDTO dto) {
 		return mapper.selectOne(dto);
 	}
+	
 
 	// ** insert
 	@Override
@@ -54,8 +55,8 @@ public class UserServiceImpl implements UserService {
     }
 	@Override
     public String foundUserPw(String userid, String useremail) {
-        return mapper.findIdByIdAndEmail(userid, useremail);
+        return mapper.findpwByIdAndEmail(userid, useremail);
     }
-	
+
 	
 } //class

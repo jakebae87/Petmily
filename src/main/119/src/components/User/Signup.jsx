@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import React from 'react';
 import axios from 'axios';
+import DaumPostcode from 'react-daum-postcode';
 
 function Signup() {
 
@@ -11,7 +12,51 @@ function Signup() {
     //         onSubmit();
     //     }
     // };
+    //주소 api
+    const [isPostOpen, setIsPostOpen] = useState(false);
+    const [isAddress, setIsAddress] = useState("");
+    const [isZoneCode, setIsZoneCode] = useState();
 
+    const handleComplete = (data) => {
+        let fullAddress = data.address;
+        let extraAddress = "";
+
+        if (data.addressType === "R") {
+            if (data.bname !== "") {
+                extraAddress += data.bname;
+            }
+            if (data.buildingName !== "") {
+                extraAddress +=
+                    extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+            }
+            fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+        }
+
+        setIsZoneCode(data.zonecode);
+        setZipcode(data.zonecode);
+        setIsAddress(fullAddress); // isAddress state 업데이트
+        setAddr(fullAddress); // addr state 업데이트
+        setAddr_detail(addr_detail);
+        setIsPostOpen(false);
+    };
+    const togglePost = (e) => {
+        e.preventDefault();
+        setIsPostOpen(!isPostOpen);
+    };
+
+    const postcodeComponent = useMemo(() => (
+        <div>
+            <DaumPostcode onComplete={handleComplete} autoClose={true} />
+        </div>
+    ), [handleComplete]);
+    //주소 유효성검사
+    const [zipcode, setZipcode] = useState("");
+    const [addr, setAddr] = useState("");
+    const [addr_detail, setAddr_detail] = useState("");
+    const onChangeAddrDetail = (e) => {
+        const currentAddrDetail = e.target.value;
+        setAddr_detail(currentAddrDetail);
+    };
 
     //이름 유효성 검사
     const [name, setName] = useState("");
@@ -36,6 +81,18 @@ function Signup() {
     const [idMessage, setIdMessage] = useState("");//오류메세지상태저장
     const [isId, setIsId] = useState(false);//유효성검사
 
+    const checkDuplicateId = (id) => {
+        return axios.get(`/rsuser/idDupCheck?user_id=${id}`)
+            .then(response => {
+                return response.data === "F"; // 중복된 아이디인 경우 "F"를 반환하므로, 여기서는 "F"인 경우 중복된 아이디로 간주합니다.
+            })
+            .catch(error => {
+                console.error('아이디 확인 실패:', error);
+                alert('아이디 확인에 실패했습니다. 다시 시도해주세요.');
+                return false; // 에러 발생 시 중복 확인 실패로 처리합니다.
+            });
+    };
+
     const onChangeId = (e) => {
         const currentId = e.target.value;
         setId(currentId);
@@ -45,8 +102,16 @@ function Signup() {
             setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요");
             setIsId(false);
         } else {
-            setIdMessage("사용가능한 아이디 입니다.");
-            setIsId(true);
+            checkDuplicateId(currentId)
+                .then(isDuplicate => {
+                    if (isDuplicate) {
+                        setIdMessage("이미 사용 중인 아이디입니다.");
+                        setIsId(false);
+                    } else {
+                        setIdMessage("사용가능한 아이디 입니다.");
+                        setIsId(true);
+                    }
+                });
         }
     };
     //패스워드 유효성 검사
@@ -169,7 +234,7 @@ function Signup() {
     }
     //모든항목 입력 검사
     const onSubmit = (e) => {
-        if (name === '' || id === '' || pw === '' || pw2 === '' || email === '' || number === '' || number2 === '' || birthyear === '' || birthmonth === '' | birthday === '') {
+        if (name === '' || id === '' || pw === '' || pw2 === '' || email === '' || number === '' || number2 === '' || birthyear === '' || birthmonth === '' || birthday === '') {
             alert('모든 항목을 입력해 주세요');
             e.preventDefault();
             return;
@@ -186,6 +251,9 @@ function Signup() {
                 user_email: email,
                 user_phone: `010-${number}-${number2}`,
                 user_birthday: `${birthyear}-${birthmonth}-${birthday}`,
+                zipcode: zipcode,
+                addr: addr,
+                addr_detail: addr_detail
 
             };
 
@@ -199,7 +267,6 @@ function Signup() {
                 });
         }
     }
-
 
 
 
@@ -289,6 +356,41 @@ function Signup() {
                                         <input onChange={onChangeNumber2} type="text" className="number" name="last_phone_number" size="1" minLength="3" maxLength="4" required /><br />
                                         <span className="emessage">{nuMessage}</span>
                                     </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label htmlfor="zipcode">우편번호</label></th>
+                                <td><div>
+                                    <input
+                                        id="zipcode"
+                                        type="text"
+                                        className="zipcodebox"
+                                        name="zipCode"
+                                        placeholder="우편번호"
+                                        value={isZoneCode || ''}
+                                        readOnly
+                                    />
+                                    <button className='zipcodebtn' onClick={togglePost}>
+                                        {isPostOpen ? '우편번호 닫기' : '우편번호 찾기'}
+                                    </button>
+                                    {isPostOpen && (
+                                        <div>
+                                            <DaumPostcode onComplete={handleComplete} autoClose={true} />
+                                        </div>
+                                    )}
+                                </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label htmlfor="addr">주소</label></th>
+                                <td>
+                                    <input id="addr" type="text" className="signupbox" name="addr" placeholder="주소" value={isAddress}></input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label htmlfor="addr_detail">상세주소</label></th>
+                                <td>
+                                    <input id="addr_detail" type="text" className="signupbox" name="addr_detail" placeholder="상세주소" onChange={onChangeAddrDetail} />
                                 </td>
                             </tr>
                         </table>
