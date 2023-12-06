@@ -62,6 +62,14 @@ function Inquiry() {
     }, [searchPeriod, searchCriteria, searchWord]);
 
 
+    function AnswerCheck(inquiry) {
+        if (inquiry.answer_content != null) {
+            return <td style={{ color: 'blue' }}>답변완료</td>
+        } else {
+            return <td style={{ color: 'red' }}>확인중</td>
+        }
+    }
+
 
     const paginatedData = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
@@ -88,10 +96,14 @@ function Inquiry() {
                     <colgroup>
                         <col className="attr1" />
                         <col className="attr2" />
+                        <col className="attr2" />
+                        <col className="attr3" />
                         <col className="attr3" />
                     </colgroup>
                     <tr>
                         <th>제목</th>
+                        <th>상품명</th>
+                        <th>답변여부</th>
                         <th>글쓴이</th>
                         <th>작성일</th>
                     </tr>
@@ -99,6 +111,8 @@ function Inquiry() {
                     {paginatedData().map((i) =>
                         <tr key={i.inquiry_id}>
                             <td><Link to={`./${i.inquiry_id}`}>{i.inquiry_title}</Link></td>
+                            <td>{i.product_name}</td>
+                            {AnswerCheck(i)}
                             <td>{i.inquiry_writer}</td>
                             <td>{i.inquiry_regdate}</td>
                         </tr>
@@ -139,8 +153,8 @@ function Inquiry() {
                                 <input type="submit" value="검색" />
                             </div>
                             <div className="board_write">
-                                <Link to="/board/inquiry">글쓰기</Link>
-                            </div> 
+                                <Link to="/board/inquiryWrite">글쓰기</Link>
+                            </div>
                         </div>
                     </form>
                 </div>

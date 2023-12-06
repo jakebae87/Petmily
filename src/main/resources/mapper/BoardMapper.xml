@@ -40,7 +40,10 @@
 
 	<!-- INQUIRY LIST -->
 	<select id="getInquiryList" resultType="com.team119.petmily.domain.InquiryDTO">
-		SELECT *
+		SELECT INQUIRY.*, 
+		(SELECT P.PRODUCT_NAME 
+	     FROM PRODUCT P 
+	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
 		FROM INQUIRY
 		WHERE (#{searchPeriod} IS NULL OR
 		    CASE 
@@ -71,12 +74,34 @@
 		SELECT COUNT(*) FROM
 		INQUIRY
 	</select>
+	
+	<insert id="insertInquiry">
+		INSERT INTO INQUIRY (INQUIRY_TITLE, PRODUCT_ID, INQUIRY_WRITER, INQUIRY_CONTENT) VALUES
+		(#{inquiry_title},#{product_id},'관리자',#{inquiry_content})
+	</insert>
 
 
 	<!-- REVIEW LIST -->
-	<select id="getReviewList"
-		resultType="com.team119.petmily.domain.ReviewDTO">
-		SELECT * FROM REVIEW ORDER BY REVIEW_ID DESC;
+	
+	<select id="getReviewList" resultType="com.team119.petmily.domain.ReviewDTO">
+		SELECT REVIEW.*, P.PRODUCT_NAME, P.PRODUCT_MAINIMAGEPATH
+	    FROM REVIEW
+	    LEFT JOIN PRODUCT P ON P.PRODUCT_ID = REVIEW.PRODUCT_ID
+		WHERE (#{searchPeriod} IS NULL OR
+		    CASE 
+		        WHEN 'week' = #{searchPeriod} THEN REVIEW_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
+		        WHEN 'month' = #{searchPeriod} THEN REVIEW_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+		        WHEN 'firstQuarter' = #{searchPeriod} THEN REVIEW_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+		        ELSE 1=1
+		    END)
+		AND (#{searchCriteria} IS NULL OR
+		    CASE 
+		        WHEN 'subject' = #{searchCriteria} THEN LOWER(REVIEW_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        WHEN 'content' = #{searchCriteria} THEN LOWER(REVIEW_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        WHEN 'writer' = #{searchCriteria} THEN LOWER(REVIEW_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        ELSE 1=1
+		    END)
+		ORDER BY REVIEW_REGDATE DESC;
 	</select>
 
 	<select id="getReviewPagedList"
@@ -159,7 +184,11 @@
 
 	<select id="getInquiry"
 		resultType="com.team119.petmily.domain.InquiryDTO">
-		SELECT * FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
+		SELECT INQUIRY.*, 
+		(SELECT P.PRODUCT_NAME 
+	     FROM PRODUCT P 
+	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME 
+		FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
 	</select>
 
 	<update id="updateInquiry">
@@ -167,6 +196,13 @@
 		#{answer_content}, ANSWER_REGDATE = CURRENT_TIMESTAMP WHERE INQUIRY_ID
 		= #{inquiry_id}
 	</update>
+
+	<update id="updateBoardInquiry">
+		UPDATE INQUIRY SET INQUIRY_TITLE = #{inquiry_title}, PRODUCT_ID = #{product_id}, INQUIRY_CONTENT = #{inquiry_content}
+		WHERE INQUIRY_ID = #{inquiry_id}
+	</update>
+	
+	
 
 	<delete id="deleteInquiry">
 		DELETE FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
@@ -204,10 +240,19 @@
 
 
 	<!-- REVIEW CRUD -->
+	
+	<insert id="insertReview">
+		INSERT INTO REVIEW (REVIEW_TITLE, PRODUCT_ID, REVIEW_WRITER, REVIEW_POINT, REVIEW_CONTENT, REVIEW_IMAGE1, REVIEW_IMAGE2) VALUES
+		(#{review_title},#{product_id},'관리자',#{review_point}, #{review_content}, #{review_image1}, #{review_image2})
+	</insert>
 
 	<select id="getReview"
 		resultType="com.team119.petmily.domain.ReviewDTO">
-		SELECT * FROM REVIEW WHERE REVIEW_ID = #{review_id}
+		SELECT REVIEW.*, P.PRODUCT_NAME, P.PRODUCT_MAINIMAGEPATH
+	    FROM REVIEW
+	    LEFT JOIN PRODUCT P 
+	    ON P.PRODUCT_ID = REVIEW.PRODUCT_ID 
+	    WHERE REVIEW_ID = #{review_id}
 	</select>
 
 	<update id="updateReview">
