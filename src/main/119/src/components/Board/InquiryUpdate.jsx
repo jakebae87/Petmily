@@ -16,7 +16,6 @@ export default function InquiryUpdate() {
     const navigate = useNavigate();
 
     const inquiryUpdate = async () => {
-        console.log(inquiry);
         try {
             await axios.post(`/inquiry/updateBoard/`, {
                 inquiry_id: id,

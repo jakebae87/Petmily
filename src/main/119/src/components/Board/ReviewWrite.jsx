@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Star from "./Star";
 
-function ReviewWrite() {
+export default function ReviewWrite() {
 
     // 상품후기의 별점 수 받기 시작
     const [score, setScore] = useState(0);
-    const formRef = useRef(null);
     const onChangeScore = (data) => {
         setScore(data);
     }
@@ -20,35 +19,27 @@ function ReviewWrite() {
     const navigate = useNavigate();
 
     const reviewSubmit = async () => {
-        try {
-            const form = formRef.current;
+        let formData = new FormData(document.getElementById('reviewForm'));
 
-            if (form) {
-                let formData = new FormData(form);
-                
-                formData.forEach((value, key) => {
-                    console.log(key, value);
-                });
-
-                await axios.post(
-                    "/review/insert",
-                    formData,
-                    {
-                        headers: {
-                            "Content-Type": "multipart/form-data"
-                        }
-                    }
-                );
-
-                alert(`상품문의 등록 완료되었습니다.`);
-                navigate('/community/review');
-            } else {
-                console.error('폼을 찾을 수 없습니다.');
+        await axios.post(
+            "/review/insert",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data" 
+                }
             }
-        } catch (error) {
-            console.error('에러:', error);
-        }
-    };
+        ).then(
+            response => {
+                alert(response.data);
+                navigate('/community/review');
+            }
+        ).catch(error => {
+            console.error(`에러 응답 = ${error.response},
+			error status = ${error.response.status},
+			error message = ${error.message}`);
+        });
+    }
 
     useEffect(() => {
     }, [selectedValue]);
@@ -103,12 +94,18 @@ function ReviewWrite() {
                 </div>
 
                 <div>
-                    <form ref={formRef} name="submitBoard">
-                        <input name="review_title"  type="text" placeholder="제목을 입력하세요." maxlength="100" required />
+                    <form id="reviewForm">
+                        <input name="review_title" type="text" placeholder="제목을 입력하세요." maxlength="100" required />
 
-                        <input type="file" id="uploadfilef" name="review_image1" multiple accept="image/gif,image/jpeg,image/png" />
+                        <input type="file" name="uploadfile1" multiple accept="image/gif,image/jpeg,image/png"
+                            onChange={(e) => {
+                                const selectedFiles = Array.from(e.target.files).slice(0, 2); // 최대 2개의 파일 선택
+                                console.log(selectedFiles);
+                            }}
+                        />
 
                         <input type="hidden" name="review_point" value={score} />
+                        <input type="hidden" name="product_id" value={selectedValue} />
 
                         <textarea name="review_content" rows="30" cols="100"></textarea>
                     </form>
@@ -121,4 +118,3 @@ function ReviewWrite() {
         </div>
     )
 }
-export default ReviewWrite;

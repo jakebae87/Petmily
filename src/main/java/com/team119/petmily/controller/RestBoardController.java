@@ -2,6 +2,7 @@ package com.team119.petmily.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -156,7 +157,7 @@ public class RestBoardController {
 	@PostMapping(value = "/inquiry/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> inquiryInsert(@RequestBody InquiryDTO dto) {
 		ResponseEntity<?> result = null;
-		
+
 		if (boardService.insertInquiry(dto) > 0) {
 			result = ResponseEntity.status(HttpStatus.OK).body("상품문의 글작성");
 			log.info("Insert new Inquiry HttpStatus => " + HttpStatus.OK);
@@ -167,13 +168,12 @@ public class RestBoardController {
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/review/list")
 	public ResponseEntity<?> reviewList(SearchDTO searchDTO) {
 		ResponseEntity<?> result = null;
 
 		List<ReviewDTO> list = boardService.getReviewList(searchDTO);
-		System.out.println(list);
 		if (list != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(list);
 			log.info("Review List HttpStatus => " + HttpStatus.OK);
@@ -184,7 +184,7 @@ public class RestBoardController {
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/reviewDetail/{id}")
 	public ResponseEntity<?> reviewDetail(@PathVariable("id") int id, ReviewDTO dto) {
 		dto.setReview_id(id);
@@ -202,32 +202,73 @@ public class RestBoardController {
 
 		return result;
 	}
-	
-	@PostMapping(value = "/review/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public void reviewInsert(@RequestParam("review_title") String reviewTitle,
-            @RequestParam("review_image1") MultipartFile reviewImage,
-            @RequestParam("review_point") int reviewPoint,
-            @RequestParam("review_content") String reviewContent
-    ) {
-        // 받아온 데이터로 원하는 작업 수행
-        
-        // 예시로 받은 데이터 로그로 출력
-        System.out.println("Review Title: " + reviewTitle);
-        System.out.println("Review Image: " + reviewImage.getOriginalFilename());
-        System.out.println("Review Point: " + reviewPoint);
-        System.out.println("Review Content: " + reviewContent);
-		
-//		if (boardService.insertReview(dto) > 0) {
-//			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 글작성");
-//			log.info("Insert new Review HttpStatus => " + HttpStatus.OK);
-//		} else {
-//			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 글작성 실패");
-//			log.info("Insert new Review HttpStatus => " + HttpStatus.BAD_GATEWAY);
-//		}
 
+	@PostMapping(value = "/review/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<?> reviewInsert(ReviewDTO dto) throws IllegalStateException, IOException {
+		ResponseEntity<?> result = null;
+
+		String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\reviews\\";
+		String file1, file2 = "";
+		String file3, file4 = "";
+
+		MultipartFile[] uploadfile1 = dto.getUploadfile1();
+		if (uploadfile1 != null && !uploadfile1[0].isEmpty()) {
+			String fileName = URLEncoder.encode(uploadfile1[0].getOriginalFilename(), "UTF-8");
+			fileName = fileName.replaceAll("\\+", "%20");
+			
+			file1 = realPath + fileName; // 저장경로 완성
+			uploadfile1[0].transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
+//			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
+//			uploadfile1[0].transferTo(new File(file1));
+
+			file2 = uploadfile1[0].getOriginalFilename();
+		} if (!uploadfile1[1].isEmpty()) {
+			String fileName = URLEncoder.encode(uploadfile1[1].getOriginalFilename(), "UTF-8");
+			fileName = fileName.replaceAll("\\+", "%20");
+			
+			file3 = realPath +fileName;
+			uploadfile1[1].transferTo(new File(file3));
+//			file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
+//			uploadfile1[1].transferTo(new File(file3));
+
+			file4 = uploadfile1[1].getOriginalFilename();
+		}
+
+		dto.setReview_image1(file2);
+		dto.setReview_image2(file4);
+		
+		
+//		MultipartFile[] uploadfile1 = dto.getUploadfile1();
+//		if (uploadfile1 != null && !uploadfile1[0].isEmpty()) {
+//
+//			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
+//			uploadfile1[0].transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
+//
+//			file2 = uploadfile1[0].getOriginalFilename();
+//		} if (!uploadfile1[1].isEmpty()) {
+//
+//			file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
+//			uploadfile1[1].transferTo(new File(file3)); // 해당경로에 저장(붙여넣기)
+//
+//			file4 = uploadfile1[1].getOriginalFilename();
+//		}
+//
+//		dto.setReview_image1(file2);
+//		dto.setReview_image2(file4);
+		
+		
+
+		if (boardService.insertReview(dto) > 0) { // Transaction_Test, insert2
+			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 등록 성공");
+			log.info("HttpStatus.OK => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 등록 실패");
+			log.info("HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
 	}
-	
-	
+
 	@PostMapping(value = "/notice/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void noticeInsert(@RequestBody NoticeDTO dto) {
 		boardService.insertNotice(dto);
@@ -242,7 +283,7 @@ public class RestBoardController {
 	public void inquiryUpdate(@RequestBody InquiryDTO dto) {
 		boardService.updateInquiry(dto);
 	}
-	
+
 	@PostMapping(value = "/inquiry/updateBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void updateBoardInquiry(@RequestBody InquiryDTO dto) {
 		boardService.updateBoardInquiry(dto);
@@ -274,35 +315,26 @@ public class RestBoardController {
 	public ResponseEntity<?> reviewUpdate(ReviewDTO dto) throws IllegalStateException, IOException {
 		ResponseEntity<?> result = null;
 
-		String realPath = "C:\\Team119\\petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+		String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\reviews\\";
 		String file1, file2 = "";
-		String file3, file4 = "";
 
-		MultipartFile uploadfile1 = dto.getUploadfile1();
-		if (uploadfile1 != null && !uploadfile1.isEmpty()) {
+		MultipartFile[] uploadfile1 = dto.getUploadfile1();
+		if (uploadfile1 != null && !uploadfile1[0].isEmpty()) {
 
-			file1 = realPath + uploadfile1.getOriginalFilename(); // 저장경로 완성
-			uploadfile1.transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
+			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
+			uploadfile1[0].transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
 
-			file2 = "resources/uploadImages/" + uploadfile1.getOriginalFilename();
-		}
-
-		MultipartFile uploadfile2 = dto.getUploadfile2();
-		if (uploadfile2 != null && !uploadfile2.isEmpty()) {
-
-			file3 = realPath + uploadfile2.getOriginalFilename(); // 저장경로 완성
-			uploadfile2.transferTo(new File(file3)); // 해당경로에 저장(붙여넣기)
-
-			file4 = "resources/uploadImages/" + uploadfile2.getOriginalFilename();
+			file2 = uploadfile1[0].getOriginalFilename();
 		}
 
 		dto.setReview_image1(file2);
-		dto.setReview_image2(file4);
 
 		if (boardService.reviewUpdate(dto) > 0) {
-			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 수정 완료");
+			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 작성 완료");
+			log.info("Review Insert HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		} else {
-			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 수정 실패");
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 작성 실패");
+			log.info("Review Insert HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		}
 
 		return result;

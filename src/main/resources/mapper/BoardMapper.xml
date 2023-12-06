@@ -242,8 +242,8 @@
 	<!-- REVIEW CRUD -->
 	
 	<insert id="insertReview">
-		INSERT INTO REVIEW (REVIEW_TITLE, PRODUCT_ID, REVIEW_WRITER, REVIEW_POINT, REVIEW_CONTENT) VALUES
-		(#{review_title},#{product_id},'관리자',#{review_point}, #{review_content})
+		INSERT INTO REVIEW (REVIEW_TITLE, PRODUCT_ID, REVIEW_WRITER, REVIEW_POINT, REVIEW_CONTENT, REVIEW_IMAGE1, REVIEW_IMAGE2) VALUES
+		(#{review_title},#{product_id},'관리자',#{review_point}, #{review_content}, #{review_image1}, #{review_image2})
 	</insert>
 
 	<select id="getReview"
