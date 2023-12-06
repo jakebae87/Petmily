@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.team119.petmily.domain.EventDTO;
 import com.team119.petmily.domain.ProductDTO;
+import com.team119.petmily.domain.PromotionProductDTO;
 import com.team119.petmily.service.EventService;
 import com.team119.petmily.service.ProductImageService;
 import com.team119.petmily.service.ProductService;
@@ -44,9 +45,17 @@ public class RestProductController {
 //        return new ResponseEntity<>(productList, HttpStatus.OK);
 //    } //productList
 	
+	@GetMapping("/productDetail/{id}")
+    public ResponseEntity<ProductDTO> productDetail(@PathVariable("id") int id, ProductDTO dto) {
+        dto.setProduct_id(id);
+        dto = pservice.selectOne(dto);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    } //productDetail
+	
 	@GetMapping("/promotionInfoList")
-    public ResponseEntity<List<ProductDTO>> promotionInfoList() {
-        List<ProductDTO> promotionInfoList = pservice.selectPromotionInfoList();
+    public ResponseEntity<List<PromotionProductDTO>> promotionInfoList() {
+		
+        List<PromotionProductDTO> promotionInfoList = pmpservice.selectPromotionInfoList();
         return new ResponseEntity<>(promotionInfoList, HttpStatus.OK);
     } //promotionProductList
 	
@@ -94,3 +103,5 @@ public class RestProductController {
         return new ResponseEntity<>(eventList, HttpStatus.OK);
     }
 }
+
+

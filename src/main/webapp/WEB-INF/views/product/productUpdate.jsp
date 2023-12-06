@@ -72,7 +72,9 @@
 				<input type="file" name="uploadfilef" id="uploadfilef">
 			</td></tr>
 		<tr><th>PRODUCT_RATING</th>
-			<td><input type="text" name="product_rating" value="${requestScope.ptable.product_rating}"></td></tr>			
+			<td><input type="text" name="product_rating" value="${requestScope.ptable.product_rating}"></td></tr>
+		<tr><th>PRODUCT_ORIGIN</th>
+			<td><input type="text" name="product_origin" value="${requestScope.ptable.product_origin}"></td></tr>		
 
 		<tr><th></th>
 			<td><input type="submit" value="수정">&nbsp;&nbsp;&nbsp;

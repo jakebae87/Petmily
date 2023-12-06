@@ -2,23 +2,23 @@ const EventItem = ({ it }) => {
     let progress = "";
     let isGoing = "";
 
-    const date = new Date();
+    const currentDate = new Date();
 
-    if (date < it.event_start) { progress = "beforeOpen"; }
-    else if (date <= it.event_end) { progress = "onGoing"; }
-    else { progress = "closed"; }
-
-    switch (progress) {
-        case "beforeOpen": isGoing = "진행전"; break;
-        case "onGoing": isGoing = "진행중"; break;
-        case "closed": isGoing = "마감"; break;
-        default: break;
+    if (currentDate < new Date(it.event_start)) {
+        progress = "beforeOpen";
+        isGoing = "진행전";
+    } else if (currentDate <= new Date(it.event_end)) {
+        progress = "onGoing";
+        isGoing = "진행중";
+    } else {
+        progress = "closed";
+        isGoing = "마감";
     }
 
     return (
         <div className={`events ${progress}`}>
             <div>
-                <img src={it.event_imagepath} alt="이벤트 사진" />
+                <img src={process.env.PUBLIC_URL + `/Images/event/${it.event_imagepath}`} alt="이벤트 사진" />
 
                 <div>
                     <p className="eventTitle">{it.event_name}</p>
@@ -28,12 +28,14 @@ const EventItem = ({ it }) => {
                         <span>
                             {isGoing}
                         </span>
-                        {/* <h5>{it.event_start.toLocaleDateString()} ~ {it.event_end.toLocaleDateString()}</h5> */}
+                        <h5>
+                            {new Date(it.event_start).toLocaleDateString()} ~ {new Date(it.event_end).toLocaleDateString()}
+                        </h5>
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default EventItem;

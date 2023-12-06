@@ -6,6 +6,12 @@
     display: flex;
 }
 
+.Home .Introduce hr {
+    width: 5px;
+    height : 100px;
+    background-color : rgb(25, 50, 100);
+}
+
 .Home .introducebox {
     width: calc(100%/4);
 }

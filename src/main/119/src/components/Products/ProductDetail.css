@@ -43,6 +43,15 @@
   width: 70%;
 }
 
+.productInfo .originalPrice {
+  color: darkgray;
+  text-decoration: line-through;
+}
+
+.ProductItem .productPrice sup {
+  color: red;
+}
+
 /* 수량 칸 높이 */
 .productInfo tr:nth-child(4) {
   height: 60px;

@@ -11,6 +11,14 @@
 		select * from PROMOTION_PRODUCT where promotion_id=#{promotion_id}
 	</select>
 	
+	<select id="selectPromotionInfoList" resultType="com.team119.petmily.domain.PromotionProductDTO">
+		SELECT *
+		FROM PROMOTION_PRODUCT
+		WHERE CURDATE() BETWEEN promotion_start AND promotion_end
+		  AND promotion_id <![CDATA[<]]> 10
+		<!-- WHERE promotion_id <![CDATA[<]]> 10 -->
+	</select>
+	
 	<insert id="insert">
 		INSERT INTO PROMOTION_PRODUCT(promotion_id, promotion_name, promotion_image, promotion_start, promotion_end, promotion_discount, promotion_value1)
 		VALUE (#{promotion_id}, #{promotion_name}, #{promotion_image}, #{promotion_start}, #{promotion_end}, #{promotion_discount}, #{promotion_value1})

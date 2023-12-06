@@ -2,13 +2,15 @@ package com.team119.petmily.service;
 
 import java.util.List;
 
+import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.ProductDTO;
+import com.team119.petmily.pagination.SearchCriteria;
 
 public interface ProductService {
 	
-	List<ProductDTO> selectList();
+	ProductDTO selectOne(ProductDTO dto);
 	
-	List<ProductDTO> selectPromotionInfoList();
+	List<ProductDTO> selectList();
 	
 	List<ProductDTO> selectPromotionList(int id);
 	
@@ -21,8 +23,6 @@ public interface ProductService {
 	List<ProductDTO> selectDiscountedList();
 	
 	List<ProductDTO> selectSearchedList(String searchKeyword);
-	
-	ProductDTO selectOne(ProductDTO dto);
 	
 	int insert(ProductDTO dto);
 

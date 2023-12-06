@@ -5,24 +5,26 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.ProductDTO;
 
 import com.team119.petmily.mapperInterface.ProductMapper;
+import com.team119.petmily.pagination.SearchCriteria;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	ProductMapper mapper;
+
+	@Override
+	public ProductDTO selectOne(ProductDTO dto) {
+		return mapper.selectOne(dto);
+	}
 	
 	@Override
 	public List<ProductDTO> selectList() {
 		return mapper.selectList();
-	}
-	
-	@Override
-	public List<ProductDTO> selectPromotionInfoList() {
-		return mapper.selectPromotionInfoList();
 	}
 	
 	@Override
@@ -56,15 +58,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public ProductDTO selectOne(ProductDTO dto) {
-		return mapper.selectOne(dto);
-	}
-	
-	@Override
 	public int insert(ProductDTO dto) {
 		return mapper.insert(dto);
 	}
 	
+	@Override
 	public int update(ProductDTO dto) {
 		return mapper.update(dto);
 	}

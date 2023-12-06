@@ -26,6 +26,11 @@ public class PromotionProductServiceImpl implements PromotionProductService {
 	}
 	
 	@Override
+	public List<PromotionProductDTO> selectPromotionInfoList() {
+		return mapper.selectPromotionInfoList();
+	}
+	
+	@Override
 	public int insert(PromotionProductDTO dto) {
 		return mapper.insert(dto);
 	}

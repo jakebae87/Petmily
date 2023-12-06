@@ -10,6 +10,8 @@ public interface PromotionProductService {
 	
 	PromotionProductDTO selectOne(PromotionProductDTO dto);
 	
+	List<PromotionProductDTO> selectPromotionInfoList();
+	
 	int insert(PromotionProductDTO dto);
 	
 	int update(PromotionProductDTO dto);

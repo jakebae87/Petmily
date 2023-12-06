@@ -2,13 +2,15 @@ package com.team119.petmily.mapperInterface;
 
 import java.util.List;
 
+import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.ProductDTO;
+import com.team119.petmily.pagination.SearchCriteria;
 
 public interface ProductMapper {
 	
+	ProductDTO selectOne(ProductDTO dto);
+
 	List<ProductDTO> selectList();
-	
-	List<ProductDTO> selectPromotionInfoList();
 	
 	List<ProductDTO> selectPromotionList(int id);
 	
@@ -21,8 +23,6 @@ public interface ProductMapper {
 	List<ProductDTO> selectDiscountedList();
 	
 	List<ProductDTO> selectSearchedList(String searchKeyword);
-	
-	ProductDTO selectOne(ProductDTO dto);
 	
 	int insert(ProductDTO dto);
 
