@@ -49,7 +49,7 @@ function Signup() {
             <DaumPostcode onComplete={handleComplete} autoClose={true} />
         </div>
     ), [handleComplete]);
-    //주소 유효성검사
+
     const [zipcode, setZipcode] = useState("");
     const [addr, setAddr] = useState("");
     const [addr_detail, setAddr_detail] = useState("");
@@ -81,17 +81,19 @@ function Signup() {
     const [idMessage, setIdMessage] = useState("");//오류메세지상태저장
     const [isId, setIsId] = useState(false);//유효성검사
 
-    const checkDuplicateId = (id) => {
-        return axios.get(`/rsuser/idDupCheck?user_id=${id}`)
-            .then(response => {
-                return response.data === "F"; // 중복된 아이디인 경우 "F"를 반환하므로, 여기서는 "F"인 경우 중복된 아이디로 간주합니다.
-            })
-            .catch(error => {
-                console.error('아이디 확인 실패:', error);
-                alert('아이디 확인에 실패했습니다. 다시 시도해주세요.');
-                return false; // 에러 발생 시 중복 확인 실패로 처리합니다.
-            });
-    };
+    // const onChangeId = (e) => {
+    //     const currentId = e.target.value;
+    //     setId(currentId);
+    //     const idRegExp = /^[a-zA-z0-9]{4,12}$/;
+
+    //     if (!idRegExp.test(currentId)) {
+    //         setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요");
+    //         setIsId(false);
+    //     } else {
+    //         setIdMessage("사용가능한 아이디 입니다.");
+    //         setIsId(true);
+    //     }
+    // };
 
     const onChangeId = (e) => {
         const currentId = e.target.value;
@@ -102,18 +104,21 @@ function Signup() {
             setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요");
             setIsId(false);
         } else {
-            checkDuplicateId(currentId)
-                .then(isDuplicate => {
-                    if (isDuplicate) {
-                        setIdMessage("이미 사용 중인 아이디입니다.");
-                        setIsId(false);
-                    } else {
-                        setIdMessage("사용가능한 아이디 입니다.");
-                        setIsId(true);
-                    }
+            axios.get(`/rsuser/idcheck?user_id=${currentId}`)
+                .then(response => {
+                    const isDuplicate = response.data === 'F';
+                    setIdMessage(isDuplicate ? '이미 사용 중인 아이디입니다' : '사용 가능한 아이디입니다.');
+                    setIsId(!isDuplicate);
+                })
+                .catch(error => {
+                    console.error('아이디 중복 확인 실패:', error);
+                    setIdMessage('아이디 중복 확인에 실패했습니다.');
+                    setIsId(false);
                 });
         }
     };
+
+
     //패스워드 유효성 검사
     const [pw, setPw] = useState("");
     const [pwMessage, setpwMessage] = useState("");

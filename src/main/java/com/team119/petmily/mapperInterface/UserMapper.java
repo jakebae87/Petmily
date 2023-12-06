@@ -36,6 +36,6 @@ public interface UserMapper {
     String findIdByNameAndEmail(@Param("user_name") String username, @Param("user_email") String useremail);
    //비밀번호찾기
     String findpwByIdAndEmail(@Param("user_id") String userid, @Param("user_email") String useremail);
-    
-
+    //아이디중복확인
+    int checkUserId(String user_id);
 }

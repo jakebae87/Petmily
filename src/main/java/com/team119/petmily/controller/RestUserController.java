@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.team119.petmily.domain.UserDTO;
 
+import com.team119.petmily.domain.UserDTO;
+import com.team119.petmily.mapperInterface.UserMapper;
 import com.team119.petmily.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +31,8 @@ import lombok.extern.log4j.Log4j2;
 @AllArgsConstructor
 public class RestUserController {
 	UserService service;
+	UserMapper mapper;
+PasswordEncoder passwordEncoder;
 	
 
 	@PostMapping(value="/Login")
@@ -44,7 +48,14 @@ public class RestUserController {
 	    log.info("password =" + password);
 	    log.info("dto.getUser_id =" + dto.getUser_id());
 	    log.info("dto.getUser_name ="+dto.getUser_name());
-	    if (dto != null && id.equals(dto.getUser_id()) && password.equals(dto.getUser_password())) {
+	    
+	    // DB에 저장된 암호화된 비밀번호
+	    String encryptedPassword = dto.getUser_password();
+
+	    // 클라이언트에서 받은 비밀번호를 암호화
+	    String encodedPassword = passwordEncoder.encode(password);
+
+	    if ((dto != null && id.equals(dto.getUser_id()) && passwordEncoder.matches(password, encryptedPassword))) {
 	        HttpSession session = request.getSession(); // 세션 가져오기
 	        session.setAttribute("loginID", dto.getUser_id());
 	        session.setAttribute("loginName", dto.getUser_name());
@@ -69,7 +80,12 @@ public class RestUserController {
 	
 	@PostMapping(value = "/Signup")
 	public ResponseEntity<String> signup(@RequestBody UserDTO dto) {
+		
 	    try {
+	    	  // 회원가입 시 비밀번호 암호화
+            String encodedPassword = passwordEncoder.encode(dto.getUser_password());
+            dto.setUser_password(encodedPassword);
+
 	        // Service 처리
 	        if (service.insert(dto) > 0) {
 	            return ResponseEntity.status(HttpStatus.OK).body("회원가입 성공");
@@ -81,6 +97,21 @@ public class RestUserController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("~~ 시스템 오류 발생! 잠시 후 다시 시도하세요 ~~");
 	    }
 	}
+	
+	 @GetMapping("/idcheck")
+	    public ResponseEntity<String> checkIfId(@RequestParam("user_id") String user_id) {
+	        try {
+	            int count = mapper.checkUserId(user_id);
+
+	            if (count > 0) {
+	                return ResponseEntity.ok("F"); // 이미 사용 중인 아이디
+	            } else {
+	                return ResponseEntity.ok("T"); // 사용 가능한 아이디
+	            }
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("아이디 확인에 실패했습니다.");
+	        }
+	    }
 	
 	@PostMapping("/Findid")
 	public ResponseEntity<UserDTO> findUserId(HttpSession session, @RequestBody UserDTO dto) {

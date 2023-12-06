@@ -31,9 +31,9 @@ function Login() {
                     `** err.response=${err.response}, err.response.status=${err.response.status}, err.message=${err.message}`
                 );
                 if (err.response.status == 401) {
-                    alert("~~ id 또는 password 오류!! 다시하세요 ~~");
+                    alert("id 또는 password 가 다릅니다");
                 } else {
-                    alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+                    alert("시스템 오류, 잠시후 다시하세요 => " + err.message);
                 }
             });
     };
