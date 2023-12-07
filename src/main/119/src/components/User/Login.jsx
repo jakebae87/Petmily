@@ -49,9 +49,13 @@ function Login() {
     const KakaoLogin = () => {
         const REST_API_KEY = "36c72e69dcc46636ff1acefe07171573";
         const REDIERCT_URI2 = "http://localhost:3000/KakaoLogin";
-        const KAKAO_AUTH_URL = `https://kauth.kakao.com/KakaoLogin/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIERCT_URI2}&response_type=code`;
+        const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIERCT_URI2}&response_type=code`;
 
         window.location.href = KAKAO_AUTH_URL;
+
+        const code = new URL(window.location.href).searchParams.get("code");
+
+
     };
 
     return (
