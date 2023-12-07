@@ -27,12 +27,13 @@ function Introduce({ props, addCart }) {
                 //console.log(`** productData 서버연결 성공 =>`, response.data);
             })
             .catch((err) => {
-                alert(`** productData 서버연결 실패 => ${err.message}`);
+                console.log(`** productData 서버연결 실패 => ${err.message}`);
             });
     }, [props]);
 
     return (
         <div className="Introduce">
+            <hr />
             <div className="introducebox">
                 <div>
                     <span>{props[0].title}</span>

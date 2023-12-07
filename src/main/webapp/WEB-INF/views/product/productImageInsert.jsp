@@ -30,12 +30,12 @@
 		    	<td><input type="file" name="uploadfilef" id="uploadfilef"></td>
 		    	<td>
 		    		<select name="product_value1" id="product_value1">
-			            <option value="10">10: 기본 상세이미지</option>
 			            <option value="1">1: 기타 이미지1</option>
 			            <option value="2">2: 기타 이미지2</option>
 			            <option value="3">3: 기타 이미지3</option>
 			            <option value="4">4: 기타 이미지4</option>
 			            <option value="5">5: 기타 이미지5</option>
+			            <option value="6">6: 기타 이미지6</option>
 			        </select>
 		        </td>
 			</tr>

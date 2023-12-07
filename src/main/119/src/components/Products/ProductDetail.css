@@ -8,7 +8,9 @@
 /* 상품정보페이지 */
 .productPage {
   width: 1120px;
-  margin: 50px auto;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 100px;
   display: flex;
   justify-content: space-evenly;
   height: 500px;
@@ -20,10 +22,35 @@
   flex-grow: 1;
 }
 
+.detailGallery {
+  display: flex;
+  gap: 10px;
+}
+
+.detailGallery img {
+  border: 1px solid silver;
+}
+
+.regDate {
+  padding: 5px;
+  font-size: 0.8em;
+}
+
+.detailThumbnail {
+  width: 80px;
+  height: 80px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.detailThumbnail:hover {
+  transform: scale(1.8);
+}
+
 /* 상품 정보 */
 .productInfo {
   width: 500px;
   height: 100%;
+  margin: 50px auto;
   text-align: center;
   border-collapse: collapse;
 }
@@ -41,6 +68,15 @@
 /* 상품 정보 내용칸 너비 */
 .productInfo td {
   width: 70%;
+}
+
+.productInfo .originalPrice {
+  color: darkgray;
+  text-decoration: line-through;
+}
+
+.ProductItem .productPrice sup {
+  color: red;
 }
 
 /* 수량 칸 높이 */
@@ -65,7 +101,7 @@
   width: 150px;
   line-height: 50px;
   text-align: center;
-  background-color: rgb(16, 40, 102);
+  background-color: rgb(25, 50, 100);
   color: white;
   border: 0;
 }
@@ -87,6 +123,7 @@
 /* 상품상세페이지 */
 .productDetailPage {
   flex-direction: column;
+  
 }
 
 .productDetailPage ul,

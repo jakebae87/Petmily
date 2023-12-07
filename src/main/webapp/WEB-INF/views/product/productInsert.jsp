@@ -25,6 +25,7 @@
 				<th>PRODUCT_STOCK (DEFAULT 100)</th>
 				<th>PRODUCT_SALES (DEFAULT 0)</th>
 				<th>PRODUCT_MAINIMAGEPATH</th>
+				<th>PRODUCT_DETAILIMAGEPATH</th>
 				<th>PRODUCT_RATING</th>
 				<th>PRODUCT_ORIGIN (DEFAULT '한국')</th>
 			</tr>
@@ -66,6 +67,7 @@
 			    <td><input type="text" name="product_stock" value="100"></td>
 			    <td><input type="text" name="product_sales" value="0"></td>
 			    <td><input type="file" name="uploadfilef" id="uploadfilef"></td>
+			    <td><input type="file" name="uploadfilef2" id="uploadfilef2"></td>
 			    <td><input type="number" step="0.1" name="product_rating" value="0.0" pattern="\d+(\.\d{1})?"></td>
 			    <td><input type="text" name="product_origin" value="한국"></td>
 			</tr>

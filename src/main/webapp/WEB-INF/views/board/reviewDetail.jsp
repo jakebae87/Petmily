@@ -46,12 +46,12 @@
 				</tr>
 				<tr>
 					<th>후기 이미지1</th>
-					<td><img alt="사진1" src="/${requestScope.review.review_image1}"
+					<td><img alt="사진1" src="/resources/uploadImages/${requestScope.review.review_image1}"
 						width="100" height="120"></td>
 				</tr>
 				<tr>
 					<th>후기 이미지2</th>
-					<td><img alt="사진2" src="/${requestScope.review.review_image2}"
+					<td><img alt="사진2" src="/resources/uploadImages/${requestScope.review.review_image2}"
 						width="100" height="120"></td>
 				</tr>
 			</table>

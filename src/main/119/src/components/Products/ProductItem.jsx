@@ -32,8 +32,11 @@ const ProductItem = ({ it, addCart }) => {
     return (
         <div className="ProductItem">
             <Link to={`/products/productdetail/${it.product_id}`}>
-                <img src={process.env.PUBLIC_URL + `/Images/products/${it.product_mainimagepath}`} alt={it.product_mainimagepath} />
+                <img src={`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(it.product_mainimagepath)}`} alt={it.product_mainimagepath} />
             </Link>
+            {/* <Link to={`/products/productdetail/${it.product_id}`}>
+                <img src={process.env.PUBLIC_URL + `/Images/products/${it.product_mainimagepath}`} alt={it.product_mainimagepath} />
+            </Link> */}
             <div>
                 <div>
                     <p className="productName"><Link to={`/products/productdetail/${it.product_id}`}>{it.product_name}</Link></p>

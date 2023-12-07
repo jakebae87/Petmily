@@ -80,7 +80,17 @@ public interface BoardService {
 
 	List<ProductDTO> getProduct(String name);
 
-	// Review end
+	int insertInquiry(InquiryDTO dto);
+
+	int updateBoardInquiry(InquiryDTO dto);
+
+	List<ReviewDTO> getReviewList(SearchDTO searchDTO);
+
+	int insertReview(ReviewDTO dto);
+
+	int insertReply(ReviewReplyDTO dto);
+
+	int deleteReply(ReviewReplyDTO dto);
 
 
 }

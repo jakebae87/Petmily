@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team119.petmily.mapperInterface.ProductMapper">
 	
 	<!-- <select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
@@ -26,36 +25,52 @@
 		ON p.promotion_id = pmp.promotion_id
 	</select>
 	
-	<select id="selectPromotionInfoList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT *
-	    FROM PROMOTION_PRODUCT
-	    WHERE promotion_id IN (1, 2, 3, 4, 5)
-	</select>
-	
 	<select id="selectPromotionList" resultType="com.team119.petmily.domain.ProductDTO">
+<<<<<<< HEAD
 		SELECT p.*, pmp.promotion_discount
 	    FROM PRODUCT AS p
 	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+=======
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+>>>>>>> main
 	    WHERE p.promotion_id = #{promotion_id}
 	</select>
     
 	<select id="selectedList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-		WHERE (#{param1} = 'all' OR p.product_kind = #{param1})
-		AND (#{param2} = 'all' OR p.product_category = #{param2})
+		WHERE (#{param1} = 'all' OR p.product_kind = #{param1} OR p.product_kind = 'all')
+		AND (#{param2} = 'all' OR p.product_category = #{param2} OR p.product_category = 'all')
 	</select>
 	
-	<select id="selectThisWeekList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
+	<select id="selectThisMonthList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, 
+			CASE
+			  WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+			  ELSE 0
+			END AS promotion_discount
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-		WHERE WEEK(p.product_regdate) = WEEK(CURDATE())
+		WHERE MONTH(p.product_regdate) = MONTH(CURDATE())
 	</select>
 	
 	<select id="selectPopularList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
 		WHERE p.product_sales >= 50
@@ -63,31 +78,81 @@
 	</select>
 	
 	<select id="selectDiscountedList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
-	    FROM PRODUCT AS p
-	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-	    WHERE pmp.promotion_discount > 0
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		HAVING promotion_discount > 0
+		ORDER BY promotion_discount DESC
 	</select>
 	
 	<select id="selectSearchedList" resultType="com.team119.petmily.domain.ProductDTO">		
-		SELECT p.*, pmp.promotion_discount
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount
 	    FROM PRODUCT AS p
 	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
 	    WHERE p.product_name LIKE CONCAT('%', #{searchKeyword}, '%')
 	</select>
 	
 	<insert id="insert">
+<<<<<<< HEAD
 		INSERT INTO PRODUCT(promotion_id, product_kind, product_category, product_name, product_description, product_price, product_stock, product_sales, product_mainimagepath, product_rating, product_origin)
 		VALUE (#{promotion_id}, #{product_kind}, #{product_category}, #{product_name}, #{product_description}, #{product_price}, #{product_stock}, #{product_sales}, #{product_mainimagepath}, #{product_rating}, #{product_origin})
+=======
+		INSERT INTO PRODUCT(promotion_id, product_kind, product_category, product_name, product_description, product_price, product_stock, product_sales, product_mainimagepath, product_detailimagepath, product_rating, product_origin)
+		VALUE (#{promotion_id}, #{product_kind}, #{product_category}, #{product_name}, #{product_description}, #{product_price}, #{product_stock}, #{product_sales}, #{product_mainimagepath}, #{product_detailimagepath}, #{product_rating}, #{product_origin})
+>>>>>>> main
 	</insert>
 	
 	<update id="update">
 		UPDATE PRODUCT
+<<<<<<< HEAD
 		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_rating=#{product_rating}, product_origin=#{product_origin}
+=======
+		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_detailimagepath=#{product_detailimagepath}, product_rating=#{product_rating}, product_origin=#{product_origin}
+>>>>>>> main
 		where product_id=#{product_id}
 	</update>
 	
 	<delete id="delete">
 		DELETE FROM PRODUCT WHERE product_id=#{product_id}
 	</delete>
+	
+	<select id="pinquiryList" resultType="com.team119.petmily.domain.InquiryDTO">		
+		SELECT i.*
+		FROM INQUIRY i left join PRODUCT p 
+		ON p.PRODUCT_ID = i.PRODUCT_ID
+		WHERE i.PRODUCT_ID = #{p.PRODUCT_ID}
+		ORDER BY INQUIRY_REGDATE DESC
+	</select>
+	
+	<select id="productinquiryList" resultType="com.team119.petmily.domain.InquiryDTO">		
+		SELECT INQUIRY.*, 
+			(SELECT P.PRODUCT_NAME 
+			FROM PRODUCT P
+			WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
+			FROM INQUIRY
+		WHERE (#{searchPeriod} IS NULL OR
+			CASE 
+			    WHEN 'week' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
+			    WHEN 'month' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+			    WHEN 'firstQuarter' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+			    ELSE 1=1
+			END)
+		AND (#{searchCriteria} IS NULL OR
+			CASE 
+			    WHEN 'subject' = #{searchCriteria} THEN LOWER(INQUIRY_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+			    WHEN 'content' = #{searchCriteria} THEN LOWER(INQUIRY_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+			    WHEN 'writer' = #{searchCriteria} THEN LOWER(INQUIRY_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+			    ELSE 1=1
+			END)
+		AND INQUIRY.PRODUCT_ID = #{id}
+		ORDER BY INQUIRY_REGDATE DESC
+	</select>
 </mapper>

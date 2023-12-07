@@ -56,6 +56,42 @@ const CartItem = ({
       });
   }
 
+  // cartCntUp(장바구니 수량 +1)
+  function upCnt(product_id) {
+    let url = "/rscart/cartCntUp/" + product_id;
+
+    axios
+      .post(url)
+      .then((response) => {
+        alert(response.data);
+        // 페이지 새로고침
+        window.location.reload();
+      })
+      .catch((err) => {
+        if (err.response.status) alert(err.response.data);
+        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+      });
+  }
+
+  // cartCntDown(장바구니 수량 -1)
+  function downCnt(product_id) {
+    let url = "/rscart/cartCntDown/" + product_id;
+
+    axios
+      .post(url)
+      .then((response) => {
+        alert(response.data);
+        // 페이지 새로고침
+        window.location.reload();
+      })
+      .catch((err) => {
+        if (err.response.status) alert(err.response.data);
+        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+      });
+  }
+
+  console.log("checkedItems =" + checkedItems);
+  
   return (
     <tbody>
       {cartItems.map((item) => (

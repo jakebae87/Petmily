@@ -1,10 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+
 export default function InquiryWrite() {
-    const [searchResult, setSearchResult] = useState([]);
+    const [searchResult, setSearchResult] = useState([]); // 검색한 값이 db에 있으면 searchResult에 저장한다.
     const [selectedValue, setSelectedValue] = useState('');
+    
+    const navigate = useNavigate();
+
+    const inquirySubmit = async() => {
+        let url = "/inquiry/insert";
+        
+            await axios({
+                url: url,
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                data: {
+                    inquiry_title: document.getElementById('inquiry_title').value,
+                    product_id: document.getElementById('product_id').value,
+                    inquiry_content: document.getElementById('inquiry_content').value
+                }
+
+            }).then(response => {
+                alert(`상품문의 등록 완료되었습니다.`);
+                navigate('/community/inquiry');
+            }).catch(error => {
+                console.error(`에러 응답 = ${error.response},
+			error status = ${error.response.status},
+			error message = ${error.message}`);
+            });
+    }
 
     useEffect(() => {
     }, [selectedValue]);
@@ -16,18 +42,13 @@ export default function InquiryWrite() {
             const response = await axios.get(`/product/search?name=${searchInput}`);
             setSearchResult(response.data);
         } catch (error) {
-            console.error('There was a problem with the axios request:', error);
+            console.error('찾으시는 상품이 없습니다.', error);
         }
     };
 
     const handleSelectChange = (event) => {
-        const selectedProductName = event.target.value;
-        const selectedProduct = searchResult.find(result => result.product_name === selectedProductName);
-
-        if (selectedProduct) {
-            const selectedProductId = selectedProduct.product_id;
-            setSelectedValue(selectedProductId);
-        }
+        const selectedProductId = event.target.value; // select 태그의 option 중 해당하는 상품명을 변수에 담는다.
+        setSelectedValue(selectedProductId);
     };
 
     return (
@@ -38,32 +59,32 @@ export default function InquiryWrite() {
 
             <div>
                 <div className="selectStarRegist">
-                    <input type="text" id="searchInput" onChange={fetchData} />
+                    <input type="text" id="searchInput" onChange={fetchData} placeholder="상품명을 입력하세요." required />
                     <div id="searchResult">
-                        <select value={selectedValue} onChange={handleSelectChange}>
+                        <select id="product_id" style={{
+                            width: '150px',
+                            height: '50px',
+                            fontSize: '16px'
+                        }} value={selectedValue} onChange={handleSelectChange}>
                             <option value="">선택하세요</option>
                             {searchResult.map((result, index) => (
-                                <option key={index} value={result.product_name}>
+                                <option key={index} value={result.product_id} >
                                     {result.product_name}
                                 </option>
                             ))}
                         </select>
                     </div>
 
-                    <div id="selectedValue">
-                        {/* 선택된 값 표시 */}
-                        {selectedValue && <p>선택된 값: {selectedValue}</p>}
-                    </div>
-
                     <div id="registButton">
-                        <input type="submit" form="submitBoard" value="등록" />
+                        <input  onClick={inquirySubmit} value="등록" />
                     </div>
                 </div>
 
                 <div>
-                    <form id="submitBoard">
-                        <input id="title" name="title" type="text" placeholder="제목을 입력하세요." maxLength="100" required />
-                        <textarea id="contents" name="contents" rows="30" cols="100"></textarea>
+                    <form>
+                        <input id="inquiry_title" type="text" placeholder="제목을 입력하세요." maxLength="100" required />
+                        <textarea id="inquiry_content" rows="30" cols="100"></textarea>
+                        <input type='hidden' id='product_id' value={selectedValue ? selectedValue.toString() : ''} />
                     </form>
                 </div>
             </div>

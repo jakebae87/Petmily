@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 const ImageSlider = () => {
     const [promotionInfoData, setPromotionInfoData] = useState([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
         axios.get('/rsproduct/promotionInfoList')
@@ -13,19 +14,17 @@ const ImageSlider = () => {
                 console.log(`** promotionProductList 서버연결 성공 =>`, response.data);
             })
             .catch((err) => {
-                alert(`** promotionProductList 서버연결 실패 => ${err.message}`);
+                console.log(`** promotionProductList 서버연결 실패 => ${err.message}`);
             });
     }, []);
 
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
     const nextImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 5);
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % promotionInfoData.length);
     };
 
     const prevImage = () => {
         setCurrentImageIndex((prevIndex) =>
-            prevIndex === 0 ? 5 - 1 : prevIndex - 1
+            prevIndex === 0 ? promotionInfoData.length - 1 : prevIndex - 1
         );
     };
 
@@ -36,22 +35,24 @@ const ImageSlider = () => {
     useEffect(() => {
         const interval = setInterval(nextImage, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [promotionInfoData]);
 
     return (
         <div className="ImageSlider">
-            <div className="slider-container">
-                {promotionInfoData.map((product, index) => (
-                    <Link to={`/products/promotionproducts/${product.promotion_id}`} key={product.promotion_id}>
-                        <div
-                            className={`slider-image ${index === currentImageIndex ? 'active' : ''}`}
-                            onClick={() => goToImage(index)}
-                        >
-                            <img src={process.env.PUBLIC_URL + `/Images/${product.promotion_image}`} alt={`Slide ${index}`} />
-                        </div>
-                    </Link>
-                ))}
-            </div>
+            {promotionInfoData.length > 0 && (
+                <div className="slider-container">
+                    {promotionInfoData.map((product, index) => (
+                        <Link to={`/products/promotionproducts/${product.promotion_id}`} key={product.promotion_id}>
+                            <div
+                                className={`slider-image ${index === currentImageIndex ? 'active' : ''}`}
+                                onClick={() => goToImage(index)}
+                            >
+                                <img src={process.env.PUBLIC_URL + `/Images/${product.promotion_image}`} alt={`Slide ${index}`} />
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            )}
 
             <div className="slider-controls">
                 <button className="prev-button" onClick={prevImage}>

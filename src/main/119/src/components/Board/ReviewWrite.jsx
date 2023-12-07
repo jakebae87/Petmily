@@ -1,16 +1,64 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import Star from "../Board/Star";
+import React, { useState, useEffect} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+import Star from "./Star";
 
 export default function ReviewWrite() {
 
     // 상품후기의 별점 수 받기 시작
     const [score, setScore] = useState(0);
-
     const onChangeScore = (data) => {
         setScore(data);
     }
     // 상품후기의 별점 수 받기 끝
+
+    const [searchResult, setSearchResult] = useState([]); // 검색한 값이 db에 있으면 searchResult에 저장한다.
+    const [selectedValue, setSelectedValue] = useState('');
+
+    const navigate = useNavigate();
+
+    const reviewSubmit = async () => {
+        let formData = new FormData(document.getElementById('reviewForm'));
+
+        await axios.post(
+            "/review/insert",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data" 
+                }
+            }
+        ).then(
+            response => {
+                alert(response.data);
+                navigate('/community/review');
+            }
+        ).catch(error => {
+            console.error(`에러 응답 = ${error.response},
+			error status = ${error.response.status},
+			error message = ${error.message}`);
+        });
+    }
+
+    useEffect(() => {
+    }, [selectedValue]);
+
+    const fetchData = async () => {
+        const searchInput = document.getElementById('searchInput').value;
+
+        try {
+            const response = await axios.get(`/product/search?name=${searchInput}`);
+            setSearchResult(response.data);
+        } catch (error) {
+            console.error('찾으시는 상품이 없습니다.', error);
+        }
+    };
+
+    const handleSelectChange = (event) => {
+        const selectedProductId = event.target.value; // select 태그의 option 중 해당하는 상품명을 변수에 담는다.
+        setSelectedValue(selectedProductId);
+    };
 
     return (
         <div className="write">
@@ -20,30 +68,46 @@ export default function ReviewWrite() {
 
             <div>
                 <div className="selectStarRegist">
-                    <select name="selectSubject" onchange="window.open(value,'_self');">
-                        <option value="./writeInquiry.html">상품후기</option>
-                        <option value="./writeInquiry.html">상품문의</option>
-                    </select>
+                    <input type="text" id="searchInput" onChange={fetchData} placeholder="상품명을 입력하세요." required />
+                    <div id="searchResult">
+                        <select id="product_id" style={{
+                            width: '150px',
+                            height: '50px',
+                            fontSize: '16px'
+                        }} value={selectedValue} onChange={handleSelectChange}>
+                            <option value="">선택하세요</option>
+                            {searchResult.map((result, index) => (
+                                <option key={index} value={result.product_id} >
+                                    {result.product_name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
                     <div className="productRating">
                         <Star onChangeScore={onChangeScore} />
                     </div>
 
-                    <div id="registButton"> {/* form 태그의 등록버튼을 form태그 외부로 빼서 사용 */}
-                        <input type="submit" form="submitBoard" value="등록" />
+                    <div id="registButton">
+                        <input onClick={reviewSubmit} value="등록" />
                     </div>
                 </div>
 
                 <div>
-                    <form action="#" id="submitBoard">
-                        <input id="title" name="title" type="text" placeholder="제목을 입력하세요." maxlength="100" required />
+                    <form id="reviewForm">
+                        <input name="review_title" type="text" placeholder="제목을 입력하세요." maxlength="100" required />
 
-                        <input type="file" id="fileUpload" name="fileUpload" multiple
-                            accept="image/gif,image/jpeg,image/png" />
+                        <input type="file" name="uploadfile1" multiple accept="image/gif,image/jpeg,image/png"
+                            onChange={(e) => {
+                                const selectedFiles = Array.from(e.target.files).slice(0, 2); // 최대 2개의 파일 선택
+                                console.log(selectedFiles);
+                            }}
+                        />
 
-                        <input type="hidden" id="star" name="star" value={score} />
+                        <input type="hidden" name="review_point" value={score} />
+                        <input type="hidden" name="product_id" value={selectedValue} />
 
-                        <textarea id="contents" name="contents" rows="30" cols="100"></textarea>
+                        <textarea name="review_content" rows="30" cols="100"></textarea>
                     </form>
                 </div>
             </div>
