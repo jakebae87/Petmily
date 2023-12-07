@@ -2,13 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-import detailImage from "../../assets/Images/productDetail1.jpg";
-import review_image1 from "../../assets/Images/products/food_image1.jpg";
-import review_image2 from "../../assets/Images/products/food_image2.jpg";
-import review_image3 from "../../assets/Images/products/food_image3.jpg";
-import review_image4 from "../../assets/Images/products/food_image4.jpg";
-import review_image5 from "../../assets/Images/products/food_image5.jpg";
-
 function Pagination({ totalPages, currentPage, onPageChange }) {
     const pages = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -252,7 +245,7 @@ const ProductDetail = ({ addCart }) => {
                 </div>
 
                 <div id="productDetailImg" className="productDetailImg">
-                    <img src={detailImage} className="detailImage" alt="productDetail1" />
+                    <img src={`${process.env.PUBLIC_URL}/Images/${encodeURIComponent(productDetailData.product_detailimagepath)}`} className="detailImage" alt="productDetail1" />
                 </div>
                 
                 
