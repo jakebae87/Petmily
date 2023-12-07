@@ -8,7 +8,7 @@ import com.team119.petmily.pagination.SearchCriteria;
 public interface CartMapper {
 
 	// selectList
-	List<CartDTO> selectList();
+	List<CartDTO> selectList(String user_id);
 	
 	// selectOne: Detail
 	CartDTO selectOne(CartDTO vo);

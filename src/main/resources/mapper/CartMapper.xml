@@ -11,7 +11,7 @@
 		select c.user_id, c.product_id, c.product_cnt, p.product_name, p.product_price, p.product_mainimagepath
 		from cart c inner Join product p
 		on c.product_id = p.product_id
-<!-- 		where user_id=#{user_id} -->
+		where c.user_id=#{user_id}
 	</select>
 	
 	<!-- 2. selectOne: Detail -->

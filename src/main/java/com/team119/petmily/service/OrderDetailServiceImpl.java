@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team119.petmily.domain.OrderDetailDTO;
+import com.team119.petmily.domain.OrderProductDTO;
 import com.team119.petmily.mapperInterface.OrderDetailMapper;
 import com.team119.petmily.pagination.SearchCriteria;
 
@@ -20,6 +21,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 	@Override
 	public List<OrderDetailDTO> selectList() {
 		return mapper.selectList();
+	}
+	@Override
+	public List<OrderProductDTO> selectListP(String user_id) {
+		return mapper.selectListP(user_id);
 	}
 	
 	// ** selectOne

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import OrderItem from "./OrderItem";
+import DaumPostcode from 'react-daum-postcode';
 
 export default function Order({ orderItems, deleteOrder }) {
   const totalPrice = () => {
@@ -8,8 +9,6 @@ export default function Order({ orderItems, deleteOrder }) {
       0
     );
   };
-
-  console.log(orderItems);
 
   // 로그인한 회원정보
   const [loginUser, setLoginUser] = useState([]);
@@ -41,6 +40,42 @@ export default function Order({ orderItems, deleteOrder }) {
       alert("로그인하세요");
     }
   }, []);
+
+  //주소 api
+  const [isPostOpen, setIsPostOpen] = useState(false);
+  // const [isAddress, setIsAddress] = useState("");
+  // const [isZoneCode, setIsZoneCode] = useState();
+
+  const handleComplete = (data) => {
+      let fullAddress = data.address;
+      let extraAddress = "";
+
+      if (data.addressType === "R") {
+          if (data.bname !== "") {
+              extraAddress += data.bname;
+          }
+          if (data.buildingName !== "") {
+              extraAddress +=
+                  extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+          }
+          fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+      }
+
+      setOrderZipcode(data.zonecode);
+      setOrderAddr(fullAddress); // isAddress state 업데이트
+      setOrderAddrD(orderAddrD);
+      setIsPostOpen(false);
+  };
+  const togglePost = (e) => {
+      e.preventDefault();
+      setIsPostOpen(!isPostOpen);
+  };
+
+  const postcodeComponent = useMemo(() => (
+      <div>
+          <DaumPostcode onComplete={handleComplete} autoClose={true} />
+      </div>
+  ), [handleComplete]);
 
   return (
     <div>
@@ -234,7 +269,7 @@ export default function Order({ orderItems, deleteOrder }) {
                           checked={useSameAddress}
                           onChange={() => {
                             setUseSameAddress(true);
-                            setOrderName(loginUser.user_id);
+                            setOrderName(loginUser.user_name);
                             setOrderPhone(loginUser.user_phone);
                             setOrderZipcode(loginUser.zipcode);
                             setOrderAddr(loginUser.addr);
@@ -296,18 +331,26 @@ export default function Order({ orderItems, deleteOrder }) {
                         value={orderZipcode}
                         onChange={(e) => setOrderZipcode(e.target.value)}
                       />
-                      <input
+                      {/* <input
                         type="submit"
                         name="postCodeFind"
                         value="우편번호"
-                      />
+                      /> */}
+                      <button className="postCodeFind" onClick={togglePost}>
+                          {isPostOpen ? '우편번호 닫기' : '우편번호 찾기'}
+                      </button>
+                      {isPostOpen && (
+                          <div>
+                              <DaumPostcode onComplete={handleComplete} autoClose={true} />
+                          </div>
+                      )}
                     </td>
                     <td>
                       <input
                         type="text"
                         id="address"
                         name="address"
-                        size="30"
+                        size="50"
                         value={orderAddr}
                         onChange={(e) => setOrderAddr(e.target.value)}
                         required
@@ -322,7 +365,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         value={orderAddrD}
                         onChange={(e) => setOrderAddrD(e.target.value)}
                       />
-                      나머지주소(선택입력가능)
+                      상세주소
                     </td>
                   </tr>
                   <tr>

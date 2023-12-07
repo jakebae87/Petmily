@@ -8,7 +8,7 @@ import com.team119.petmily.pagination.SearchCriteria;
 public interface CartService {
 	
 	// ** selectList(회원별 장바구니 목록)
-	List<CartDTO> selectList();
+	List<CartDTO> selectList(String user_id);
 	
 	// ** selectOne(장바구니 항목 선택)
 	CartDTO selectOne(CartDTO dto);

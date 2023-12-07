@@ -28,7 +28,8 @@
 /* 주문내역 */
 .orderListInfo {
   width: 1120px;
-  margin: auto;
+  margin: auto auto 10px auto;
+  height: auto;
   border: 1px solid gray;
   border-collapse: collapse;
   text-align: center;
@@ -38,6 +39,9 @@
 .orderListInfo tfoot {
   border-top: 1px solid black;
 }
+
+/* 주문내역 상하단 높이 */
+
 
 .orderListInfo tr:not(:first-child) {
   border-top: 1px solid black;

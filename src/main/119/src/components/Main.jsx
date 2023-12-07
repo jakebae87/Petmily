@@ -23,8 +23,6 @@ import Board from "./Board/Board";
 // Event
 import Event from "./Event/Event";
 
-// Test
-
 function Main() {
   // 장바구니 상품
   const [cartItems, setCartItems] = useState([]);
@@ -43,8 +41,8 @@ function Main() {
       .catch((err) => {
         alert(`** checkdata 서버연결 실패 => ${err.message}`);
       });
-  }, []);
-  // }, [productCntArray]);
+  }, [productCntArray]);
+  // }, []);
   // }, [cartItems]);
 
   // 장바구니 체크된 상품
@@ -72,7 +70,9 @@ function Main() {
 
   // 바로 주문
   const addOrder = (it) => {
-    const existingCartItem = orderItems.find((item) => item.product_id === it.product_id);
+    const existingCartItem = orderItems.find(
+      (item) => item.product_id === it.product_id
+    );
     if (existingCartItem) {
       const updatedCart = orderItems.map((item) =>
         item.product_id === it.product_id
@@ -92,7 +92,9 @@ function Main() {
 
   // 주문 상품 삭제
   const deleteOrder = (it) => {
-    setOrderItems(orderItems.filter((orderItems) => orderItems.product_id !== it.product_id));
+    setOrderItems(
+      orderItems.filter((orderItems) => orderItems.product_id !== it.product_id)
+    );
   };
 
   // 수량 up

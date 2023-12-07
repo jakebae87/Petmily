@@ -39,10 +39,31 @@ public class RestCartController {
 
 	@GetMapping("/cartList")
 	// => React Connect Test
-	public ResponseEntity<List<CartDTO>> cartList() {
-		List<CartDTO> CartList = cservice.selectList();
+	public ResponseEntity<List<CartDTO>> cartList(HttpSession session) {
+		String user_id = (String) session.getAttribute("loginID");
+		List<CartDTO> CartList = cservice.selectList(user_id);
 		return new ResponseEntity<>(CartList, HttpStatus.OK);
 	}
+	
+//	public ResponseEntity<?> cartInsertP(HttpSession session, @PathVariable("jj") int product_id) {
+//	    try {
+//	        // 세션에서 로그인 아이디를 가져오기
+//	        String user_id = (String) session.getAttribute("loginID");
+//	        
+//	        // user_id null
+//	        if (user_id == null) {
+//	            return new ResponseEntity<String>("로그인 해주세요.", HttpStatus.UNAUTHORIZED);
+//	        }
+//
+//	        // 세션에서 가져온 로그인 아이디와 상품 ID를 사용하여 처리
+//	        cservice.insertP(user_id, product_id);
+//
+//	        return new ResponseEntity<String>("Success", HttpStatus.OK);
+//	    } catch (Exception e) {
+//	        log.error("Error in cartInsertP", e);
+//	        return new ResponseEntity<String>("Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+//	    }
+//	}
 
 	// ** 리액트 장바구니 상품 삭제
 	@DeleteMapping("/cdelete/{ii}/{jj}")
@@ -150,27 +171,28 @@ public class RestCartController {
 	// ===============================================================
 	
 	@GetMapping("/orderproductList")
-	public ResponseEntity<List<OrderProductDTO>> orderProductList() {
-		List<OrderProductDTO> OrderProductList = opservice.selectList();
+	public ResponseEntity<List<OrderProductDTO>> orderProductList(HttpSession session) {
+		String user_id = (String) session.getAttribute("loginID");
+		List<OrderProductDTO> OrderProductList = odservice.selectListP(user_id);
 		return new ResponseEntity<>(OrderProductList, HttpStatus.OK);
 	}
 	
 	// ===============================================================
 	
-	@PostMapping("/order")
-	public ResponseEntity<?> order() {
-		try {
-			
-			
-			cservice.delete(dto);
-			opservice.insert(dto);
-			odservice.insert(dto);
-			pservice.update(dto);
-			
-			return new ResponseEntity<>("주문 완료", HttpStatus.OK);
-		} catch (Exception e) {
-			log.error("Error in order", e);
-			return new ResponseEntity<String>("주문 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+//	@PostMapping("/order")
+//	public ResponseEntity<?> order() {
+//		try {
+//			
+//			
+//			cservice.delete(dto);
+//			opservice.insert(dto);
+//			odservice.insert(dto);
+//			pservice.update(dto);
+//			
+//			return new ResponseEntity<>("주문 완료", HttpStatus.OK);
+//		} catch (Exception e) {
+//			log.error("Error in order", e);
+//			return new ResponseEntity<String>("주문 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 }
