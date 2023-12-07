@@ -2,7 +2,6 @@ package com.team119.petmily.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -22,6 +21,7 @@ import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.service.BoardService;
 import lombok.AllArgsConstructor;
@@ -191,7 +191,7 @@ public class RestBoardController {
 		ResponseEntity<?> result = null;
 
 		ReviewDTO review = boardService.getReview(dto);
-
+		
 		if (review != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(review);
 			log.info("Review Detail HttpStatus => " + HttpStatus.OK);
@@ -211,50 +211,54 @@ public class RestBoardController {
 		String file1, file2 = "";
 		String file3, file4 = "";
 
-		MultipartFile[] uploadfile1 = dto.getUploadfile1();
-		if (uploadfile1 != null && !uploadfile1[0].isEmpty()) {
-			String fileName = URLEncoder.encode(uploadfile1[0].getOriginalFilename(), "UTF-8");
-			fileName = fileName.replaceAll("\\+", "%20");
-			
-			file1 = realPath + fileName; // 저장경로 완성
-			uploadfile1[0].transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
-//			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
-//			uploadfile1[0].transferTo(new File(file1));
-
-			file2 = uploadfile1[0].getOriginalFilename();
-		} if (!uploadfile1[1].isEmpty()) {
-			String fileName = URLEncoder.encode(uploadfile1[1].getOriginalFilename(), "UTF-8");
-			fileName = fileName.replaceAll("\\+", "%20");
-			
-			file3 = realPath +fileName;
-			uploadfile1[1].transferTo(new File(file3));
-//			file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
-//			uploadfile1[1].transferTo(new File(file3));
-
-			file4 = uploadfile1[1].getOriginalFilename();
-		}
-
-		dto.setReview_image1(file2);
-		dto.setReview_image2(file4);
-		
-		
 //		MultipartFile[] uploadfile1 = dto.getUploadfile1();
 //		if (uploadfile1 != null && !uploadfile1[0].isEmpty()) {
-//
-//			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
+//			String fileName = URLEncoder.encode(uploadfile1[0].getOriginalFilename(), "UTF-8");
+//			System.out.println(fileName);
+//			fileName = fileName.replaceAll("\\+", "%20");
+//			System.out.println(fileName);
+//			
+//			file1 = realPath + fileName; // 저장경로 완성
 //			uploadfile1[0].transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
+////			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
+////			uploadfile1[0].transferTo(new File(file1));
 //
 //			file2 = uploadfile1[0].getOriginalFilename();
 //		} if (!uploadfile1[1].isEmpty()) {
-//
-//			file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
-//			uploadfile1[1].transferTo(new File(file3)); // 해당경로에 저장(붙여넣기)
+//			String fileName = URLEncoder.encode(uploadfile1[1].getOriginalFilename(), "UTF-8");
+//			fileName = fileName.replaceAll("\\+", "%20");
+//			
+//			file3 = realPath +fileName;
+//			uploadfile1[1].transferTo(new File(file3));
+////			file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
+////			uploadfile1[1].transferTo(new File(file3));
 //
 //			file4 = uploadfile1[1].getOriginalFilename();
 //		}
 //
 //		dto.setReview_image1(file2);
 //		dto.setReview_image2(file4);
+		
+		
+		MultipartFile[] uploadfile1 = dto.getUploadfile1();
+		if (uploadfile1 != null && !uploadfile1[0].isEmpty()) {
+
+			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
+			System.out.println(file1.replaceAll(" ",  ""));
+			uploadfile1[0].transferTo(new File(file1.replaceAll(" ",  ""))); // 해당경로에 저장(붙여넣기)
+
+			file2 = uploadfile1[0].getOriginalFilename().replaceAll(" ",  "");
+			System.out.println(file2);
+		} if (!uploadfile1[1].isEmpty()) {
+
+			file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
+			uploadfile1[1].transferTo(new File(file3)); // 해당경로에 저장(붙여넣기)
+
+			file4 = uploadfile1[1].getOriginalFilename();
+		}
+
+		dto.setReview_image1(file2);
+		dto.setReview_image2(file4);
 		
 		
 
@@ -264,6 +268,24 @@ public class RestBoardController {
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 등록 실패");
 			log.info("HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+	
+	@GetMapping(value = "/review/reply/{id}")
+	public ResponseEntity<?> reviewReplyList(@PathVariable("id") int id, ReviewDTO dto) {
+		ResponseEntity<?> result = null;
+		dto.setReview_id(id);
+		
+		List<ReviewReplyDTO> list = boardService.getReplyList(dto);
+		
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Review Reply List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Review Reply List HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		}
 
 		return result;

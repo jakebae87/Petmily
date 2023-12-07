@@ -186,6 +186,4 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 
-
-
 } // class
