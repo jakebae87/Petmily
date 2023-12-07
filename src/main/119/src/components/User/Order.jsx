@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import OrderItem from "./OrderItem";
-import axios from "axios";
 
 export default function Order({ orderItems, deleteOrder }) {
   const totalPrice = () => {
     return orderItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + item.product_price * item.product_cnt,
       0
     );
   };
+
+  console.log(orderItems);
 
   // 로그인한 회원정보
   const [loginUser, setLoginUser] = useState([]);
@@ -25,12 +26,17 @@ export default function Order({ orderItems, deleteOrder }) {
   // 회원상세주소
   const [orderAddrD, setOrderAddrD] = useState("");
 
-  // 회원 리스트 불러오기
+  // 회원 정보 불러오기
   useEffect(() => {
-    const userFromSession = JSON.parse(sessionStorage.getItem("loginID"));
+    const userFromSession = JSON.parse(sessionStorage.getItem("loggedInUser"));
 
     if (userFromSession) {
       setLoginUser(userFromSession);
+      setOrderName(userFromSession.user_name);
+      setOrderPhone(userFromSession.user_phone);
+      setOrderZipcode(userFromSession.zipcode);
+      setOrderAddr(userFromSession.addr);
+      setOrderAddrD(userFromSession.addr_detail);
     } else {
       alert("로그인하세요");
     }
@@ -122,7 +128,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         type="text"
                         id="name"
                         name="name"
-                        value={setLoginUser.user_name}
+                        value={loginUser.user_name}
                         required
                       />
                     </td>
@@ -228,7 +234,7 @@ export default function Order({ orderItems, deleteOrder }) {
                           checked={useSameAddress}
                           onChange={() => {
                             setUseSameAddress(true);
-                            setOrderName(loginUser.user_name);
+                            setOrderName(loginUser.user_id);
                             setOrderPhone(loginUser.user_phone);
                             setOrderZipcode(loginUser.zipcode);
                             setOrderAddr(loginUser.addr);
@@ -385,38 +391,36 @@ export default function Order({ orderItems, deleteOrder }) {
           <div className="payInfoArea">
             <ul type="square" className="listTitle">
               <li>
-                <h3>결제 예정 금액</h3>
+                <h3>결제 금액 / 방법</h3>
               </li>
             </ul>
             <div>
               <table className="payTable">
                 <thead>
                   <tr>
-                    <th>총 주문금액</th>
-                    <th>총 할인 + 부가결제금액</th>
+                    {/* <th>총 주문금액</th> */}
                     <th>총 결제예정 금액</th>
+                    <th>결제방법</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    {/* <td>
+                      <span>{(totalPrice() + 3000).toLocaleString()}</span>원
+                    </td> */}
                     <td>
                       <span>{(totalPrice() + 3000).toLocaleString()}</span>원
                     </td>
                     <td>
-                      - <span>0</span>원
-                    </td>
-                    <td>
-                      <span>{(totalPrice() + 3000).toLocaleString()}</span>원
+                      <select id="paymethod" name="paymethod">
+                        <option>카드</option>
+                        <option>계좌이체</option>
+                      </select>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-          </div>
-
-          <div className="payMethod">
-            결제방법
-            <div></div>
           </div>
 
           <div className="payArea">

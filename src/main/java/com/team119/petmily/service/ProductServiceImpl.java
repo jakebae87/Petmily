@@ -14,6 +14,11 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	ProductMapper mapper;
+
+	@Override
+	public ProductDTO selectOne(ProductDTO dto) {
+		return mapper.selectOne(dto);
+	}
 	
 	@Override
 	public List<ProductDTO> selectList() {
@@ -53,11 +58,6 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductDTO> selectSearchedList(String searchKeyword) {
 		return mapper.selectSearchedList(searchKeyword);
-	}
-	
-	@Override
-	public ProductDTO selectOne(ProductDTO dto) {
-		return mapper.selectOne(dto);
 	}
 	
 	@Override

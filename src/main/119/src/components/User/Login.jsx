@@ -21,10 +21,9 @@ function Login() {
     axios
       .post(url, data, { headers: { "Content-Type": "application/json" } })
       .then((response) => {
-        alert(
-          `** response : id=${response.data.user_id}, password=${response.data.user_password}`
-        );
-        navigate("/User/Cart");
+        const user = response.data;
+        sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+        navigate("/");
       })
       .catch((err) => {
         console.error(

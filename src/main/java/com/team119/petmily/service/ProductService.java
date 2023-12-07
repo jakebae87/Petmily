@@ -6,6 +6,8 @@ import com.team119.petmily.domain.ProductDTO;
 
 public interface ProductService {
 	
+	ProductDTO selectOne(ProductDTO dto);
+	
 	List<ProductDTO> selectList();
 	
 	List<ProductDTO> selectPromotionInfoList();
@@ -21,8 +23,6 @@ public interface ProductService {
 	List<ProductDTO> selectDiscountedList();
 	
 	List<ProductDTO> selectSearchedList(String searchKeyword);
-	
-	ProductDTO selectOne(ProductDTO dto);
 	
 	int insert(ProductDTO dto);
 

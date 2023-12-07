@@ -42,15 +42,19 @@ public class RestUserController {
        log.info("dto =" + dto);
        log.info("password =" + password);
        log.info("dto.getUser_id =" + dto.getUser_id());
+       log.info("dto.getUser_name ="+dto.getUser_name());
        if (dto != null && id.equals(dto.getUser_id()) && password.equals(dto.getUser_password())) {
            HttpSession session = request.getSession(); // 세션 가져오기
            session.setAttribute("loginID", dto.getUser_id());
-           session.setAttribute("loginPassword", dto.getUser_password());
            session.setAttribute("loginName", dto.getUser_name());
-
            final UserDTO userDTO = UserDTO.builder()
                .user_id(dto.getUser_id())
-               .user_password(dto.getUser_password())
+               .user_name(dto.getUser_name())
+               .user_email(dto.getUser_email())
+               .user_phone(dto.getUser_phone())
+               .zipcode(dto.getZipcode())
+               .addr(dto.getAddr())
+               .addr_detail(dto.getAddr_detail())
                .build();
 
            result = ResponseEntity.status(HttpStatus.OK).body(userDTO);
@@ -60,7 +64,7 @@ public class RestUserController {
            log.info("** login HttpStatus.UNAUTHORIZED => " + HttpStatus.UNAUTHORIZED);
        }
        return result;
-   }   
+   }    
    
    @PostMapping(value = "/Signup")
    public ResponseEntity<String> signup(@RequestBody UserDTO dto) {

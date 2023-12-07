@@ -9,8 +9,7 @@ const ProductItem = ({ it, addCart }) => {
 	
     axios.post(url)
         .then((response) => {
-				alert(`** response.data:${response.data}`);
-				window.location.reload(); // 화면 새로고침
+				alert("장바구니 담기 성공");
 	}).catch( err => {
 				if ( err.response.status ) alert(err.response.data);  				
 				else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);

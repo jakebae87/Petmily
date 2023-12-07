@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "axios";
 
 const CartItem = ({
@@ -10,33 +10,15 @@ const CartItem = ({
   increQuantity,
   decreQuantity,
 }) => {
-  // SpringBoot test
-  const [Data, setData] = useState([]);
-
-  // 장바구니 리스트 불러오기
-  useEffect(() => {
-    axios
-      .get("/rscart/cartList")
-      .then((response) => {
-        setData(response.data);
-        console.log(`** checkdata 서버연결 성공 =>`, response.data);
-      })
-      .catch((err) => {
-        alert(`** checkdata 서버연결 실패 => ${err.message}`);
-      });
-  }, []);
 
   // 장바구니 상품 삭제
-  // cartDelete(장바구니 삭제)
   function cDelete(user_id, product_id) {
     let url = "/rscart/cdelete/" + user_id + "/" + product_id;
 
     axios
       .delete(url)
       .then((response) => {
-        alert(response.data);
-        // 페이지 새로고침
-        window.location.reload();
+        // alert(response.data);
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);
@@ -51,9 +33,7 @@ const CartItem = ({
     axios
       .post(url)
       .then((response) => {
-        alert(response.data);
-        // 페이지 새로고침
-        window.location.reload();
+        // alert(response.data);
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);
@@ -68,9 +48,7 @@ const CartItem = ({
     axios
       .post(url)
       .then((response) => {
-        alert(response.data);
-        // 페이지 새로고침
-        window.location.reload();
+        // alert(response.data);
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);
@@ -78,19 +56,15 @@ const CartItem = ({
       });
   }
 
-  console.log("checkedItems =" + checkedItems);
-  console.log("cartItems = " + cartItems);
-  
-
   return (
     <tbody>
-      {Data.map((item) => (
+      {cartItems.map((item) => (
         <tr>
           <td>
             <input
               type="checkbox"
-              checked={checkedItems.includes(item.product_id)}
-              onChange={(e) => checkChange(e, item.product_id)}
+              checked={checkedItems.includes(item)}
+              onChange={(e) => checkChange(e, item)}
             />
           </td>
           <td>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import detailImage from "../../assets/Images/productDetail1.jpg";
 
 // Mock Data
@@ -12,9 +13,21 @@ import review_image3 from "../../assets/Images/products/food_image3.jpg";
 import review_image4 from "../../assets/Images/products/food_image4.jpg";
 import review_image5 from "../../assets/Images/products/food_image5.jpg";
 
-const ProductDetail = ({ addCart }) => {
+const ProductDetail = ({ addCart, addOrder }) => {
   const { id } = useParams();
-  const product = mockData.find((item) => item.id === parseInt(id));
+  const [productDetailData, setProductDetailData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`/rsproduct/productDetail/${id}`)
+      .then((response) => {
+        setProductDetailData(response.data);
+        console.log(`** productDetail 서버연결 성공 =>`, response.data);
+      })
+      .catch((err) => {
+        console.log(`** productDetail 서버연결 실패 => ${err.message}`);
+      });
+  }, []);
 
   // 수량
   const [quantity, setQuantity] = useState(1);
@@ -23,18 +36,35 @@ const ProductDetail = ({ addCart }) => {
     setQuantity(parseInt(event.target.value, 10));
   };
 
-  const handleAddToCart = () => {
-    addCart({ ...product, quantity: quantity });
+  const handleAddToOrder = () => {
+    addOrder({ ...productDetailData, product_cnt: quantity });
     setQuantity(1);
   };
 
+  // 장바구니 추가
+  function cartInsert(a, b) {
+    let url = "/rscart/cartInsert/" + a + "/" + b;
+
+    axios
+      .post(url)
+      .then((response) => {
+        alert("장바구니 담기 성공");
+      })
+      .catch((err) => {
+        if (err.response.status) alert(err.response.data);
+        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+      });
+  }
   return (
     <div className="ProductDetail">
       <div className="productPage">
         <div className="productImage">
           <img
-            src={product.img}
-            alt="product1"
+            src={
+              process.env.PUBLIC_URL +
+              `/Images/products/${productDetailData.product_mainimagepath}`
+            }
+            alt={productDetailData.product_mainimagepath}
             width={"500px"}
             height={"400px"}
           />
@@ -43,15 +73,15 @@ const ProductDetail = ({ addCart }) => {
           <tbody>
             <tr>
               <th>상품명</th>
-              <td>{product.title}</td>
+              <td>{productDetailData.product_description}</td>
             </tr>
             <tr>
               <th>원산지</th>
-              <td>국내산</td>
+              <td>{productDetailData.product_origin}</td>
             </tr>
             <tr>
               <th>가격</th>
-              <td>{product.price.toLocaleString()}</td>
+              <td>{productDetailData.product_price}원</td>
             </tr>
             <tr>
               <th>수량</th>
@@ -80,7 +110,7 @@ const ProductDetail = ({ addCart }) => {
                   <button
                     className="buySoon"
                     quantity={quantity}
-                    onClick={() => handleAddToCart(product)}
+                    onClick={() => handleAddToOrder(productDetailData)}
                   >
                     바로구매하기
                   </button>
@@ -89,7 +119,9 @@ const ProductDetail = ({ addCart }) => {
                   <button
                     className="buyCart"
                     quantity={quantity}
-                    onClick={() => handleAddToCart(product)}
+                    onClick={() =>
+                      cartInsert(productDetailData.product_id, quantity)
+                    }
                   >
                     장바구니
                   </button>

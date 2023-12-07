@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import CartItem from "./CartItem";
 
 export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder }) {
   // 체크된 상품 가격
   const totalPrice = () => {
-    const selectedTotalPrice = checkedItems.reduce((total, itemId) => {
-      const selectedItem = cartItems.find((cart) => cart.id === itemId);
+    const selectedTotalPrice = checkedItems.reduce((total, product) => {
+      const selectedItem = cartItems.find((cart) => cart === product);
       if (selectedItem) {
-        return total + selectedItem.price * selectedItem.quantity;
+        return total + selectedItem.product_price * selectedItem.product_cnt;
       }
       return total;
     }, 0);

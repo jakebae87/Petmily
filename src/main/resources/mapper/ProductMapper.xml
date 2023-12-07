@@ -2,9 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team119.petmily.mapperInterface.ProductMapper">
+	
+	<!-- <select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT * FROM PRODUCT WHERE product_id=#{product_id}
+	</select> -->
+	
 	<!-- <select id="selectList" resultType="com.team119.petmily.domain.ProductDTO">
 		select * from PRODUCT
 	</select> -->
+	
+	<select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, pmp.promotion_image, pmp.promotion_discount
+		FROM PRODUCT as p
+		JOIN PROMOTION_PRODUCT as pmp
+		ON p.promotion_id = pmp.promotion_id
+		WHERE p.product_id = #{product_id}
+	</select>
 	
 	<select id="selectList" resultType="com.team119.petmily.domain.ProductDTO">
 		SELECT p.*, pmp.promotion_image, pmp.promotion_discount
@@ -23,7 +36,7 @@
 		SELECT p.*, pmp.promotion_discount
 	    FROM PRODUCT AS p
 	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-	    WHERE p.promotion_id = #{p.promotion_id}
+	    WHERE p.promotion_id = #{promotion_id}
 	</select>
     
 	<select id="selectedList" resultType="com.team119.petmily.domain.ProductDTO">
@@ -63,18 +76,14 @@
 	    WHERE p.product_name LIKE CONCAT('%', #{searchKeyword}, '%')
 	</select>
 	
-	<select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT * FROM PRODUCT WHERE product_id=#{product_id}
-	</select>
-	
 	<insert id="insert">
-		INSERT INTO PRODUCT(promotion_id, product_kind, product_category, product_name, product_description, product_price, product_stock, product_sales, product_mainimagepath, product_rating)
-		VALUE (#{promotion_id}, #{product_kind}, #{product_category}, #{product_name}, #{product_description}, #{product_price}, #{product_stock}, #{product_sales}, #{product_mainimagepath}, #{product_rating})
+		INSERT INTO PRODUCT(promotion_id, product_kind, product_category, product_name, product_description, product_price, product_stock, product_sales, product_mainimagepath, product_rating, product_origin)
+		VALUE (#{promotion_id}, #{product_kind}, #{product_category}, #{product_name}, #{product_description}, #{product_price}, #{product_stock}, #{product_sales}, #{product_mainimagepath}, #{product_rating}, #{product_origin})
 	</insert>
 	
 	<update id="update">
 		UPDATE PRODUCT
-		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_rating=#{product_rating}
+		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_rating=#{product_rating}, product_origin=#{product_origin}
 		where product_id=#{product_id}
 	</update>
 	

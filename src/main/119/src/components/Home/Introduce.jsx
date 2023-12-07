@@ -24,7 +24,7 @@ function Introduce({ props, addCart }) {
         axios.get(`/rsproduct/${url}`)
             .then((response) => {
                 setProductData(response.data);
-                console.log(`** productData 서버연결 성공 =>`, response.data);
+                //console.log(`** productData 서버연결 성공 =>`, response.data);
             })
             .catch((err) => {
                 alert(`** productData 서버연결 실패 => ${err.message}`);
