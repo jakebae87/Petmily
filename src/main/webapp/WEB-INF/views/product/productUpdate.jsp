@@ -66,13 +66,22 @@
 			<td><input type="date" name="product_regdate" value='<fmt:formatDate value="${requestScope.ptable.product_regdate}" pattern="yyyy-MM-dd" />'></td></tr>			
 		<tr><th>PRODUCT_MAINIMAGEPATH</th>
 			<td><input type="text" name="product_mainimagepath" value="${requestScope.ptable.product_mainimagepath}"></td></tr>			
-		<tr><th>Image</th>
+		<tr><th>MAINIMAGE</th>
 			<td>
 				<input type="hidden" name="product_mainimagepath" value="${requestScope.ptable.product_mainimagepath}" readonly><br>		
 				<input type="file" name="uploadfilef" id="uploadfilef">
 			</td></tr>
+		<tr><th>PRODUCT_DETAILIMAGEPATH</th>
+			<td><input type="text" name="product_detailimagepath" value="${requestScope.ptable.product_detailimagepath}"></td></tr>			
+		<tr><th>DETAILIMAGE</th>
+			<td>
+				<input type="hidden" name="product_mainimagepath" value="${requestScope.ptable.product_detailimagepath}" readonly><br>		
+				<input type="file" name="uploadfilef2" id="uploadfilef2">
+			</td></tr>
 		<tr><th>PRODUCT_RATING</th>
-			<td><input type="text" name="product_rating" value="${requestScope.ptable.product_rating}"></td></tr>			
+			<td><input type="text" name="product_rating" value="${requestScope.ptable.product_rating}"></td></tr>
+		<tr><th>PRODUCT_ORIGIN</th>
+			<td><input type="text" name="product_origin" value="${requestScope.ptable.product_origin}"></td></tr>		
 
 		<tr><th></th>
 			<td><input type="submit" value="수정">&nbsp;&nbsp;&nbsp;

@@ -8,7 +8,7 @@ public interface ProductImageService {
 	
 	List<ProductImageDTO> selectList();
 	
-	List<ProductImageDTO> selectListByID(ProductImageDTO dto);
+	List<ProductImageDTO> selectListByID(int id);
 	
 	ProductImageDTO selectOne(ProductImageDTO dto);
 	

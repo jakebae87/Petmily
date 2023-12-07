@@ -29,7 +29,9 @@
 			<th>PRODUCT_SALES</th>
 			<th>PRODUCT_REGDATE</th>
 			<th>PRODUCT_MAINIMAGEPATH</th>
+			<th>PRODUCT_DETAILIMAGEPATH</th>
 			<th>PRODUCT_RATING</th>
+			<th>PRODUCT_ORIGIN</th>
 		</tr>
 		
 		<c:if test="${not empty requestScope.ptable}">
@@ -48,7 +50,9 @@
 					<td>${s.product_sales}</td>
 					<td><fmt:formatDate value="${s.product_regdate}" pattern="yyyy-MM-dd" /></td>
 					<td><img alt="MyImage" src="/resources/uploadImages/${s.product_mainimagepath}"  width="60" height="40"></td>
+					<td><img alt="MyImage" src="/resources/uploadImages/${s.product_detailimagepath}"  width="60" height="40"></td>
 					<td>${s.product_rating}</td>
+					<td>${s.product_origin}</td>
 				</tr>
 			</c:forEach>
 		</c:if>

@@ -3,6 +3,11 @@
     margin: auto;
 }
 
+#eventBox {
+    width: 1070px;
+    margin: auto;
+}
+
 #eventTop {
     margin: 40px 10px;
     
@@ -29,8 +34,8 @@
 }
 
 .events img {
-    width: 550px;
-    height: 400px;
+    width: 500px;
+    height: 350px;
     border-radius: 10px;
 }
 

@@ -21,8 +21,8 @@ public class ProductImageServiceImpl implements ProductImageService {
 	}
 	
 	@Override
-	public List<ProductImageDTO> selectListByID(ProductImageDTO dto) {
-		return mapper.selectListByID(dto);
+	public List<ProductImageDTO> selectListByID(int id) {
+		return mapper.selectListByID(id);
 	}
 	
 	@Override

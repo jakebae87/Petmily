@@ -69,10 +69,10 @@ public class BoardController {
 	// --------------------SHOW REVIEW LIST--------------------	
 		
 	// Review List
-	@GetMapping(value = "/reviewList")
-	public void reviewList(Model model) {
-		model.addAttribute("review", boardService.getReviewList());
-	}
+//	@GetMapping(value = "/reviewList")
+//	public void reviewList(Model model) {
+//		model.addAttribute("review", boardService.getReviewList());
+//	}
 	
 	// Review Paging List
 	@GetMapping(value = "/reviewPagingList")
