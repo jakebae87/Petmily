@@ -1,8 +1,11 @@
 package com.team119.petmily.service;
 
+import java.security.SecureRandom;
 import java.util.List;
 
+import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.team119.petmily.domain.UserDTO;
@@ -16,6 +19,8 @@ public class UserServiceImpl implements UserService {
 	// ** 전역변수 정의
 	@Autowired
 	UserMapper mapper;
+	
+
 	
 	@Override
 	public List<UserDTO> UserList(String id) {
@@ -32,6 +37,7 @@ public class UserServiceImpl implements UserService {
 	public UserDTO selectOne(UserDTO dto) {
 		return mapper.selectOne(dto);
 	}
+	
 
 	// ** insert
 	@Override
@@ -54,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 	@Override
     public String foundUserPw(String userid, String useremail) {
-        return mapper.findIdByIdAndEmail(userid, useremail);
+        return mapper.findpwByIdAndEmail(userid, useremail);
     }
 	
 	

@@ -22,6 +22,8 @@ public interface UserService {
 	// ** selectOne
 	UserDTO selectOne(UserDTO dto);
 
+	
+	
 	// ** insert
 	int insert(UserDTO dto);
 
@@ -35,5 +37,6 @@ public interface UserService {
 	 //비밀번호찾기
 	String foundUserPw(String userid, String useremail);
 
-
+	
+	
 }

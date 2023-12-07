@@ -16,10 +16,10 @@ function Popup({ showPopup, closePopup, data }) {
         reply_content: document.getElementById('reply_content').value
       }
     }).then(response => {
-        alert(`댓글 등록 완료되었습니다.`);
-        closePopup();
-        window.location.reload();
-      }
+      alert(`댓글 등록 완료되었습니다.`);
+      closePopup();
+      window.location.reload();
+    }
     ).catch(error => {
       console.error(`에러 응답 = ${error.response},
 			error status = ${error.response.status},
@@ -39,7 +39,7 @@ function Popup({ showPopup, closePopup, data }) {
               </div>
               <div style={{ width: '75%' }}>
                 <th>내용</th>
-                <td><input id='reply_content' style={{ width: '550px',height:'30px' }} type='text'/></td>
+                <td><input id='reply_content' style={{ width: '550px', height: '30px' }} type='text' /></td>
               </div>
               <div>
                 <input onClick={replySubmit} type='button' value='등록'></input>

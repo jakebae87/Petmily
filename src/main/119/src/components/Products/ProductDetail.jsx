@@ -159,7 +159,7 @@ const ProductDetail = ({ addCart }) => {
                         상품 등록일 : {productDetailData.product_regdate}
                     </div>
                 </div>
-                
+
                 <table className="productInfo">
                     <tbody>
                         <tr>
@@ -253,8 +253,8 @@ const ProductDetail = ({ addCart }) => {
                 <div id="productDetailImg" className="productDetailImg">
                     <img src={detailImage} className="detailImage" alt="productDetail1" />
                 </div>
-                
-                
+
+
                 <div id="productQA" className="productQA">
                     <h2>상품문의</h2>
                     <div className="boardList">
@@ -324,7 +324,7 @@ const ProductDetail = ({ addCart }) => {
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="buyGuide" className="buyGuide">
                     <div className="buyGuide">
                         <div className="returnInfo">

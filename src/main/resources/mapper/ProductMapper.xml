@@ -26,11 +26,6 @@
 	</select>
 	
 	<select id="selectPromotionList" resultType="com.team119.petmily.domain.ProductDTO">
-<<<<<<< HEAD
-		SELECT p.*, pmp.promotion_discount
-	    FROM PRODUCT AS p
-	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-=======
 		SELECT p.*, 
 		  CASE
 		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
@@ -38,7 +33,6 @@
 		  END AS promotion_discount
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
->>>>>>> main
 	    WHERE p.promotion_id = #{promotion_id}
 	</select>
     
@@ -101,22 +95,13 @@
 	</select>
 	
 	<insert id="insert">
-<<<<<<< HEAD
-		INSERT INTO PRODUCT(promotion_id, product_kind, product_category, product_name, product_description, product_price, product_stock, product_sales, product_mainimagepath, product_rating, product_origin)
-		VALUE (#{promotion_id}, #{product_kind}, #{product_category}, #{product_name}, #{product_description}, #{product_price}, #{product_stock}, #{product_sales}, #{product_mainimagepath}, #{product_rating}, #{product_origin})
-=======
 		INSERT INTO PRODUCT(promotion_id, product_kind, product_category, product_name, product_description, product_price, product_stock, product_sales, product_mainimagepath, product_detailimagepath, product_rating, product_origin)
 		VALUE (#{promotion_id}, #{product_kind}, #{product_category}, #{product_name}, #{product_description}, #{product_price}, #{product_stock}, #{product_sales}, #{product_mainimagepath}, #{product_detailimagepath}, #{product_rating}, #{product_origin})
->>>>>>> main
 	</insert>
 	
 	<update id="update">
 		UPDATE PRODUCT
-<<<<<<< HEAD
-		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_rating=#{product_rating}, product_origin=#{product_origin}
-=======
 		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_detailimagepath=#{product_detailimagepath}, product_rating=#{product_rating}, product_origin=#{product_origin}
->>>>>>> main
 		where product_id=#{product_id}
 	</update>
 	
