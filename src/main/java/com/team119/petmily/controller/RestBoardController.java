@@ -189,7 +189,6 @@ public class RestBoardController {
 	public ResponseEntity<?> reviewDetail(@PathVariable("id") int id, ReviewDTO dto) {
 		dto.setReview_id(id);
 		ResponseEntity<?> result = null;
-
 		ReviewDTO review = boardService.getReview(dto);
 		
 		if (review != null) {
@@ -290,6 +289,22 @@ public class RestBoardController {
 
 		return result;
 	}
+	
+	@PostMapping(value = "/review/reply/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> replyInsert(@RequestBody ReviewReplyDTO dto) {
+		
+		ResponseEntity<?> result = null;
+
+		if (boardService.insertReply(dto) > 0) {
+			result = ResponseEntity.status(HttpStatus.OK).body("상품문의 글작성");
+			log.info("Insert new Inquiry HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품문의 글작성 실패");
+			log.info("Insert new Inquiry HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
 
 	@PostMapping(value = "/notice/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void noticeInsert(@RequestBody NoticeDTO dto) {
@@ -374,6 +389,21 @@ public class RestBoardController {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 삭제 실패");
 		}
 
+		return result;
+	}
+	
+	@DeleteMapping(value = "/review/reply/delete/{id}")
+	public ResponseEntity<?> replyDelete(@PathVariable("id") int id, ReviewReplyDTO dto) {
+		ResponseEntity<?> result = null;
+		
+		dto.setReply_id(id);
+		
+		if (boardService.deleteReply(dto) > 0) {
+			result = ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 완료");
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("댓글 삭제 실패");
+		}
+		
 		return result;
 	}
 }

@@ -88,5 +88,9 @@ public interface BoardService {
 
 	int insertReview(ReviewDTO dto);
 
+	int insertReply(ReviewReplyDTO dto);
+
+	int deleteReply(ReviewReplyDTO dto);
+
 
 }

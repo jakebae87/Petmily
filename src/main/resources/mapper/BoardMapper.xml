@@ -276,6 +276,16 @@
 		ON R.REVIEW_ID = RR.REVIEW_ID
 		WHERE R.REVIEW_ID = #{review_id};
 	</select>
+	
+	<insert id="insertReply">
+		INSERT INTO REVIEW_REPLY (REVIEW_ID, REPLY_WRITER, REPLY_CONTENT) VALUES
+		(#{review_id},'더미맨',#{reply_content})
+	</insert>
+	
+	<delete id="deleteReply">
+		DELETE FROM REVIEW_REPLY WHERE REPLY_ID = #{reply_id}
+	</delete>
+	
 
 	<!-- REVIEW CRUD END -->
 	

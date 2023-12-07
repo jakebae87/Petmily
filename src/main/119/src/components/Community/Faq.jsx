@@ -89,9 +89,11 @@ function Faq() {
                         <col className="attr1" />
                         <col className="attr2" />
                         <col className="attr3" />
+                        <col className="attr3" />
                     </colgroup>
                     <tr>
                         <th>제목</th>
+                        <th>질문유형</th>
                         <th>글쓴이</th>
                         <th>작성일</th>
                     </tr>
@@ -99,6 +101,7 @@ function Faq() {
                     {paginatedData().map((f) =>
                         <tr key={f.faq_id}>
                             <td><Link to={`./${f.faq_id}`}>{f.faq_title}</Link></td>
+                            <td>{f.question_type}</td>
                             <td>{f.faq_writer}</td>
                             <td>{f.faq_regdate}</td>
                         </tr>
