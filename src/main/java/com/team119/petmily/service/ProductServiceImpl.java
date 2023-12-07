@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team119.petmily.domain.CartDTO;
+import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.ProductDTO;
-
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.mapperInterface.ProductMapper;
 import com.team119.petmily.pagination.SearchCriteria;
 
@@ -38,8 +39,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<ProductDTO> selectThisWeekList() {
-		return mapper.selectThisWeekList();
+	public List<ProductDTO> selectThisMonthList() {
+		return mapper.selectThisMonthList();
 	}
 	
 	@Override
@@ -70,5 +71,15 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int delete(ProductDTO dto) {
 		return mapper.delete(dto);
+	}
+	
+	@Override
+	public List<InquiryDTO> pinquiryList(int id) {
+		return mapper.pinquiryList(id);
+	}
+	
+	@Override
+	public List<InquiryDTO> productinquiryList(SearchDTO searchDTO) {
+		return mapper.productinquiryList(searchDTO);
 	}
 }

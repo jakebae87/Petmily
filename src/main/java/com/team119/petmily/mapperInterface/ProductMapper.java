@@ -2,9 +2,9 @@ package com.team119.petmily.mapperInterface;
 
 import java.util.List;
 
-import com.team119.petmily.domain.CartDTO;
+import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.ProductDTO;
-import com.team119.petmily.pagination.SearchCriteria;
+import com.team119.petmily.domain.SearchDTO;
 
 public interface ProductMapper {
 	
@@ -16,7 +16,7 @@ public interface ProductMapper {
 	
 	List<ProductDTO> selectedList(String kind, String category);
 	
-	List<ProductDTO> selectThisWeekList();
+	List<ProductDTO> selectThisMonthList();
 	
 	List<ProductDTO> selectPopularList();
 	
@@ -29,4 +29,8 @@ public interface ProductMapper {
 	int update(ProductDTO dto);
 	
 	int delete(ProductDTO dto);
+	
+	List<InquiryDTO> pinquiryList(int id);
+	
+	List<InquiryDTO> productinquiryList(SearchDTO searchDTO);
 }

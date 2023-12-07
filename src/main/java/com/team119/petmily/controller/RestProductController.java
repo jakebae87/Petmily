@@ -4,15 +4,17 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team119.petmily.domain.EventDTO;
+import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.ProductDTO;
+import com.team119.petmily.domain.ProductImageDTO;
 import com.team119.petmily.domain.PromotionProductDTO;
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.service.EventService;
 import com.team119.petmily.service.ProductImageService;
 import com.team119.petmily.service.ProductService;
@@ -52,6 +54,13 @@ public class RestProductController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     } //productDetail
 	
+	@GetMapping("/productImage/{id}")
+    public ResponseEntity<List<ProductImageDTO>> productImage(@PathVariable("id") int id) {
+		
+        List<ProductImageDTO> productImageList = piservice.selectListByID(id);
+        return new ResponseEntity<>(productImageList, HttpStatus.OK);
+    } //productImage
+	
 	@GetMapping("/promotionInfoList")
     public ResponseEntity<List<PromotionProductDTO>> promotionInfoList() {
 		
@@ -76,7 +85,7 @@ public class RestProductController {
 	
 	@GetMapping("/newProductList")
     public ResponseEntity<List<ProductDTO>> newProductList() {
-        List<ProductDTO> newProductList = pservice.selectThisWeekList();
+        List<ProductDTO> newProductList = pservice.selectThisMonthList();
         return new ResponseEntity<>(newProductList, HttpStatus.OK);
     } //newProductList
 	
@@ -104,6 +113,40 @@ public class RestProductController {
         List<EventDTO> eventList = eservice.selectList();
         return new ResponseEntity<>(eventList, HttpStatus.OK);
     }
+	
+	@GetMapping("/inquiry/list/{id}")
+	public ResponseEntity<?> pinquiryList(@PathVariable("id") int id) {
+		ResponseEntity<?> result = null;
+
+		List<InquiryDTO> list = pservice.pinquiryList(id);
+				
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Inquiry List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Inquiry List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+	
+//	@GetMapping(value = "/inquiry/list")
+//	public ResponseEntity<?> productinquiryList(SearchDTO searchDTO) {
+//		ResponseEntity<?> result = null;
+//
+//		List<InquiryDTO> list = pservice.productinquiryList(searchDTO);
+//				
+//		if (list != null) {
+//			result = ResponseEntity.status(HttpStatus.OK).body(list);
+//			log.info("Inquiry List HttpStatus => " + HttpStatus.OK);
+//		} else {
+//			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+//			log.info("Inquiry List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+//		}
+//
+//		return result;
+//	}
 }
 
 
