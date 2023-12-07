@@ -123,7 +123,7 @@
 /* 상품상세페이지 */
 .productDetailPage {
   flex-direction: column;
-  
+
 }
 
 .productDetailPage ul,
@@ -170,6 +170,7 @@
 .detailImage {
   margin: 50px 0;
 }
+
 /* 상품후기 */
 .attr1 {
   width: 200px;
@@ -335,6 +336,7 @@
   text-decoration: none;
   border-bottom: 1px solid gray;
 }
+
 .returnInfoTable th,
 .returnInfoTable td,
 .sellerTable th,
@@ -348,6 +350,7 @@
   font-weight: normal;
   background-color: rgba(0, 0, 0, 0.1);
 }
+
 .returnInfoTable td,
 .sellerTable td {
   padding: 14px 10px 14px 20px;
