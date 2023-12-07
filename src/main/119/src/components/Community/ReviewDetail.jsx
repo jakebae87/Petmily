@@ -132,7 +132,7 @@ function ReviewDetail() {
                         <td>
                             <Link to={`/products/productdetail/${review.product_id}`}>{review.product_name}</Link>
                         </td>
-                        <th scope="row">평점{review.review_point}</th>
+                        <th scope="row">평점</th>
                         <td>
                             <Star star={review.review_point} />
                         </td>

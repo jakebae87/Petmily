@@ -2,42 +2,52 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import Star from "./Star";
 
-export default function InquiryUpdate() {
+export default function ReviewUpdate() {
     const { id } = useParams();
+    const [clickedStars, setClickedStars] = useState(0);
     const [searchResult, setSearchResult] = useState([]); // 검색한 값이 db에 있으면 searchResult에 저장한다.
     const [selectedValue, setSelectedValue] = useState('');
-    const [inquiry, setInquiry] = useState({
-        inquiry_title: '',
+    const [review, setReview] = useState({
+        review_title: '',
         product_id: '',
-        inquiry_content: ''
+        review_point: 0,
+        review_content: ''
     });
+
+    // 상품후기의 별점 수 받기 시작
+    const [score, setScore] = useState(0);
+    const onChangeScore = (data) => {
+        setClickedStars(data);
+    }
+    // 상품후기의 별점 수 받기 끝
 
     const navigate = useNavigate();
 
-    const inquiryUpdate = async () => {
-        console.log(inquiry);
+    const reviewUpdate = async () => {
         try {
-            await axios.post(`/inquiry/updateBoard/`, {
-                inquiry_id: id,
-                inquiry_title: inquiry.inquiry_title,
-                product_id: selectedValue,
-                inquiry_content: inquiry.inquiry_content
+            await axios.post(`/review/updateBoard/`, {
+                review_id: id,
+                review_title: review.review_title,
+                product_id: selectedValue || review.product_id,
+                review_content: review.review_content,
+                review_point: clickedStars
             });
-            alert(`상품문의 수정이 완료되었습니다.`);
-            navigate(`/community/inquiry/${id}`);
+            alert(`상품후기 수정이 완료되었습니다.`);
+            navigate(`/community/review/${id}`);
         } catch (error) {
-            console.error('상품문의 수정 에러:', error);
+            console.error('상품후기 수정 에러:', error);
         }
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/inquiryDetail/${id}`);
-                setInquiry(response.data);
+                const response = await axios.get(`/reviewDetail/${id}`);
+                setReview(response.data);
             } catch (error) {
-                console.error('상품문의 데이터를 불러오는 중 에러:', error);
+                console.error('상품후기 데이터를 불러오는 중 에러:', error);
             }
         };
         fetchData(); // 컴포넌트가 마운트되거나 id 값이 변경될 때마다 호출
@@ -56,7 +66,7 @@ export default function InquiryUpdate() {
     };
     const handleInputChange = (event) => {
         const value = event.target.value;
-        setInquiry({ ...inquiry, product_name: value });
+        setReview({ ...review, product_name: value });
         fetchData(value);
     };
     const handleSelectChange = (event) => {
@@ -67,7 +77,7 @@ export default function InquiryUpdate() {
     return (
         <div className="write">
             <div className="cateTitle">
-                <h1>상품문의</h1>
+                <h1>상품후기 수정</h1>
             </div>
 
             <div>
@@ -76,7 +86,7 @@ export default function InquiryUpdate() {
                         type="text"
                         id="searchInput"
                         onChange={handleInputChange}
-                        value={inquiry.product_name}
+                        value={review.product_name}
                     />
                     <div id="searchResult">
                         <select id="product_id" style={{
@@ -94,35 +104,35 @@ export default function InquiryUpdate() {
                     </div>
 
                     <div id="registButton">
-                        <input onClick={inquiryUpdate} value="수정" />
+                        <input onClick={reviewUpdate} value="수정" />
                     </div>
                 </div>
 
                 <div>
                     <form>
                         <input
-                            id="inquiry_title"
+                            id="review_title"
                             type="text"
                             placeholder="제목을 입력하세요."
                             maxLength="100"
-                            value={inquiry.inquiry_title}
-                            onChange={(e) => setInquiry({ ...inquiry, inquiry_title: e.target.value })}
+                            value={review.review_title}
+                            onChange={(e) => setReview({ ...review, review_title: e.target.value })}
                             required
-                        />
+                        /> <Star star={review.review_point} onChangeScore={onChangeScore} />
                         <textarea
-                            id="inquiry_content"
+                            id="review_content"
                             rows="30"
                             cols="100"
-                            value={inquiry.inquiry_content}
-                            onChange={(e) => setInquiry({ ...inquiry, inquiry_content: e.target.value })}
+                            value={review.review_content}
+                            onChange={(e) => setReview({ ...review, review_content: e.target.value })}
                         ></textarea>
-                        <input type='hidden' id='product_id' value={selectedValue ? selectedValue.toString() : ''} />
+                        <input type='hidden' id='product_id' value={selectedValue ? selectedValue.toString() : review.product_id} />
                     </form>
                 </div>
             </div>
 
             <div id="bottomBoard">
-                <Link to="/community/inquiry">
+                <Link to="/community/review">
                     <input type="button" value="목록" />
                 </Link>
             </div>

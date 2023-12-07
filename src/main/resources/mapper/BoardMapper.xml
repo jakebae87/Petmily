@@ -185,10 +185,9 @@
 	<select id="getInquiry"
 		resultType="com.team119.petmily.domain.InquiryDTO">
 		SELECT INQUIRY.*, 
-		(SELECT P.PRODUCT_NAME 
-	     FROM PRODUCT P 
-	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME 
-		FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
+		(SELECT P.PRODUCT_NAME FROM PRODUCT P WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME 
+		FROM INQUIRY 
+		WHERE INQUIRY_ID = #{inquiry_id}
 	</select>
 
 	<update id="updateInquiry">
@@ -268,6 +267,11 @@
 	<delete id="deleteReview">
 		DELETE FROM REVIEW WHERE REVIEW_ID = #{review_id}
 	</delete>
+	
+	<update id="updateBoardReview">
+		UPDATE REVIEW SET REVIEW_TITLE = #{review_title}, PRODUCT_ID = #{product_id}, REVIEW_POINT = #{review_point}, REVIEW_CONTENT = #{review_content}
+		WHERE REVIEW_ID = #{review_id}
+	</update>
 
 	<select id="getReplyList"
 		resultType="com.team119.petmily.domain.ReviewReplyDTO">

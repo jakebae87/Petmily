@@ -190,7 +190,7 @@ public class RestBoardController {
 		dto.setReview_id(id);
 		ResponseEntity<?> result = null;
 		ReviewDTO review = boardService.getReview(dto);
-		
+
 		if (review != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(review);
 			log.info("Review Detail HttpStatus => " + HttpStatus.OK);
@@ -237,29 +237,27 @@ public class RestBoardController {
 //
 //		dto.setReview_image1(file2);
 //		dto.setReview_image2(file4);
-		
-		
+
 		MultipartFile[] uploadfile1 = dto.getUploadfile1();
-		if (uploadfile1 != null && !uploadfile1[0].isEmpty()) {
+		if (uploadfile1 != null && uploadfile1.length > 0) {
 
 			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
-			System.out.println(file1.replaceAll(" ",  ""));
-			uploadfile1[0].transferTo(new File(file1.replaceAll(" ",  ""))); // 해당경로에 저장(붙여넣기)
+			System.out.println(file1.replaceAll(" ", ""));
+			uploadfile1[0].transferTo(new File(file1.replaceAll(" ", ""))); // 해당경로에 저장(붙여넣기)
 
-			file2 = uploadfile1[0].getOriginalFilename().replaceAll(" ",  "");
+			file2 = uploadfile1[0].getOriginalFilename().replaceAll(" ", "");
 			System.out.println(file2);
-		} if (!uploadfile1[1].isEmpty()) {
+			if (uploadfile1.length > 1) {
 
-			file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
-			uploadfile1[1].transferTo(new File(file3)); // 해당경로에 저장(붙여넣기)
+				file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
+				uploadfile1[1].transferTo(new File(file3)); // 해당경로에 저장(붙여넣기)
 
-			file4 = uploadfile1[1].getOriginalFilename();
+				file4 = uploadfile1[1].getOriginalFilename();
+			}
 		}
 
 		dto.setReview_image1(file2);
 		dto.setReview_image2(file4);
-		
-		
 
 		if (boardService.insertReview(dto) > 0) { // Transaction_Test, insert2
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 등록 성공");
@@ -271,14 +269,14 @@ public class RestBoardController {
 
 		return result;
 	}
-	
+
 	@GetMapping(value = "/review/reply/{id}")
 	public ResponseEntity<?> reviewReplyList(@PathVariable("id") int id, ReviewDTO dto) {
 		ResponseEntity<?> result = null;
 		dto.setReview_id(id);
-		
+
 		List<ReviewReplyDTO> list = boardService.getReplyList(dto);
-		
+
 		if (list != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(list);
 			log.info("Review Reply List HttpStatus => " + HttpStatus.OK);
@@ -289,10 +287,10 @@ public class RestBoardController {
 
 		return result;
 	}
-	
+
 	@PostMapping(value = "/review/reply/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> replyInsert(@RequestBody ReviewReplyDTO dto) {
-		
+
 		ResponseEntity<?> result = null;
 
 		if (boardService.insertReply(dto) > 0) {
@@ -323,7 +321,14 @@ public class RestBoardController {
 
 	@PostMapping(value = "/inquiry/updateBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void updateBoardInquiry(@RequestBody InquiryDTO dto) {
+		System.out.println(dto);
 		boardService.updateBoardInquiry(dto);
+	}
+	
+	@PostMapping(value = "/review/updateBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void updateBoardReview(@RequestBody ReviewDTO dto) {
+		System.out.println(dto);
+		boardService.updateBoardReview(dto);
 	}
 
 	@DeleteMapping(value = "/inquiry/delete/{id}")
@@ -391,19 +396,19 @@ public class RestBoardController {
 
 		return result;
 	}
-	
+
 	@DeleteMapping(value = "/review/reply/delete/{id}")
 	public ResponseEntity<?> replyDelete(@PathVariable("id") int id, ReviewReplyDTO dto) {
 		ResponseEntity<?> result = null;
-		
+
 		dto.setReply_id(id);
-		
+
 		if (boardService.deleteReply(dto) > 0) {
 			result = ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 완료");
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("댓글 삭제 실패");
 		}
-		
+
 		return result;
 	}
 }

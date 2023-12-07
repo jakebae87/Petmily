@@ -20,7 +20,7 @@ export default function InquiryUpdate() {
             await axios.post(`/inquiry/updateBoard/`, {
                 inquiry_id: id,
                 inquiry_title: inquiry.inquiry_title,
-                product_id: selectedValue,
+                product_id: selectedValue || inquiry.product_id, // 만약 selectedValue가 존재하면 그 값을 사용하고, 그렇지 않으면 inquiry.product_id 사용
                 inquiry_content: inquiry.inquiry_content
             });
             alert(`상품문의 수정이 완료되었습니다.`);
@@ -60,13 +60,13 @@ export default function InquiryUpdate() {
     };
     const handleSelectChange = (event) => {
         const selectedProductId = event.target.value; // select 태그의 option 중 해당하는 상품명을 변수에 담는다.
-        setSelectedValue(selectedProductId);
+        setSelectedValue(selectedProductId);    
     };
 
     return (
         <div className="write">
             <div className="cateTitle">
-                <h1>상품문의</h1>
+                <h1>상품문의 수정</h1>{inquiry.product_id}
             </div>
 
             <div>
@@ -115,7 +115,7 @@ export default function InquiryUpdate() {
                             value={inquiry.inquiry_content}
                             onChange={(e) => setInquiry({ ...inquiry, inquiry_content: e.target.value })}
                         ></textarea>
-                        <input type='hidden' id='product_id' value={selectedValue ? selectedValue.toString() : ''} />
+                        <input type='hidden' id='product_id' value={selectedValue ? selectedValue.toString() : inquiry.product_id} />
                     </form>
                 </div>
             </div>
