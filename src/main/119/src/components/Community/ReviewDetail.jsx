@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Star from "./Star";
+import Popup from '../Board/Popup';
 
 function ReviewDetail() {
 
@@ -16,11 +17,49 @@ function ReviewDetail() {
         review_content: '',
         review_regdate: '',
         review_image1: '',
-        review_image2: ''
+        review_image2: '',
+        reply_check: false
     });
+    const [replies, setReplies] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
     let contents = review.review_content;
+
+    function replyCheck() {
+        if (review.reply_check) {
+
+            return <div id='bottomBoard'><button onClick={() => getReplies(id)}>댓글보기</button></div>
+        } else {
+            return null;
+        }
+    }
+
+    const [showPopup, setShowPopup] = useState(false);
+
+    function replyWrite() {
+        setShowPopup(true);
+    }
+
+    function closePopup() {
+        setShowPopup(false);
+    }
+
+    function getReplies() {
+        setIsLoading(true);
+        let url = '/review/reply/' + id;
+        axios.get(url)
+            .then(response => {
+                setReplies(response.data);
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error(`에러 응답 = ${error.response},
+                    error status = ${error.response.status},
+                    error message = ${error.message}`);
+                setIsLoading(false);
+            });
+    }
 
     function reviewDelete() {
         let url = '/review/delete/' + id;
@@ -29,6 +68,20 @@ function ReviewDetail() {
         ).then(response => {
             alert('상품후기가 삭제 되었습니다.');
             navigate('/community/review');
+        }).catch(error => {
+            console.error(`에러 응답 = ${error.response},
+			error status = ${error.response.status},
+			error message = ${error.message}`);
+        })
+    }
+
+    const replyDelete = async (reply_id) => {
+        let url = '/review/reply/delete/' + reply_id;
+        axios.delete(
+            url
+        ).then(response => {
+            alert('댓글이 삭제 되었습니다.');
+            window.location.reload();
         }).catch(error => {
             console.error(`에러 응답 = ${error.response},
 			error status = ${error.response.status},
@@ -97,12 +150,46 @@ function ReviewDetail() {
                             <div className="contents">
                                 {contents}
                             </div>
+
                         </td>
                     </tr>
                 </table>
+
+                {replyCheck()}
+                <div className="ReviewDetail">
+                    {isLoading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        <div>
+                            {replies.map((reply) => (
+                                <div style={{ marginBottom: '15px' }}>
+                                    <table style={{ width: '100%' }}>
+                                        <tr>
+                                            <div style={{ width: '15%' }}>
+                                                <th>작성자</th>
+                                                <td>{reply.reply_writer}</td>
+                                            </div>
+                                            <div style={{ width: '65%' }}>
+                                                <th>내용</th>
+                                                <td>{reply.reply_content}</td>
+                                            </div>
+                                            <div style={{ width: '20%' }}>
+                                                <th>작성일</th>
+                                                <td>{reply.reply_regdate}</td>
+                                            </div>
+                                            <div><button onClick={()=>replyDelete(reply.reply_id)} style={{ width: '50px' }} type="button">삭제</button></div>
+                                        </tr>
+                                    </table>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <Popup data={id} showPopup={showPopup} closePopup={closePopup} />
                 <div id="bottomBoard">
                     <Link to={`/board/reviewUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
                     <input onClick={reviewDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
+                    <input onClick={replyWrite} style={{ marginRight: '50px' }} type="button" value="댓글작성" />
                     <Link to="/community/review"><input type="button" value="목록" /></Link>
                 </div>
             </div>

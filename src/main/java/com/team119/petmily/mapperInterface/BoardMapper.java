@@ -69,5 +69,9 @@ public interface BoardMapper {
 	List<ReviewDTO> getReviewList(SearchDTO searchDTO);
 	
 	int insertReview(ReviewDTO dto);
+	
+	int insertReply(ReviewReplyDTO dto);
+	
+	int deleteReply(ReviewReplyDTO dto);
 
 }

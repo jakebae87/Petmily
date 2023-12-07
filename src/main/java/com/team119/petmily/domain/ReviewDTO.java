@@ -24,6 +24,8 @@ public class ReviewDTO extends ProductDTO{
 	private String review_image1;
 	private String review_image2;
 	
+	private boolean reply_check;
+	
 	// Join과 Update 폼으로부터 전달받은 데이터 
 	private MultipartFile[] uploadfile1;
 	private MultipartFile uploadfile2;

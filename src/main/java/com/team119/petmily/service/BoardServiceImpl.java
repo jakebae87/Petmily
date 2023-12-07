@@ -185,7 +185,15 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.insertReview(dto);
 	}
 
+	@Override
+	public int insertReply(ReviewReplyDTO dto) {
+		return boardMapper.insertReply(dto);
+	}
 
+	@Override
+	public int deleteReply(ReviewReplyDTO dto) {
+		return boardMapper.deleteReply(dto);
+	}
 
 
 } // class
