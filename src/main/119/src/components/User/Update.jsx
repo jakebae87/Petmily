@@ -4,7 +4,7 @@ import React from 'react';
 import axios from 'axios';
 import DaumPostcode from 'react-daum-postcode';
 
-function Signup() {
+function Update() {
 
 
     // const onKeyDown = (e) => {
@@ -407,4 +407,4 @@ function Signup() {
     )
 };
 
-export default Signup;
+export default Update;

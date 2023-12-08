@@ -9,6 +9,7 @@ import './OrderList.css'
 import './Profile.css'
 import './Signup.css'
 import './Success.css'
+import './Update.css'
 
 import { Route, Routes } from "react-router-dom";
 
@@ -23,6 +24,7 @@ import Login from './Login';
 import Findid from './Findid';
 import Findpw from './Findpw';
 import Success from './Success';
+import Update from './Update';
 
 function User({ cartItems, onDelete, deleteOrder, increQuantity, decreQuantity, checkedItems, orderItems, allOrder, selectedOrder, allCheck, checkChange }) {
     return (
@@ -48,6 +50,7 @@ function User({ cartItems, onDelete, deleteOrder, increQuantity, decreQuantity, 
             <Route path="/login" element={<Login />} />
             <Route path="/findID" element={<Findid />} />
             <Route path="/findPW" element={<Findpw />} />
+            <Route path="/update" element={<Update />} />
             <Route path="/success" element={<Success />} />
         </Routes >
     )

@@ -8,7 +8,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.mapperInterface.UserMapper;
-
 import com.team119.petmily.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -64,6 +66,7 @@ PasswordEncoder passwordEncoder;
 	            .user_name(dto.getUser_name())
 	            .user_email(dto.getUser_email())
 	            .user_phone(dto.getUser_phone())
+	            .user_birthday(dto.getUser_birthday())
 	            .zipcode(dto.getZipcode())
 	            .addr(dto.getAddr())
 	            .addr_detail(dto.getAddr_detail())
@@ -77,6 +80,8 @@ PasswordEncoder passwordEncoder;
 	    }
 	    return result;
 	}	
+	
+	
 	
 	@PostMapping(value = "/Signup")
 	public ResponseEntity<String> signup(@RequestBody UserDTO dto) {
@@ -148,27 +153,20 @@ PasswordEncoder passwordEncoder;
 	        // 해당 사용자를 찾을 수 없을 때 처리
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	    }
+	
 	}
 	
-	@GetMapping(value="/detail")
-	public ResponseEntity<?> userdetail(UserDTO dto) {
-		// => dto 확인 : parameter와 같은 이름의 멤버변수가 있으면 자동으로
-		System.out.println("** detail dto => " + dto);
-		ResponseEntity<?> result = null;
-		
-		// => Service 처리
-		dto = service.selectOne(dto);
-		
-		// => 출력 Data 유/무 구별
-		if(dto != null) {
-			result = ResponseEntity.status(HttpStatus.OK).body(dto);
-			log.info("** detail HttpStatus.OK => "+HttpStatus.OK);
+	@DeleteMapping("/selfDelete/{user_id}")
+	public ResponseEntity<?> delete(@PathVariable("user_id") String userId, UserDTO dto) {
+		dto.setUser_id(userId);
+		if (service.delete(dto) > 0) {
+			log.info("** delete HttpStatus.OK => " + HttpStatus.OK);
+			return new ResponseEntity<String>("** 삭제 성공 **", HttpStatus.OK);
 		} else {
-			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("출력할 유저의 자료가 없습니다"); 			
-			log.info("** detail HttpStatus.BAD_GATEWAY => "+HttpStatus.BAD_GATEWAY); // 502
+			log.info("** delete HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
+			return new ResponseEntity<String>("** 삭제 실패, Data_NotFound **", HttpStatus.BAD_GATEWAY);
 		}
-		return result;
 	}
-
+	
 	
 }

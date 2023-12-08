@@ -1,0 +1,158 @@
+.Signup * {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.Signup {
+    /* font-size: 14px; */
+    margin: auto;
+}
+
+.Signup h1 {
+    margin: 60px auto;
+    text-align: center;
+}
+
+.emessage {
+    color: red;
+    font-size: x-small;
+    font-style: italic;
+    margin-left: 10px;
+}
+
+.sign_up {
+    width: 700px;
+    padding: 0 40px 60px 40px;
+    box-sizing: border-box;
+    margin: auto;
+    text-align: center;
+
+}
+
+.Signup>select {
+    width: 50px;
+    padding: 10px;
+    display: block;
+    border: solid 1px silver;
+    background-color: #F8F8F8;
+}
+
+/* .sign_up>h1 {
+    color: rgb(25, 50, 100);
+    margin: 10px 0;
+    padding: 30px 0;
+    text-align: center;
+} */
+
+.signupbox {
+    width: 100%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: solid 1px silver;
+    background-color: #F8F8F8;
+    margin-left: 10px;
+}
+
+.zipcodebox {
+    width: 50%;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: solid 1px silver;
+    background-color: #F8F8F8;
+    margin-left: 10px;
+}
+
+.zipcodebtn {
+    width: 200px;
+    height: 48px;
+    color: #ffffff;
+    font-size: 16px;
+    background-color: rgb(25, 50, 100);
+    border-radius: 6px;
+    display: inline-block;
+    text-align: center;
+    border: solid 1px silver;
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+
+
+.birth {
+    display: inline-block;
+    width: 150px;
+    height: 48px;
+    border-radius: 6px;
+    /* margin-bottom: 10px; */
+    margin-left: 10px;
+    border: solid 1px silver;
+}
+
+.birthbox {
+    width: 100%;
+    height: 48px;
+    /* margin-bottom: 10px; */
+}
+
+.numberbox {
+    width: 100%;
+    height: 48px;
+    margin-bottom: 10px;
+}
+
+.signupbox::placeholder {
+    color: #D2D2D2;
+}
+
+.zipcodebox::placeholder {
+    color: #D2D2D2;
+}
+
+.idbox::placeholder {
+    color: #D2D2D2;
+}
+
+.signupBtn {
+    width: 500px;
+    height: 48px;
+    color: #ffffff;
+    font-size: 16px;
+    background-color: rgb(25, 50, 100);
+    border-radius: 6px;
+    display: inline-block;
+    text-align: center;
+    border: solid 1px silver;
+    margin-top: 10px;
+}
+
+.number {
+    width: 150px;
+    height: 48px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    /* margin-bottom: 10px; */
+    border-radius: 6px;
+    background-color: #F8F8F8;
+    margin-left: 10px;
+    border: solid 1px silver;
+}
+
+.table {
+    text-align: left;
+    font-style: bold;
+}
+
+.Signup>input {
+    text-align: center;
+}
+
+.Signup select option[value=""][disabled] {
+    display: none;
+}
