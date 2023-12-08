@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-
 import detailImage from "../../assets/Images/productDetail1.jpg";
 import review_image1 from "../../assets/Images/products/food_image1.jpg";
 import review_image2 from "../../assets/Images/products/food_image2.jpg";

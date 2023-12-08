@@ -8,7 +8,7 @@ import com.team119.petmily.pagination.SearchCriteria;
 public interface CartMapper {
 
 	// selectList
-	List<CartDTO> selectList();
+	List<CartDTO> selectList(String user_id);
 	
 	// selectOne: Detail
 	CartDTO selectOne(CartDTO vo);
@@ -20,10 +20,12 @@ public interface CartMapper {
 //	int insert(CartDTO vo);
 //	Integer getQuantity(String user_id, int product_id);
 	void insert(String user_id, int product_id, int product_cnt);
-	int insertP(int product_id);
+	void insertP(String user_id, int product_id);
 		
 	// update
 	int update(CartDTO vo);
+	void upCnt(String user_id, int product_id);
+	void downCnt(String user_id, int product_id);
 
 	// ** Board_SrarchCri_Paging
 	// => Cri + 검색조건

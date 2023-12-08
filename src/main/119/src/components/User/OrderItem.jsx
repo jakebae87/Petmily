@@ -8,20 +8,22 @@ const OrderItem = ({ orderItems, deleteOrder }) => {
         <tr>
           <td>
             <div className="orderImage">
-              <img src={item.img} alt="product1" />
+              <img src={process.env.PUBLIC_URL +`/Images/products/${item.product_mainimagepath}`}
+                alt={item.product_mainimagepath}
+              />
             </div>
           </td>
           <td>
-            <span>{item.title}</span>
+            <span>{item.product_name}</span>
           </td>
           <td>
-            <span>{item.price.toLocaleString()}</span>
+            <span>{item.product_price ? `${item.product_price.toLocaleString()}원` : "가격 정보 없음"}</span>
           </td>
           <td>
-            <span>{item.quantity}</span>
+            <span>{item.product_cnt}</span>
           </td>
           <td>
-            <span>{(item.price * item.quantity).toLocaleString()}</span>
+            <span>{(item.product_price * item.product_cnt) ? `${(item.product_price * item.product_cnt).toLocaleString()}원` : "가격 정보 없음"}</span>
           </td>
           <td>
             <button

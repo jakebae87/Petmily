@@ -11,6 +11,7 @@
 		select c.user_id, c.product_id, c.product_cnt, p.product_name, p.product_price, p.product_mainimagepath
 		from cart c inner Join product p
 		on c.product_id = p.product_id
+		where c.user_id=#{user_id}
 	</select>
 	
 	<!-- 2. selectOne: Detail -->
@@ -40,11 +41,7 @@
 
     <insert id="insertP">
         INSERT INTO cart (user_id, product_id)
-		(
-		select user_id, product_id
-		from user cross join product
-		where product_id=#{product_id}
-		)
+		VALUES (#{param1}, #{param2})
 		ON DUPLICATE KEY UPDATE product_cnt = product_cnt + 1
     </insert>
 	
@@ -53,6 +50,14 @@
 		update cart set
 		user_id=#{user_id}, product_id=#{product_id}, product_cnt=#{product_cnt}
 		where user_id = #{user_id} and product_id = #{product_id}
+	</update>
+	<update id="upCnt">
+		update cart set product_cnt=product_cnt+1
+		where user_id = #{param1} and product_id = #{param2}
+	</update>
+	<update id="downCnt">
+		update cart set product_cnt=product_cnt-1
+		where user_id = #{param1} and product_id = #{param2}
 	</update>
 	
 	<!-- ** Board_SearchCri_Paging 

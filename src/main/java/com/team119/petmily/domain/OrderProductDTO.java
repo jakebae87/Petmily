@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderProductDTO {
+public class OrderProductDTO extends ProductDTO {
 	private int order_key;
 	private String user_id;
 	private int order_total_price;

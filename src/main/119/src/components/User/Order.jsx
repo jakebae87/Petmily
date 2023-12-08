@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import OrderItem from "./OrderItem";
-import axios from "axios";
+import DaumPostcode from 'react-daum-postcode';
 
 export default function Order({ orderItems, deleteOrder }) {
   const totalPrice = () => {
     return orderItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + item.product_price * item.product_cnt,
       0
     );
   };
 
-  // SpringBoot test
-  const [userData, setuserData] = useState([]);
+  // 로그인한 회원정보
+  const [loginUser, setLoginUser] = useState([]);
   // true: 주문자 정보와 동일, false: 새로운 배송지
   const [useSameAddress, setUseSameAddress] = useState(true);
   // 회원이름
@@ -25,21 +25,57 @@ export default function Order({ orderItems, deleteOrder }) {
   // 회원상세주소
   const [orderAddrD, setOrderAddrD] = useState("");
 
-  // 회원 리스트 불러오기
+  // 회원 정보 불러오기
   useEffect(() => {
-    axios
-      .get("/rscart/userList")
-      .then((response) => {
-        setuserData(response.data);
-        console.log(`** checkdata 서버연결 성공 =>`, response.data);
-      })
-      .catch((err) => {
-        alert(`** checkdata 서버연결 실패 => ${err.message}`);
-      });
+    const userFromSession = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+    if (userFromSession) {
+      setLoginUser(userFromSession);
+      setOrderName(userFromSession.user_name);
+      setOrderPhone(userFromSession.user_phone);
+      setOrderZipcode(userFromSession.zipcode);
+      setOrderAddr(userFromSession.addr);
+      setOrderAddrD(userFromSession.addr_detail);
+    } else {
+      alert("로그인하세요");
+    }
   }, []);
 
-  // 선택된 사용자 정보
-  const selectedUser = userData.length > 0 ? userData[0] : {};
+  //주소 api
+  const [isPostOpen, setIsPostOpen] = useState(false);
+  // const [isAddress, setIsAddress] = useState("");
+  // const [isZoneCode, setIsZoneCode] = useState();
+
+  const handleComplete = (data) => {
+      let fullAddress = data.address;
+      let extraAddress = "";
+
+      if (data.addressType === "R") {
+          if (data.bname !== "") {
+              extraAddress += data.bname;
+          }
+          if (data.buildingName !== "") {
+              extraAddress +=
+                  extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+          }
+          fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+      }
+
+      setOrderZipcode(data.zonecode);
+      setOrderAddr(fullAddress); // isAddress state 업데이트
+      setOrderAddrD(orderAddrD);
+      setIsPostOpen(false);
+  };
+  const togglePost = (e) => {
+      e.preventDefault();
+      setIsPostOpen(!isPostOpen);
+  };
+
+  const postcodeComponent = useMemo(() => (
+      <div>
+          <DaumPostcode onComplete={handleComplete} autoClose={true} />
+      </div>
+  ), [handleComplete]);
 
   return (
     <div>
@@ -127,7 +163,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         type="text"
                         id="name"
                         name="name"
-                        value={selectedUser.user_name}
+                        value={loginUser.user_name}
                         required
                       />
                     </td>
@@ -143,7 +179,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         type="text"
                         id="firstPhoneNumber"
                         name="firstPhoneNumber"
-                        value={selectedUser.user_phone}
+                        value={loginUser.user_phone}
                         size="10"
                       />
                       {/* <input
@@ -185,7 +221,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         <input
                           type="text"
                           name="email_id"
-                          value={selectedUser.user_email}
+                          value={loginUser.user_email}
                           size="20"
                           required
                         />
@@ -233,11 +269,11 @@ export default function Order({ orderItems, deleteOrder }) {
                           checked={useSameAddress}
                           onChange={() => {
                             setUseSameAddress(true);
-                            setOrderName(selectedUser.user_name);
-                            setOrderPhone(selectedUser.user_phone);
-                            setOrderZipcode(selectedUser.zipcode);
-                            setOrderAddr(selectedUser.addr);
-                            setOrderAddrD(selectedUser.addr_detail);
+                            setOrderName(loginUser.user_name);
+                            setOrderPhone(loginUser.user_phone);
+                            setOrderZipcode(loginUser.zipcode);
+                            setOrderAddr(loginUser.addr);
+                            setOrderAddrD(loginUser.addr_detail);
                           }}
                         />
                         &nbsp;
@@ -295,18 +331,26 @@ export default function Order({ orderItems, deleteOrder }) {
                         value={orderZipcode}
                         onChange={(e) => setOrderZipcode(e.target.value)}
                       />
-                      <input
+                      {/* <input
                         type="submit"
                         name="postCodeFind"
                         value="우편번호"
-                      />
+                      /> */}
+                      <button className="postCodeFind" onClick={togglePost}>
+                          {isPostOpen ? '우편번호 닫기' : '우편번호 찾기'}
+                      </button>
+                      {isPostOpen && (
+                          <div>
+                              <DaumPostcode onComplete={handleComplete} autoClose={true} />
+                          </div>
+                      )}
                     </td>
                     <td>
                       <input
                         type="text"
                         id="address"
                         name="address"
-                        size="30"
+                        size="50"
                         value={orderAddr}
                         onChange={(e) => setOrderAddr(e.target.value)}
                         required
@@ -321,7 +365,7 @@ export default function Order({ orderItems, deleteOrder }) {
                         value={orderAddrD}
                         onChange={(e) => setOrderAddrD(e.target.value)}
                       />
-                      나머지주소(선택입력가능)
+                      상세주소
                     </td>
                   </tr>
                   <tr>
@@ -390,38 +434,36 @@ export default function Order({ orderItems, deleteOrder }) {
           <div className="payInfoArea">
             <ul type="square" className="listTitle">
               <li>
-                <h3>결제 예정 금액</h3>
+                <h3>결제 금액 / 방법</h3>
               </li>
             </ul>
             <div>
               <table className="payTable">
                 <thead>
                   <tr>
-                    <th>총 주문금액</th>
-                    <th>총 할인 + 부가결제금액</th>
+                    {/* <th>총 주문금액</th> */}
                     <th>총 결제예정 금액</th>
+                    <th>결제방법</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    {/* <td>
+                      <span>{(totalPrice() + 3000).toLocaleString()}</span>원
+                    </td> */}
                     <td>
                       <span>{(totalPrice() + 3000).toLocaleString()}</span>원
                     </td>
                     <td>
-                      - <span>0</span>원
-                    </td>
-                    <td>
-                      <span>{(totalPrice() + 3000).toLocaleString()}</span>원
+                      <select id="paymethod" name="paymethod">
+                        <option>카드</option>
+                        <option>계좌이체</option>
+                      </select>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-          </div>
-
-          <div className="payMethod">
-            결제방법
-            <div></div>
           </div>
 
           <div className="payArea">
