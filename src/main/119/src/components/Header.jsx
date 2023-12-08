@@ -6,7 +6,22 @@ import PetmilyLogo from '../assets/Images/Petmily_logo.png';
 import glassLogo from '../assets/Images/magnifying-glass-30.png';
 
 function Header() {
+
+
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : ''; // 유저 이름 변수
+
+
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("loggedInUser");
+        window.location.reload(); // 로그아웃 후 페이지 새로고침
+    };
+
     const navigate = useNavigate();
+
 
     const handleEnterPress = (e) => {
         navigate("/products/searchedproducts");
@@ -37,10 +52,21 @@ function Header() {
                 </div>
 
                 <div className="userMenu">
-                    <Link to="user/login">로그인</Link>
-                    <Link to="user/signup">회원가입</Link>
-                    <Link to="user/mypage">마이페이지</Link>
-                    <Link to="user/cart">장바구니</Link>
+                    {isLoggedIn ? (
+                        <>
+                            <span>{userName}님</span>
+                            <Link to="/" onClick={handleLogout}>
+                                로그아웃
+                            </Link>
+                            <Link to="/user/mypage">마이페이지</Link>
+                            <Link to="/user/cart">장바구니</Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/user/login">로그인</Link>
+                            <Link to="/user/signup">회원가입</Link>
+                        </>
+                    )}
                 </div>
             </div>
 

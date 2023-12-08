@@ -24,7 +24,7 @@ import Findid from './Findid';
 import Findpw from './Findpw';
 import Success from './Success';
 
-function User({ cartItems, onDelete, deleteOrder, increQuantity, decreQuantity, checkedItems, orderItems, allOrder, selectedOrder, allCheck, checkChange }) {
+function User({ cartItems, onDelete, deleteOrder, increQuantity, decreQuantity, checkedItems, orderItems, allOrder, selectedOrder, allCheck, checkChange, calcProductPrice }) {
     return (
         <Routes>
             <Route path="/cart" element={<Cart
@@ -38,11 +38,12 @@ function User({ cartItems, onDelete, deleteOrder, increQuantity, decreQuantity, 
                 selectedOrder={selectedOrder}
                 allCheck={allCheck}
                 checkChange={checkChange}
+                calcProductPrice={calcProductPrice}
             />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/myprofile" element={<Profile />} />
             <Route path="/mypage/manageboard" element={<ManageBoard />} />
-            <Route path="/order" element={<Order cartItems={cartItems} deleteOrder={deleteOrder} orderItems={orderItems} />} />
+            <Route path="/order" element={<Order cartItems={cartItems} deleteOrder={deleteOrder} orderItems={orderItems} calcProductPrice={calcProductPrice} />} />
             <Route path="/orderlist" element={<OrderList />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />

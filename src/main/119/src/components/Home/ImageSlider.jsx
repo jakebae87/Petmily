@@ -47,7 +47,7 @@ const ImageSlider = () => {
                                 className={`slider-image ${index === currentImageIndex ? 'active' : ''}`}
                                 onClick={() => goToImage(index)}
                             >
-                                <img src={process.env.PUBLIC_URL + `/Images/${product.promotion_image}`} alt={`Slide ${index}`} />
+                                <img src={process.env.PUBLIC_URL + `/Images/promotion/${product.promotion_image}`} alt={`Slide ${index}`} />
                             </div>
                         </Link>
                     ))}

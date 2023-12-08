@@ -24,6 +24,8 @@ import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.service.BoardService;
+import com.team119.petmily.service.ProductService;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -32,6 +34,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class RestBoardController {
 	BoardService boardService;
+	ProductService pservice;
 
 	@GetMapping(value = "/notice/list")
 	public ResponseEntity<?> noticeList(SearchDTO searchDTO) {
@@ -264,6 +267,7 @@ public class RestBoardController {
 		if (boardService.insertReview(dto) > 0) { // Transaction_Test, insert2
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 등록 성공");
 			log.info("HttpStatus.OK => " + HttpStatus.OK);
+			pservice.updateProductRating();
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 등록 실패");
 			log.info("HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);

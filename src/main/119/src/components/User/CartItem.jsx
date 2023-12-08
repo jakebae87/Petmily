@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "axios";
 
 const CartItem = ({
@@ -9,34 +9,47 @@ const CartItem = ({
   checkChange,
   increQuantity,
   decreQuantity,
+  calcProductPrice
 }) => {
-  // SpringBoot test
-  const [Data, setData] = useState([]);
-
-  // 장바구니 리스트 불러오기
-  useEffect(() => {
-    axios
-      .get("/rscart/cartList")
-      .then((response) => {
-        setData(response.data);
-        console.log(`** checkdata 서버연결 성공 =>`, response.data);
-      })
-      .catch((err) => {
-        alert(`** checkdata 서버연결 실패 => ${err.message}`);
-      });
-  }, []);
 
   // 장바구니 상품 삭제
-  // cartDelete(장바구니 삭제)
   function cDelete(user_id, product_id) {
     let url = "/rscart/cdelete/" + user_id + "/" + product_id;
 
     axios
       .delete(url)
       .then((response) => {
-        alert(response.data);
-        // 페이지 새로고침
-        window.location.reload();
+        // alert(response.data);
+      })
+      .catch((err) => {
+        if (err.response.status) alert(err.response.data);
+        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+      });
+  }
+
+  // cartCntUp(장바구니 수량 +1)
+  function upCnt(product_id) {
+    let url = "/rscart/cartCntUp/" + product_id;
+
+    axios
+      .post(url)
+      .then((response) => {
+        // alert(response.data);
+      })
+      .catch((err) => {
+        if (err.response.status) alert(err.response.data);
+        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+      });
+  }
+
+  // cartCntDown(장바구니 수량 -1)
+  function downCnt(product_id) {
+    let url = "/rscart/cartCntDown/" + product_id;
+
+    axios
+      .post(url)
+      .then((response) => {
+        // alert(response.data);
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);
@@ -79,16 +92,16 @@ const CartItem = ({
   }
 
   console.log("checkedItems =" + checkedItems);
-  
+
   return (
     <tbody>
-      {Data.map((item) => (
+      {cartItems.map((item) => (
         <tr>
           <td>
             <input
               type="checkbox"
-              checked={checkedItems.includes(item.product_id)}
-              onChange={(e) => checkChange(e, item.product_id)}
+              checked={checkedItems.includes(item)}
+              onChange={(e) => checkChange(e, item)}
             />
           </td>
           <td>
@@ -106,7 +119,7 @@ const CartItem = ({
             <span>{item.product_name}</span>
           </td>
           <td>
-            <span>{item.product_price.toLocaleString()}</span>
+            <span>{calcProductPrice(item.product_price, item.promotion_discount).toLocaleString()}</span>
           </td>
           <td>
             <button
@@ -129,7 +142,7 @@ const CartItem = ({
           </td>
           <td>
             <span>
-              {(item.product_price * item.product_cnt).toLocaleString()}
+              {(calcProductPrice(item.product_price, item.promotion_discount) * item.product_cnt).toLocaleString()}
             </span>
           </td>
           <td>

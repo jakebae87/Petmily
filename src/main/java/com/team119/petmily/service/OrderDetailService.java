@@ -3,12 +3,14 @@ package com.team119.petmily.service;
 import java.util.List;
 
 import com.team119.petmily.domain.OrderDetailDTO;
+import com.team119.petmily.domain.OrderProductDTO;
 import com.team119.petmily.pagination.SearchCriteria;
 
 public interface OrderDetailService {
 
 	// ** selectList
 	List<OrderDetailDTO> selectList();
+	List<OrderProductDTO> selectListP(String user_id);
 	
 	// ** selectOne(주문상세내역 항목 선택)
 	OrderDetailDTO selectOne(OrderDetailDTO dto);

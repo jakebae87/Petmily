@@ -34,7 +34,8 @@
 					<td><a onclick="pmpUpdate('${s.promotion_id}')" id="${s.promotion_id}">수정</a></td>
 					<td>${s.promotion_id}</td>
 					<td>${s.promotion_name}</td>
-					<td><img alt="MyImage" src="/resources/uploadImages/${s.promotion_image}" width="60" height="40"></td>
+					<td>${s.promotion_image}</td>
+					<%-- <td><img alt="MyImage" src="/resources/uploadImages/${s.promotion_image}" width="60" height="40"></td> --%>
 					<td><fmt:formatDate value="${s.promotion_start}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatDate value="${s.promotion_end}" pattern="yyyy-MM-dd" /></td>
 					<td>${s.promotion_discount}</td>

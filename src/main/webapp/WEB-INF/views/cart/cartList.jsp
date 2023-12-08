@@ -65,9 +65,9 @@
 				<td colspan="4">장바구니가 비어있습니다</td>
 			</tr>
 		</c:if>
-		<tr>
+		<!-- <tr>
 			<td colspan="4"><input type="submit" id="orderButton" value="주문"></td>
-		</tr>
+		</tr> -->
 	</table>
 	<hr>
 	<div align="center">

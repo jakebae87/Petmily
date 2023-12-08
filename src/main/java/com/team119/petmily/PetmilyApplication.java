@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 @SpringBootApplication
-// Spring Security 제외 시키기 (exclude = { SecurityAutoConfiguration.class })
+(exclude = { SecurityAutoConfiguration.class })
 @MapperScan(value = { "com.team119.petmily.mapperInterface" })
 public class PetmilyApplication {
 

@@ -39,7 +39,7 @@
 .detailThumbnail {
   width: 80px;
   height: 80px;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .detailThumbnail:hover {
@@ -123,7 +123,6 @@
 /* 상품상세페이지 */
 .productDetailPage {
   flex-direction: column;
-  
 }
 
 .productDetailPage ul,
@@ -142,24 +141,47 @@
   display: flex;
   flex: 1;
   background-color: #fff;
-  border-radius: 10px;
-  border: 1px solid;
+  /* border-radius: 10px; */
+  border: 1px solid silver;
 }
 
 .productDetailMenu>li {
   flex: 1;
   text-align: center;
   line-height: 50px;
+  position: relative;
 }
 
 .productDetailMenu>li:not(:first-child) {
-  border-left: 1px solid black;
+  border-left: 1px solid silver;
 }
 
 /* 상품상세페이지 메뉴 밑줄 삭제 */
 .productDetailMenu>li>a {
   text-decoration: none;
   color: black;
+  display: block;
+  transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 적용 */
+}
+
+.productDetailMenu>li.active>a {
+  background-color: rgb(25, 50, 100);
+  color: aliceblue; /* 활성화된 메뉴의 글자색 변경 */
+}
+
+.productDetailTitle h2 span {
+  font-size: 0.8em;
+  color: gray;
+}
+
+.productDetailTitle a {
+  float: right;
+  font-weight: bold;
+  color: gray;
+}
+
+.productDetailTitle a:hover {
+  color: rgb(25, 50, 100);
 }
 
 /* 상품정보 */
@@ -167,163 +189,11 @@
   text-align: center;
 }
 
-.detailImage {
-  margin: 50px 0;
-}
-/* 상품후기 */
-.attr1 {
-  width: 200px;
-}
-
-.attr2,
-.attr3,
-.attr4 {
-  width: 30px;
-}
-
-.reviewList {
-  width: 1120px;
-  margin: auto;
-}
-
-.reviewList table {
-  margin-top: 10px;
-  margin-bottom: 30px;
-  text-align: center;
-  width: 100%;
-  border: 1px solid black;
-  border-collapse: collapse;
-  border-left: 0;
-  border-right: 0;
-  white-space: nowrap;
-}
-
-.reviewList table tr {
-  border-top: 1px solid black;
-}
-
-.reviewList table th {
-  font-size: 24px;
-  padding: 20px;
-}
-
-/* 평점 색상 */
-.fa-solid {
-  color: #f60404;
-}
-
-/* 평점 색상 */
-.fa-regular {
-  color: #fa0000;
-}
-
-.titleBox ul {
-  display: flex;
-}
-
-/* 상품후기 제목 사진 */
-.titleBox ul>li {
-  align-self: left;
-}
-
-/* 상품후기 상품명과 글제목 */
-.titleBox ul>li+li {
-  align-self: center;
-  margin-left: 30px;
-}
-
-/* 상품후기 사진 */
-.reviewList table tr td div img {
-  width: 100px;
-  height: 100px;
-  border: 1px outset;
-}
-
-/* 상품후기 사진 hover effect */
-.reviewList table tr td div img:hover {
-  transform: scale(1.4);
-}
-
-/* 제목 왼쪽 정렬 */
-.reviewList table tr td:nth-of-type(1) {
-  text-align: left;
-}
-
-.reviewList table tr td {
-  padding: 20px;
-}
-
-/* 상품 Q&A */
-.qaList {
-  width: 1120px;
-  margin: auto;
-}
-
-.qaList table {
-  margin-top: 10px;
-  margin-bottom: 30px;
-  text-align: center;
-  width: 100%;
-  border: 1px solid black;
-  border-collapse: collapse;
-  border-left: 0;
-  border-right: 0;
-  white-space: nowrap;
-}
-
-.qaList table tr {
-  border-top: 1px solid black;
-}
-
-.qaList table th {
-  font-size: 24px;
-  padding: 20px;
-}
-
-.qaList a {
-  color: black;
-}
-
-.titleBox ul {
-  display: flex;
-}
-
-/* 상품후기 제목 사진 */
-.titleBox ul>li {
-  align-self: left;
-}
-
-/* 상품후기 상품명과 글제목 */
-.titleBox ul>li+li {
-  align-self: center;
-  margin-left: 30px;
-}
-
-/* 상품후기 사진 */
-.qaList table tr td div img {
-  width: 100px;
-  height: 100px;
-  border: 1px outset;
-}
-
-/* 상품후기 사진 hover effect */
-.qaList table tr td div img:hover {
-  transform: scale(1.4);
-}
-
-/* 제목 왼쪽 정렬 */
-.qaList table tr td:nth-of-type(1) {
-  text-align: left;
-}
-
-.qaList table tr td {
-  padding: 20px;
-}
-
-/* 구매안내 */
-/* 반품/교환정보 제목*/
-.returnTitle {
-  margin: 20px 0;
+.detailImage,
+.productReview,
+.productQA,
+.buyGuide {
+  margin: 25px 0;
 }
 
 /* 반품/교환정보 */
@@ -335,6 +205,7 @@
   text-decoration: none;
   border-bottom: 1px solid gray;
 }
+
 .returnInfoTable th,
 .returnInfoTable td,
 .sellerTable th,
@@ -348,6 +219,7 @@
   font-weight: normal;
   background-color: rgba(0, 0, 0, 0.1);
 }
+
 .returnInfoTable td,
 .sellerTable td {
   padding: 14px 10px 14px 20px;

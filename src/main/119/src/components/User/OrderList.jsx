@@ -1,10 +1,22 @@
-import React from "react";
-
-// 이미지
-import product1 from "../../assets/Images/product1.jpg";
-import product2 from "../../assets/Images/products/clothes_dog.jpg";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function OrderList() {
+
+  const [orderLists, setOrderLists] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/rscart/orderproductList")
+      .then((response) => {
+        setOrderLists(response.data);
+        //console.log(`** checkdata 서버연결 성공 =>`, response.data);
+      })
+      .catch((err) => {
+        alert(`** checkdata 서버연결 실패 => ${err.message}`);
+      });
+  }, []);
+
   return (
     <div className="OrderList">
       <div className="orderListtitleArea">
@@ -19,13 +31,12 @@ export default function OrderList() {
         <div>
           <table className="orderListInfo">
             <colgroup>
-              <col style={{ width: 100 }} />
-              <col style={{ width: 180 }} />
-              <col style={{ width: "auto" }} />
               <col style={{ width: 150 }} />
-              <col style={{ width: 120 }} />
-              <col style={{ width: 130 }} />
-              <col style={{ width: 130 }} />
+              <col style={{ width: 200 }} />
+              <col style={{ width: "auto" }} />
+              <col style={{ width: 170 }} />
+              <col style={{ width: 140 }} />
+              <col style={{ width: 150 }} />
             </colgroup>
             <thead>
               <tr>
@@ -39,62 +50,52 @@ export default function OrderList() {
                 <th scope="col">수량</th>
                 <th scope="col">상품구매금액</th>
                 <th scope="col">주문처리상태</th>
-                <th scope="col">취소/교환/반품</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <span className="orderDate">230526</span><br/>
-                  <span className="orderNumber">(13135)</span>
-                </td>
-                <td>
-                  <div className="orderListImage">
-                    <img src={product1} alt="" />
-                  </div>
-                </td>
-                <td>
-                  <span className="orderProduct">강아지 사료</span>
-                </td>
-                <td>
-                  <span className="orderQuantity">2</span>
-                </td>
-                <td>
-                  <span className="orderPrice">71,000원</span>
-                </td>
-                <td>
-                  <span className="orderState">배송완료</span>
-                </td>
-                <td>
-                  <span className="orderCancel">-</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span className="orderDate">230623</span><br/>
-                  <span className="orderNumber">(14536)</span>
-                </td>
-                <td>
-                  <div className="orderListImage">
-                    <img src={product2} alt="" />
-                  </div>
-                </td>
-                <td>
-                  <span className="orderProduct">강아지 옷</span>
-                </td>
-                <td>
-                  <span className="orderQuantity">3</span>
-                </td>
-                <td>
-                  <span className="orderPrice">60,000원</span>
-                </td>
-                <td>
-                  <span className="orderState">배송완료</span>
-                </td>
-                <td>
-                  <span className="orderCancel">-</span>
-                </td>
-              </tr>
+              {orderLists.map((item) => (
+                <tr>
+                  <td>
+                    <span className="orderDate">
+                      {new Date(item.order_date)
+                        .toLocaleDateString("ko-KR", {
+                          year: "2-digit",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })
+                        .replace(/\./g, "")
+                        .replace(/\s/g, "")}
+                    </span>
+                    <br />
+                    <span className="orderNumber">({item.order_key})</span>
+                  </td>
+                  <td>
+                    <div className="orderListImage">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/Images/products/${item.product_mainimagepath}`
+                        }
+                        alt={item.product_mainimagepath}
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <span className="orderProduct">{item.product_name}</span>
+                  </td>
+                  <td>
+                    <span className="orderQuantity">{item.product_cnt}</span>
+                  </td>
+                  <td>
+                    <span className="orderPrice">
+                      {(item.product_kind_price * item.product_cnt).toLocaleString()}원
+                    </span>
+                  </td>
+                  <td>
+                    <span className="orderState">{item.delivery_status}</span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
