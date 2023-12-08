@@ -9,6 +9,7 @@ const CartItem = ({
   checkChange,
   increQuantity,
   decreQuantity,
+  calcProductPrice
 }) => {
 
   // 장바구니 상품 삭제
@@ -91,7 +92,7 @@ const CartItem = ({
   }
 
   console.log("checkedItems =" + checkedItems);
-  
+
   return (
     <tbody>
       {cartItems.map((item) => (
@@ -118,7 +119,7 @@ const CartItem = ({
             <span>{item.product_name}</span>
           </td>
           <td>
-            <span>{item.product_price.toLocaleString()}</span>
+            <span>{calcProductPrice(item.product_price, item.promotion_discount).toLocaleString()}</span>
           </td>
           <td>
             <button
@@ -141,7 +142,7 @@ const CartItem = ({
           </td>
           <td>
             <span>
-              {(item.product_price * item.product_cnt).toLocaleString()}
+              {(calcProductPrice(item.product_price, item.promotion_discount) * item.product_cnt).toLocaleString()}
             </span>
           </td>
           <td>

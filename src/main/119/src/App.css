@@ -8,7 +8,7 @@
 
 /* ==================== global setting ==================== */
 html,
-body {
+body * {
   font-family: 'Pretendard-Regular';
   /* same as above font info */
   /* width: 100%;
@@ -18,7 +18,7 @@ body {
 .Header,
 .Main,
 .Footer {
-  min-width: 1200px;
+  min-width: 1400px;
 }
 
 /* ==================== category title ==================== */

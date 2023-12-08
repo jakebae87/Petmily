@@ -33,7 +33,7 @@ import lombok.extern.log4j.Log4j2;
 public class RestUserController {
 	UserService service;
 	UserMapper mapper;
-PasswordEncoder passwordEncoder;
+	PasswordEncoder passwordEncoder;
 	
 
 

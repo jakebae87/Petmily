@@ -8,10 +8,11 @@
 <!-- 		select * from cart order by user_id asc -->
 <!-- 	</select> -->
 	<select id="selectList" resultType="com.team119.petmily.domain.CartDTO">
-		select c.user_id, c.product_id, c.product_cnt, p.product_name, p.product_price, p.product_mainimagepath
-		from cart c inner Join product p
-		on c.product_id = p.product_id
-		where c.user_id=#{user_id}
+		SELECT c.user_id, c.product_id, c.product_cnt, p.product_name, p.product_price, p.product_mainimagepath, pp.promotion_discount
+		FROM cart c
+		INNER JOIN product p ON c.product_id = p.product_id
+		INNER JOIN promotion_product pp ON p.promotion_id = pp.promotion_id
+		WHERE c.user_id = #{user_id}
 	</select>
 	
 	<!-- 2. selectOne: Detail -->

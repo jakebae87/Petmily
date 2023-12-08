@@ -1,12 +1,8 @@
 import { Link, useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
-import detailImage from "../../assets/Images/productDetail1.jpg";
-import review_image1 from "../../assets/Images/products/food_image1.jpg";
-import review_image2 from "../../assets/Images/products/food_image2.jpg";
-import review_image3 from "../../assets/Images/products/food_image3.jpg";
-import review_image4 from "../../assets/Images/products/food_image4.jpg";
-import review_image5 from "../../assets/Images/products/food_image5.jpg";
+
+import Star from "../Community/Star";
 
 function Pagination({ totalPages, currentPage, onPageChange }) {
     const pages = [];
@@ -32,11 +28,18 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
     );
 }
 
-const ProductDetail = ({ addCart }) => {
+const ProductDetail = ({ calcProductPrice, addCart }) => {
     const { id } = useParams();
     const [productDetailData, setProductDetailData] = useState([]);
     const [productImagesData, setProductImagesData] = useState([]);
     const [quantity, setQuantity] = useState(1);
+
+    const date = new Date();
+    const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }).format(date);
 
     const quantityChange = (event) => {
         setQuantity(parseInt(event.target.value, 10));
@@ -63,26 +66,13 @@ const ProductDetail = ({ addCart }) => {
         scrollToAnchor(anchorId);
     };
 
-    const discountedPrice = productDetailData.promotion_discount
-        ? Math.floor(productDetailData.product_price - (productDetailData.product_price * productDetailData.promotion_discount / 100))
-        : null;
+    // 상품 후기
+    const [review, setReview] = useState([]);
 
     // 상품문의
     const [inquiry, setInquiry] = useState([]);
-    const [searchPeriod, setSearchPeriod] = useState("all");
-    const [searchCriteria, setSearchCriteria] = useState("subject");
-    const [searchWord, setSearchWord] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-    const [searchInput, setSearchInput] = useState("");
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        setInquiry([]); // 검색 결과 초기화
-        setSearchPeriod(e.target.searchPeriod.value);
-        setSearchCriteria(e.target.searchCriteria.value);
-        setSearchWord(e.target.searchWord.value); // 검색어 업데이트
-    };
 
     function AnswerCheck(inquiry) {
         if (inquiry.answer_content != null) {
@@ -92,10 +82,16 @@ const ProductDetail = ({ addCart }) => {
         }
     }
 
-    const paginatedData = () => {
+    const paginatedInquiryData = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         return inquiry.slice(startIndex, endIndex);
+    };
+
+    const paginateReviewdData = () => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return review.slice(startIndex, endIndex);
     };
 
     useEffect(() => {
@@ -128,11 +124,62 @@ const ProductDetail = ({ addCart }) => {
             }
         };
 
+        const fetchReviewData = async () => {
+            try {
+                const response = await axios.get(`/rsproduct/review/list/${id}`);
+                setReview(response.data);
+            } catch (error) {
+                alert(`자료가 없습니다.`);
+            }
+        };
         fetchInquiryData();
+        fetchReviewData();
         fetchProductImageData();
         fetchProductData();
 
-    }, [id, searchPeriod, searchCriteria, searchWord]);
+    }, [id]);
+
+    // 스크롤
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [productDetailImgOffset, setProductDetailImgOffset] = useState(0);
+    const [productReviewOffset, setProductReviewOffset] = useState(0);
+    const [productQAOffset, setProductQAOffset] = useState(0);
+    const [buyGuideOffset, setBuyGuideOffset] = useState(0);
+    const productDetailImgRef = useRef(null);
+    const productReviewRef = useRef(null);
+    const productQARef = useRef(null);
+    const buyGuideRef = useRef(null);
+
+    useEffect(() => {
+
+    }, []);
+
+    useEffect(() => {
+        const calculateOffsets = () => {
+            if (productDetailImgRef.current && productReviewRef.current && productQARef.current && buyGuideRef.current) {
+                setProductDetailImgOffset(productDetailImgRef.current.offsetTop - 152);
+                setProductReviewOffset(productReviewRef.current.offsetTop - 152);
+                setProductQAOffset(productQARef.current.offsetTop - 152);
+                setBuyGuideOffset(buyGuideRef.current.offsetTop - 152);
+
+                console.log("Offsets:", productDetailImgOffset, productReviewOffset, productQAOffset, buyGuideOffset);
+            }
+        };
+
+        const handleScroll = () => {
+            setScrollPosition(window.scrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        calculateOffsets();
+        window.addEventListener("resize", calculateOffsets);
+
+        return () => {
+            window.removeEventListener("resize", calculateOffsets);
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [scrollPosition, productDetailImgOffset, productReviewOffset, productQAOffset, buyGuideOffset]);
 
     return (
         <div className="ProductDetail">
@@ -156,7 +203,7 @@ const ProductDetail = ({ addCart }) => {
                     </div>
 
                     <div className="regDate">
-                        상품 등록일 : {productDetailData.product_regdate}
+                        상품 등록일 : {formattedDate}
                     </div>
                 </div>
 
@@ -176,7 +223,7 @@ const ProductDetail = ({ addCart }) => {
                                 {productDetailData.promotion_discount ? (
                                     <p className="productPrice">
                                         <span className="originalPrice">{productDetailData.product_price.toLocaleString()}원</span>
-                                        <span>{discountedPrice.toLocaleString()}원</span>
+                                        <span>{calcProductPrice(productDetailData.product_price, productDetailData.promotion_discount)}원</span>
                                     </p>
                                 ) : (
                                     <p className="productPrice">
@@ -235,28 +282,76 @@ const ProductDetail = ({ addCart }) => {
             <div className="productDetailPage">
                 <div className="productDetailnav">
                     <ul className="productDetailMenu">
-                        <li>
+                        <li className={scrollPosition >= productDetailImgOffset && scrollPosition < productReviewOffset ? 'active' : ''}>
                             <a href="#" onClick={(e) => handleAnchorClick(e, "productDetailImg")}>상품정보</a>
                         </li>
-                        <li>
-                            <a href="#" onClick={(e) => handleAnchorClick(e, "productReview")}>상품후기</a>
+                        <li className={scrollPosition >= productReviewOffset && scrollPosition < productQAOffset ? 'active' : ''}>
+                            <a href="#" onClick={(e) => handleAnchorClick(e, "productReview")}>상품후기({review.length})</a>
                         </li>
-                        <li>
-                            <a href="#" onClick={(e) => handleAnchorClick(e, "productQA")}>상품문의</a>
+                        <li className={scrollPosition >= productQAOffset && scrollPosition < buyGuideOffset ? 'active' : ''}>
+                            <a href="#" onClick={(e) => handleAnchorClick(e, "productQA")}>상품문의({inquiry.length})</a>
                         </li>
-                        <li>
+                        <li className={scrollPosition >= buyGuideOffset ? 'active' : ''}>
                             <a href="#" onClick={(e) => handleAnchorClick(e, "buyGuide")}>구매안내</a>
                         </li>
                     </ul>
                 </div>
 
-                <div id="productDetailImg" className="productDetailImg">
-                    <img src={detailImage} className="detailImage" alt="productDetail1" />
+                <div id="productDetailImg" className="productDetailImg" ref={productDetailImgRef}>
+                    <img src={`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(productDetailData.product_detailimagepath)}`} className="detailImage" alt="productDetail1" />
                 </div>
 
+                <div id="productReview" className="productReview" ref={productReviewRef}>
+                    <div className="productDetailTitle">
+                        <h2>상품후기 <span>({review.length})건</span></h2>
+                        <Link to="/board/reviewWrite">후기작성</Link>
+                    </div>
 
-                <div id="productQA" className="productQA">
-                    <h2>상품문의</h2>
+                    <div className="boardList">
+                        <table>
+                            <colgroup>
+                                <col className="attr1" />
+                                <col className="attr1" />
+                                <col className="attr2" />
+                                <col className="attr3" />
+                                <col className="attr3" />
+                            </colgroup>
+                            <tr>
+                                <th>제목</th>
+                                <th>사진</th>
+                                <th>평점</th>
+                                <th>글쓴이</th>
+                                <th>작성일</th>
+                            </tr>
+
+                            {paginateReviewdData().map((r) =>
+                                <tr key={r.review_id}>
+                                    <td style={{ textAlign: 'center' }}><Link to={`/community/review/${r.review_id}`}>{r.review_title}</Link></td>
+                                    <td><Link to={`/community/review/${r.review_id}`}>
+                                        <img style={{ width: '100px', height: '100px' }} src={process.env.PUBLIC_URL + `/Images/reviews/${r.review_image1}`} alt={r.review_image1} />
+                                    </Link></td>
+                                    <td><Star star={r.review_point} /></td>
+                                    <td>{r.review_writer}</td>
+                                    <td>{r.review_regdate}</td>
+                                </tr>
+                            )}
+
+                        </table>
+
+                        <Pagination
+                            totalPages={Math.ceil(review.length / itemsPerPage)}
+                            currentPage={currentPage}
+                            onPageChange={setCurrentPage}
+                        />
+                    </div>
+                </div>
+
+                <div id="productQA" className="productQA" ref={productQARef}>
+                    <div className="productDetailTitle">
+                        <h2>상품문의 <span>({inquiry.length})건</span></h2>
+                        <Link to="/board/inquiryWrite">문의작성</Link>
+                    </div>
+
                     <div className="boardList">
                         <table>
                             <colgroup>
@@ -272,7 +367,7 @@ const ProductDetail = ({ addCart }) => {
                                 <th>작성일</th>
                             </tr>
                             {/* 데이터 매핑 */}
-                            {paginatedData().map((i) =>
+                            {paginatedInquiryData().map((i) =>
                                 <tr key={i.inquiry_id}>
                                     <td><Link to={`/community/Inquiry/${i.inquiry_id}`}>{i.inquiry_title}</Link></td>
                                     {AnswerCheck(i)}
@@ -288,44 +383,14 @@ const ProductDetail = ({ addCart }) => {
                             currentPage={currentPage}
                             onPageChange={setCurrentPage}
                         />
-                        <div name="search" className="search">
-                            <form onSubmit={handleSearch}>
-                                <div className="searchConditions">
-                                    <div>
-                                        <select name="searchPeriod">
-                                            <option value="all">전체</option>
-                                            <option value="week">일주일</option>
-                                            <option value="month">한달</option>
-                                            <option value="firstQuarter">세달</option>
-                                        </select>
-                                        <select name="searchCriteria">
-                                            <option value="subject">제목</option>
-                                            <option value="content">내용</option>
-                                            <option value="writer">글쓴이</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="searchInput">
-                                    <div>
-                                        <input
-                                            className="searchWord"
-                                            name="searchWord"
-                                            type="text"
-                                            value={searchInput}
-                                            onChange={(e) => setSearchInput(e.target.value)}
-                                        />
-                                        <input type="submit" value="검색" />
-                                    </div>
-                                    <div className="board_write">
-                                        <Link to="/board/inquiryWrite">글쓰기</Link>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
 
-                <div id="buyGuide" className="buyGuide">
+                <div id="buyGuide" className="buyGuide" ref={buyGuideRef}>
+                    <div className="productReviewTitle">
+                        <h2>구매안내</h2>
+                    </div>
+
                     <div className="buyGuide">
                         <div className="returnInfo">
                             <h2 className="returnTitle">반품/교환 정보</h2>
@@ -353,7 +418,7 @@ const ProductDetail = ({ addCart }) => {
                                 </tbody>
                             </table>
 
-                            <h2 className="returnTitle">반품/교환 기준</h2>
+                            <h2>반품/교환 기준</h2>
                             <div className="returnStandard">
                                 <p className="returnStandardTitle">
                                     상품 수령 후 7일 이내에 신청하실 수 있습니다. 단, 제품이

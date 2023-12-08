@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import ProductItem from "./ProductItem";
 
-function DiscountedProducts({ addCart }) {
+function DiscountedProducts({ calcProductPrice, sortProducts, addCart }) {
     const [discountedProductData, setDiscountedProductData] = useState([]);
 
     useEffect(() => {
@@ -16,7 +16,7 @@ function DiscountedProducts({ addCart }) {
                 alert(`** discountedProductList 서버연결 실패 => ${err.message}`);
             });
 
-            handleSort("newest");
+        handleSort("newest");
     }, []);
 
     // 페이지네이션
@@ -32,24 +32,11 @@ function DiscountedProducts({ addCart }) {
     // 정렬
     const [sortOption, setSortOption] = useState("default");
 
-    const sortProducts = (products, option) => {
-        switch (option) {
-          case "highToLow":
-            return products.slice().sort((a, b) => b.product_price - a.product_price);
-          case "lowToHigh":
-            return products.slice().sort((a, b) => a.product_price - b.product_price);
-          case "newest":
-            return products.slice().sort((a, b) => new Date(b.product_created) - new Date(a.product_created));
-          default:
-            return products;
-        }
-    };
-    
     const handleSort = (option) => {
         setSortOption(option);
         setCurrentPage(1); // 페이지를 처음으로 리셋
     };
-    
+
     const currentItems = sortProducts(discountedProductData, sortOption).slice(indexOfFirstItem, indexOfLastItem);
 
     return (
@@ -60,13 +47,14 @@ function DiscountedProducts({ addCart }) {
             <hr />
 
             <div className="sortButtons">
-                <button className={sortOption === "newest" ? "active" : ""} onClick={() => handleSort("newest")}>등록일순</button>
+                <button className={sortOption === "newest" ? "active" : ""} onClick={() => handleSort("newest")}>최신 등록일순</button>
                 <button className={sortOption === "highToLow" ? "active" : ""} onClick={() => handleSort("highToLow")}>가격 높은순</button>
                 <button className={sortOption === "lowToHigh" ? "active" : ""} onClick={() => handleSort("lowToHigh")}>가격 낮은순</button>
+                <button className={sortOption === "HighAvgStar" ? "active" : ""} onClick={() => handleSort("HighAvgStar")}>평점 높은순</button>
             </div>
 
             <div className="productList">
-                {currentItems.map((item) => (<ProductItem key={item.id} it={item} addCart={addCart} />))}
+                {currentItems.map((item) => (<ProductItem key={item.id} it={item} calcProductPrice={calcProductPrice} addCart={addCart} />))}
             </div>
 
             {/* 페이지네이션 컴포넌트 */}

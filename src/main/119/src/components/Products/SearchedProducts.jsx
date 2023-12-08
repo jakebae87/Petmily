@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import ProductItem from "./ProductItem";
 
-function SearchedProducts({ addCart }) {
+function SearchedProducts({ calcProductPrice, addCart }) {
     const [searchedData, setSearchedData] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams("");
     const search = searchParams.get('search');
@@ -28,7 +28,7 @@ function SearchedProducts({ addCart }) {
             <hr />
 
             <div className="productList">
-                {searchedData.map((item) => (<ProductItem key={item.id} it={item} addCart={addCart} />))}
+                {searchedData.map((item) => (<ProductItem key={item.id} it={item} calcProductPrice={calcProductPrice} addCart={addCart} />))}
             </div>
         </div>
     );

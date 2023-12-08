@@ -14,6 +14,7 @@ import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ProductImageDTO;
 import com.team119.petmily.domain.PromotionProductDTO;
+import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.service.EventService;
 import com.team119.petmily.service.ProductImageService;
@@ -114,6 +115,23 @@ public class RestProductController {
         return new ResponseEntity<>(eventList, HttpStatus.OK);
     }
 	
+	@GetMapping("/review/list/{id}")
+	public ResponseEntity<?> pReviewList(@PathVariable("id") int id) {
+		ResponseEntity<?> result = null;
+
+		List<ReviewDTO> list = pservice.pReviewList(id);
+				
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Review List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Review List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+	
 	@GetMapping("/inquiry/list/{id}")
 	public ResponseEntity<?> pinquiryList(@PathVariable("id") int id) {
 		ResponseEntity<?> result = null;
@@ -130,23 +148,6 @@ public class RestProductController {
 
 		return result;
 	}
-	
-//	@GetMapping(value = "/inquiry/list")
-//	public ResponseEntity<?> productinquiryList(SearchDTO searchDTO) {
-//		ResponseEntity<?> result = null;
-//
-//		List<InquiryDTO> list = pservice.productinquiryList(searchDTO);
-//				
-//		if (list != null) {
-//			result = ResponseEntity.status(HttpStatus.OK).body(list);
-//			log.info("Inquiry List HttpStatus => " + HttpStatus.OK);
-//		} else {
-//			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-//			log.info("Inquiry List HttpStatus => " + HttpStatus.BAD_GATEWAY);
-//		}
-//
-//		return result;
-//	}
 }
 
 

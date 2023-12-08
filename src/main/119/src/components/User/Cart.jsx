@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 
-export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder }) {
+export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder, calcProductPrice }) {
   // 체크된 상품 가격
   const totalPrice = () => {
     const selectedTotalPrice = checkedItems.reduce((total, product) => {
       const selectedItem = cartItems.find((cart) => cart === product);
       if (selectedItem) {
-        return total + selectedItem.product_price * selectedItem.product_cnt;
+        return total + calcProductPrice(selectedItem.product_price, selectedItem.promotion_discount) * selectedItem.product_cnt;
       }
       return total;
     }, 0);
@@ -69,6 +69,7 @@ export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity
               checkedItems={checkedItems}
               increQuantity={increQuantity}
               decreQuantity={decreQuantity}
+              calcProductPrice={calcProductPrice}
             />
             <tfoot>
               <tr>

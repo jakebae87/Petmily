@@ -31,7 +31,8 @@
 					<td><a onclick="piUpdate('${s.pimage_id}')" id="${s.pimage_id}">수정</a></td>
 					<td>${s.pimage_id}</td>
 					<td>${s.product_id}</td>
-					<td><img alt="MyImage" src="/resources/uploadImages/${s.product_imagepath}" width="60" height="40"></td>
+					<td>${s.product_imagepath}</td>
+					<%-- <td><img alt="MyImage" src="/resources/uploadImages/${s.product_imagepath}" width="60" height="40"></td> --%>
 					<td>${s.product_value1}</td>
 				</tr>
 			</c:forEach>
