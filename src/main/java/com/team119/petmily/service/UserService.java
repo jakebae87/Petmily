@@ -21,7 +21,6 @@ public interface UserService {
 
 	// ** selectOne
 	UserDTO selectOne(UserDTO dto);
-
 	
 	
 	// ** insert

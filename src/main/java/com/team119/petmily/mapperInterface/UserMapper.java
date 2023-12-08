@@ -22,7 +22,7 @@ public interface UserMapper {
 
    //2. selectOne: Detail
    UserDTO selectOne(UserDTO vo);
-
+   
    //3. insert: Join
    int insert(UserDTO vo);
 

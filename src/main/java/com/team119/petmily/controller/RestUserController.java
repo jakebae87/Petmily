@@ -149,5 +149,25 @@ PasswordEncoder passwordEncoder;
 	    }
 	}
 	
+	@GetMapping(value="/detail")
+	public ResponseEntity<?> userdetail(UserDTO dto) {
+		// => dto 확인 : parameter와 같은 이름의 멤버변수가 있으면 자동으로
+		System.out.println("** detail dto => " + dto);
+		ResponseEntity<?> result = null;
+		
+		// => Service 처리
+		dto = service.selectOne(dto);
+		
+		// => 출력 Data 유/무 구별
+		if(dto != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(dto);
+			log.info("** detail HttpStatus.OK => "+HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("출력할 유저의 자료가 없습니다"); 			
+			log.info("** detail HttpStatus.BAD_GATEWAY => "+HttpStatus.BAD_GATEWAY); // 502
+		}
+		return result;
+	}
+
 	
 }

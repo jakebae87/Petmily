@@ -17,7 +17,7 @@ function Header() {
 
     const handleLogout = () => {
         sessionStorage.removeItem("loggedInUser");
-        window.location.reload(); // 로그아웃 후 페이지 새로고침
+        navigate("/");
     };
 
     const navigate = useNavigate();

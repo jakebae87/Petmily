@@ -1,39 +1,48 @@
 import React from "react";
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 export default function Profile() {
+
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get('/rsuser/detail');
+        setUserData(response.data); // 받아온 데이터로 상태 업데이트
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile(); // 프로필 정보 가져오는 함수 호출
+
+  }, []);
+
+
   return (
     <div className="Profile">
       <div class="profile_form">
         <h1>회원정보</h1>
-
-        <form action="#" id="profileForm">
+        <form id="profileForm">
           <div>
             <table class="profileTable">
               <tbody>
                 <tr>
                   <th>이름</th>
                   <td>
-                    <span class="profile">김펫밀리</span>
+                    <input class="profile" value={userData.user_name}></input>
                   </td>
                 </tr>
                 <tr>
                   <th>아이디</th>
                   <td>
-                    <span class="profile">Petmily</span>
+                    <span class="profile">{userData.id}</span>
                   </td>
                 </tr>
-                <tr>
-                  <th>비밀번호</th>
-                  <td>
-                    <span class="profile">********</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th>비밀번호 확인</th>
-                  <td>
-                    <span class="profile">********</span>
-                  </td>
-                </tr>
+
                 <tr>
                   <th>이메일</th>
                   <td>
@@ -62,7 +71,7 @@ export default function Profile() {
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <input type="submit" class="editBtn" value="수정하기" />
+                    <Link to="/user/Success"></Link><input type="submit" class="editBtn" value="수정하기" />
                   </td>
                 </tr>
               </tbody>
