@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 const CartItem = ({
-  cartItems,
-  onDelete,
-  addCart,
+  user_id,
+  product_id,
+  product_cnt,
+  product_name,
+  product_price,
+  product_mainimagepath,
   checkedItems,
-  checkChange,
-  increQuantity,
-  decreQuantity,
-}) => {
+  setCartItems,
+  nothing,
+  setNothing,
+  checkChange,}
+) => {
+
+const [quantity , setQuantity] = useState(product_cnt);
+const price = (product_price * quantity);
 
   // 장바구니 상품 삭제
   function cDelete(user_id, product_id) {
@@ -18,7 +25,13 @@ const CartItem = ({
     axios
       .delete(url)
       .then((response) => {
-        // alert(response.data);
+        axios.get("/rscart/cartList")
+        .then((response) => {
+          setCartItems(response.data);
+        })
+        .catch((err) => {
+          alert(`** checkdata 서버연결 실패 => ${err.message}`);
+        });
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);
@@ -30,77 +43,49 @@ const CartItem = ({
   function upCnt(product_id) {
     let url = "/rscart/cartCntUp/" + product_id;
 
+    if(quantity < 100) {
+    setQuantity(quantity+1)
     axios
       .post(url)
       .then((response) => {
-        // alert(response.data);
+        setNothing(nothing+1);
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);
         else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
       });
+      } else {      
+        alert("최대 수량은 100입니다");
+        }
   }
 
   // cartCntDown(장바구니 수량 -1)
   function downCnt(product_id) {
-    let url = "/rscart/cartCntDown/" + product_id;
+      let url = "/rscart/cartCntDown/" + product_id;
+      
+      if(quantity > 1){
+        setQuantity(quantity-1)
+        axios
+        .post(url)
+        .then((response) => {
+          setNothing(nothing+1);
+        })
+        .catch((err) => {
+          if (err.response.status) alert(err.response.data);
+          else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+        });
+      } else {      
+        alert("최소 수량은 1입니다");
+        }
+    }
 
-    axios
-      .post(url)
-      .then((response) => {
-        // alert(response.data);
-      })
-      .catch((err) => {
-        if (err.response.status) alert(err.response.data);
-        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
-      });
-  }
-
-  // cartCntUp(장바구니 수량 +1)
-  function upCnt(product_id) {
-    let url = "/rscart/cartCntUp/" + product_id;
-
-    axios
-      .post(url)
-      .then((response) => {
-        alert(response.data);
-        // 페이지 새로고침
-        window.location.reload();
-      })
-      .catch((err) => {
-        if (err.response.status) alert(err.response.data);
-        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
-      });
-  }
-
-  // cartCntDown(장바구니 수량 -1)
-  function downCnt(product_id) {
-    let url = "/rscart/cartCntDown/" + product_id;
-
-    axios
-      .post(url)
-      .then((response) => {
-        alert(response.data);
-        // 페이지 새로고침
-        window.location.reload();
-      })
-      .catch((err) => {
-        if (err.response.status) alert(err.response.data);
-        else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
-      });
-  }
-
-  console.log("checkedItems =" + checkedItems);
-  
   return (
-    <tbody>
-      {cartItems.map((item) => (
         <tr>
           <td>
             <input
               type="checkbox"
-              checked={checkedItems.includes(item)}
-              onChange={(e) => checkChange(e, item)}
+              checked={checkedItems.includes(product_id)}
+              onChange={(e) => checkChange(e, product_id)}
             />
           </td>
           <td>
@@ -108,32 +93,32 @@ const CartItem = ({
               <img
                 src={
                   process.env.PUBLIC_URL +
-                  `/Images/products/${item.product_mainimagepath}`
+                  `/Images/products/${product_mainimagepath}`
                 }
-                alt={item.product_mainimagepath}
+                alt={product_mainimagepath}
               />
             </div>
           </td>
           <td>
-            <span>{item.product_name}</span>
+            <span>{product_name}</span>
           </td>
           <td>
-            <span>{item.product_price.toLocaleString()}</span>
+            <span>{product_price ? `${product_price.toLocaleString()}` : ""}</span>
           </td>
           <td>
             <button
               className="decreQuantity"
               onClick={() => {
-                downCnt(item.product_id);
+                downCnt(product_id);
               }}
             >
               ▽
             </button>
-            <span>{item.product_cnt}</span>
+            <span>{quantity}</span>
             <button
               className="increQuantity"
               onClick={() => {
-                upCnt(item.product_id);
+                upCnt(product_id);
               }}
             >
               △
@@ -141,7 +126,7 @@ const CartItem = ({
           </td>
           <td>
             <span>
-              {(item.product_price * item.product_cnt).toLocaleString()}
+              {price ? `${price.toLocaleString()}` : ""}
             </span>
           </td>
           <td>
@@ -151,16 +136,14 @@ const CartItem = ({
               name="deleteCartProduct"
               class="textlink"
               onClick={() => {
-                cDelete(item.user_id, item.product_id);
+                cDelete(user_id, product_id);
               }}
             >
               삭제
             </button>
           </td>
         </tr>
-      ))}
-    </tbody>
-  );
+      );
 };
 
 export default CartItem;

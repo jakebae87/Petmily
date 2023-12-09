@@ -24,11 +24,14 @@ import Findid from './Findid';
 import Findpw from './Findpw';
 import Success from './Success';
 
-function User({ cartItems, onDelete, deleteOrder, increQuantity, decreQuantity, checkedItems, orderItems, allOrder, selectedOrder, allCheck, checkChange }) {
+function User({ cartItems, setCartItems, nothing, setNothing, onDelete, deleteOrder, increQuantity, decreQuantity, checkedItems, orderItems, allOrder, selectedOrder, allCheck, checkChange }) {
     return (
         <Routes>
             <Route path="/cart" element={<Cart
                 cartItems={cartItems}
+                setCartItems={setCartItems}
+                nothing={nothing}
+                setNothing={setNothing}
                 onDelete={onDelete}
                 increQuantity={increQuantity}
                 decreQuantity={decreQuantity}

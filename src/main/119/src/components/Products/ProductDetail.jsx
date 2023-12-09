@@ -32,7 +32,7 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
     );
 }
 
-const ProductDetail = ({ addCart }) => {
+const ProductDetail = ({ addCart, addOrder, setCartItems }) => {
     const { id } = useParams();
     const [productDetailData, setProductDetailData] = useState([]);
     const [productImagesData, setProductImagesData] = useState([]);
@@ -43,9 +43,34 @@ const ProductDetail = ({ addCart }) => {
     };
 
     const handleAddToCart = () => {
-        addCart({ ...productDetailData, quantity });
+        addCart({ ...productDetailData, product_cnt :quantity });
         setQuantity(1);
     };
+
+    const handleAddToOrder = () => {
+        addOrder({ ...productDetailData, product_cnt: quantity });
+    setQuantity(1);
+  };
+
+  // 장바구니 추가
+  function cartInsert(a, b) {    
+	let url="/rscart/cartInsert/" + a + "/" +b;
+	
+    axios.post(url)
+        .then((response) => {
+            alert("장바구니에 상품이 추가되었습니다");
+            axios.get("/rscart/cartList")
+                .then((response) => {
+                setCartItems(response.data);
+                })
+                .catch((err) => {
+                alert(`** checkdata 서버연결 실패 => ${err.message}`);
+                });
+        }).catch( err => {
+                    if ( err.response.status ) alert(err.response.data);  				
+                    else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+        });
+}
 
     const scrollToAnchor = (anchorId) => {
         const element = document.getElementById(anchorId);
@@ -212,7 +237,7 @@ const ProductDetail = ({ addCart }) => {
                                     <button
                                         className="buySoon"
                                         quantity={quantity}
-                                        onClick={() => handleAddToCart(productDetailData)}
+                                        onClick={() => handleAddToOrder(productDetailData)}
                                     >
                                         바로구매하기
                                     </button>
@@ -220,8 +245,8 @@ const ProductDetail = ({ addCart }) => {
                                 <Link to={`/user/cart`}>
                                     <button
                                         className="buyCart"
-                                        quantity={quantity}
-                                        onClick={() => handleAddToCart(productDetailData)}
+                                        //quantity={quantity}
+                                        onClick={() => cartInsert(productDetailData.product_id, quantity)}
                                     >
                                         장바구니
                                     </button>

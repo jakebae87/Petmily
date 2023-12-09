@@ -11,7 +11,7 @@ import PromotionProducts from './PromotionProducts';
 import SearchedProducts from './SearchedProducts';
 import ProductDetail from './ProductDetail';
 
-function Products({ addCart, increQuantity, decreQuantity, addOrder }) {
+function Products({ addCart, increQuantity, decreQuantity, addOrder, setCartItems }) {
     return (
         <Routes>
             <Route path="/:kind/:category" element={<AllProducts addCart={addCart} />} />
@@ -23,6 +23,7 @@ function Products({ addCart, increQuantity, decreQuantity, addOrder }) {
             <Route path="/productdetail/:id" element={<ProductDetail
                 addCart={addCart}
                 addOrder={addOrder}
+                setCartItems={setCartItems}
                 increQuantity={increQuantity}
                 decreQuantity={decreQuantity} />}
             />
