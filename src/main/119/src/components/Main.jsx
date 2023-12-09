@@ -35,7 +35,6 @@ const calcProductPrice = (productPrice, promotionDiscount) => {
 
 function Main() {
   
-
   // 장바구니 상품
   const [cartItems, setCartItems] = useState([]);
   // 장바구니 무한루프 방지용
@@ -51,9 +50,6 @@ function Main() {
         alert(`** checkdata 서버연결 실패 => ${err.message}`);
       });
   }, [nothing]);
-
-  console.log(cartItems);
-  console.log(nothing);
 
   // 장바구니 체크된 상품
   const [checkedItems, setCheckedItems] = useState(

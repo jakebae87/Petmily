@@ -37,6 +37,7 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
       />
   ))
 
+  console.log(cartItems);
   return (
     <div className="Cart">
       <div className="titleArea">

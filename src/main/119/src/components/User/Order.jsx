@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import OrderItem from "./OrderItem";
 import DaumPostcode from 'react-daum-postcode';
 
-export default function Order({ orderItems, deleteOrder }) {
+export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const totalPrice = () => {
     return orderItems.reduce(
       (total, item) => total + item.product_price * item.product_cnt,
@@ -69,6 +69,8 @@ export default function Order({ orderItems, deleteOrder }) {
       setIsPostOpen(!isPostOpen);
   };
 
+  console.log(orderItems);
+
   return (
     <div>
       <div className="Order">
@@ -101,7 +103,7 @@ export default function Order({ orderItems, deleteOrder }) {
                   <th scope="col">선택</th>
                 </tr>
               </thead>
-              <OrderItem orderItems={orderItems} deleteOrder={deleteOrder} />
+              <OrderItem orderItems={orderItems} deleteOrder={deleteOrder} calcProductPrice={calcProductPrice} />
               <tfoot>
                 <tr>
                   <th colSpan="7">
