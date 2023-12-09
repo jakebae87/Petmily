@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.ProductDTO;
+import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.SearchDTO;
 
 public interface ProductMapper {
@@ -24,13 +25,16 @@ public interface ProductMapper {
 	
 	List<ProductDTO> selectSearchedList(String searchKeyword);
 	
+	List<ReviewDTO> pReviewList(int id);
+	
+	List<InquiryDTO> pinquiryList(int id);
+	
+	
 	int insert(ProductDTO dto);
 
 	int update(ProductDTO dto);
 	
+	int updateProductRating();
+	
 	int delete(ProductDTO dto);
-	
-	List<InquiryDTO> pinquiryList(int id);
-	
-	List<InquiryDTO> productinquiryList(SearchDTO searchDTO);
 }

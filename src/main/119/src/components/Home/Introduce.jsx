@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import ProductItem from '../Products/ProductItem';
 
-function Introduce({ props, addCart }) {
+function Introduce({ props, calcProductPrice, addCart }) {
     const [productData, setProductData] = useState([]);
 
     let url = '';
@@ -47,7 +47,7 @@ function Introduce({ props, addCart }) {
 
             <div className="productList">
                 {productData.map((item, idx) => {
-                    if (idx < 3) return (<ProductItem key={item.id} it={item} addCart={addCart} />);
+                    if (idx < 3) return (<ProductItem key={item.id} it={item} calcProductPrice={calcProductPrice} addCart={addCart} />);
                 })}
             </div>
         </div>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.ProductDTO;
+import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.mapperInterface.ProductMapper;
 import com.team119.petmily.pagination.SearchCriteria;
@@ -59,18 +60,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public int insert(ProductDTO dto) {
-		return mapper.insert(dto);
-	}
-	
-	@Override
-	public int update(ProductDTO dto) {
-		return mapper.update(dto);
-	}
-
-	@Override
-	public int delete(ProductDTO dto) {
-		return mapper.delete(dto);
+	public List<ReviewDTO> pReviewList(int id) {
+		return mapper.pReviewList(id);
 	}
 	
 	@Override
@@ -79,7 +70,22 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<InquiryDTO> productinquiryList(SearchDTO searchDTO) {
-		return mapper.productinquiryList(searchDTO);
+	public int insert(ProductDTO dto) {
+		return mapper.insert(dto);
+	}
+	
+	@Override
+	public int update(ProductDTO dto) {
+		return mapper.update(dto);
+	}
+	
+	@Override
+	public int updateProductRating() {
+		return mapper.updateProductRating();
+	}
+
+	@Override
+	public int delete(ProductDTO dto) {
+		return mapper.delete(dto);
 	}
 }

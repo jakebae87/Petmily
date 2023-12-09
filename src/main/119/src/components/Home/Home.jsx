@@ -26,14 +26,14 @@ const IntroduceData = [
     }
 ];
 
-function Home({ addCart }) {
+function Home({ calcProductPrice, addCart }) {
 
     return (
         <div className="Home">
             <ImageSlider />
 
             <div id="mainWrap">
-                {IntroduceData.map((item, index) => (<Introduce props={[item, index]} addCart={addCart} />))}
+                {IntroduceData.map((item, index) => (<Introduce props={[item, index]} calcProductPrice={calcProductPrice} addCart={addCart} />))}
             </div>
         </div>
     );

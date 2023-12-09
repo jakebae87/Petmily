@@ -8,15 +8,16 @@ const CartItem = ({
   product_name,
   product_price,
   product_mainimagepath,
+  promotion_discount,
   checkedItems,
   setCartItems,
   nothing,
   setNothing,
-  checkChange,}
+  checkChange,
+  calcProductPrice}
 ) => {
 
 const [quantity , setQuantity] = useState(product_cnt);
-const price = (product_price * quantity);
 
   // 장바구니 상품 삭제
   function cDelete(user_id, product_id) {
@@ -103,7 +104,7 @@ const price = (product_price * quantity);
             <span>{product_name}</span>
           </td>
           <td>
-            <span>{product_price ? `${product_price.toLocaleString()}` : ""}</span>
+            <span>{calcProductPrice(product_price, promotion_discount).toLocaleString()}</span>
           </td>
           <td>
             <button
@@ -126,7 +127,7 @@ const price = (product_price * quantity);
           </td>
           <td>
             <span>
-              {price ? `${price.toLocaleString()}` : ""}
+              {(calcProductPrice(product_price, promotion_discount) * product_cnt).toLocaleString()}
             </span>
           </td>
           <td>

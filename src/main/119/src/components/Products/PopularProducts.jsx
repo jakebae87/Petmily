@@ -3,22 +3,22 @@ import axios from 'axios';
 
 import ProductItem from "./ProductItem";
 
-function PopularProducts({ addCart }) {
+function PopularProducts({ calcProductPrice, sortProducts, addCart }) {
     const [popularProductData, setPopularProductData] = useState([]);
-    
+
     useEffect(() => {
         axios.get('/rsproduct/popularProductList')
-        .then((response) => {
-            setPopularProductData(response.data);
-            console.log(`** popularProductList 서버연결 성공 =>`, response.data);
-        })
-        .catch((err) => {
-            alert(`** popularProductList 서버연결 실패 => ${err.message}`);
-        });
+            .then((response) => {
+                setPopularProductData(response.data);
+                console.log(`** popularProductList 서버연결 성공 =>`, response.data);
+            })
+            .catch((err) => {
+                alert(`** popularProductList 서버연결 실패 => ${err.message}`);
+            });
 
         handleSort("newest");
     }, []);
-    
+
     // 페이지네이션
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9;
@@ -32,19 +32,6 @@ function PopularProducts({ addCart }) {
     // 정렬
     const [sortOption, setSortOption] = useState("default");
 
-    const sortProducts = (products, option) => {
-        switch (option) {
-          case "highToLow":
-            return products.slice().sort((a, b) => b.product_price - a.product_price);
-          case "lowToHigh":
-            return products.slice().sort((a, b) => a.product_price - b.product_price);
-          case "newest":
-            return products.slice().sort((a, b) => new Date(b.product_created) - new Date(a.product_created));
-          default:
-            return products;
-        }
-    };
-    
     const handleSort = (option) => {
         setSortOption(option);
         setCurrentPage(1); // 페이지를 처음으로 리셋
@@ -60,13 +47,14 @@ function PopularProducts({ addCart }) {
             <hr />
 
             <div className="sortButtons">
-                <button className={sortOption === "newest" ? "active" : ""} onClick={() => handleSort("newest")}>등록일순</button>
+                <button className={sortOption === "newest" ? "active" : ""} onClick={() => handleSort("newest")}>최신 등록일순</button>
                 <button className={sortOption === "highToLow" ? "active" : ""} onClick={() => handleSort("highToLow")}>가격 높은순</button>
                 <button className={sortOption === "lowToHigh" ? "active" : ""} onClick={() => handleSort("lowToHigh")}>가격 낮은순</button>
+                <button className={sortOption === "HighAvgStar" ? "active" : ""} onClick={() => handleSort("HighAvgStar")}>평점 높은순</button>
             </div>
 
             <div className="productList">
-                {currentItems.map((item) => (<ProductItem key={item.id} it={item} addCart={addCart} />))}
+                {currentItems.map((item) => (<ProductItem key={item.id} it={item} calcProductPrice={calcProductPrice} addCart={addCart} />))}
             </div>
 
             {/* 페이지네이션 컴포넌트 */}

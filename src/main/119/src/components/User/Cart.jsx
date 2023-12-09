@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 
-export default function Cart({ cartItems, setCartItems, nothing, setNothing, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder }) {
+export default function Cart({ cartItems, setCartItems, nothing, setNothing, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder, calcProductPrice }) {
   // 체크된 상품 가격
   const totalPrice = () => {
     const selectedTotalPrice = checkedItems.reduce((total, item) => {
       const selectedItem = cartItems.find((cart) => cart.product_id === item);
       if (selectedItem) {
-        return total + selectedItem.product_price * selectedItem.product_cnt;
+        return total + calcProductPrice(selectedItem.product_price, selectedItem.promotion_discount) * selectedItem.product_cnt;
       }
       return total;
     }, 0);
@@ -22,6 +22,7 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
       product_cnt={item.product_cnt}
       product_name={item.product_name}
       product_price={item.product_price}
+      promotion_discount={item.promotion_discount}
       product_mainimagepath={item.product_mainimagepath}
       cartItems={cartItems}
       setCartItems={setCartItems}
@@ -32,6 +33,7 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
       checkedItems={checkedItems}
       increQuantity={increQuantity}
       decreQuantity={decreQuantity}
+      calcProductPrice={calcProductPrice}
       />
   ))
 

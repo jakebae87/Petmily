@@ -23,7 +23,19 @@ import Board from "./Board/Board";
 // Event
 import Event from "./Event/Event";
 
+// 상품 할인적용된 최종가격
+const calcProductPrice = (productPrice, promotionDiscount) => {
+  if (promotionDiscount) {
+    const discountedPrice = Math.floor(productPrice - (productPrice * promotionDiscount / 100));
+    return discountedPrice;
+  } else {
+    return productPrice;
+  }
+}
+
 function Main() {
+  
+
   // 장바구니 상품
   const [cartItems, setCartItems] = useState([]);
   // 장바구니 무한루프 방지용
@@ -154,13 +166,14 @@ function Main() {
     <div className="Main">
       <Routes>
         {/* Home */}
-        <Route path="/" element={<Home addCart={addCart} />} />
+        <Route path="/" element={<Home calcProductPrice={calcProductPrice} addCart={addCart} />} />
 
         {/* Products */}
         <Route
           path="/products/*"
           element={
             <Products
+              calcProductPrice={calcProductPrice}
               addCart={addCart}
               addOrder={addOrder}
               setCartItems={setCartItems}
@@ -193,6 +206,7 @@ function Main() {
               selectedOrder={selectedOrder}
               allCheck={allCheck}
               checkChange={checkChange}
+              calcProductPrice={calcProductPrice}
             />
           }
         />
