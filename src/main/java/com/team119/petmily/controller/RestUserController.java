@@ -2,6 +2,8 @@ package com.team119.petmily.controller;
 
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +33,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 public class RestUserController {
+	private static final String String = null;
 	UserService service;
 	UserMapper mapper;
 	PasswordEncoder passwordEncoder;
@@ -63,6 +66,7 @@ public class RestUserController {
 	        session.setAttribute("loginName", dto.getUser_name());
 	        final UserDTO userDTO = UserDTO.builder()
 	            .user_id(dto.getUser_id())
+	            .user_password(encodedPassword)
 	            .user_name(dto.getUser_name())
 	            .user_email(dto.getUser_email())
 	            .user_phone(dto.getUser_phone())
@@ -103,7 +107,7 @@ public class RestUserController {
 	    }
 	}
 	
-	 @GetMapping("/idcheck")
+	 @GetMapping(value="/idcheck")
 	    public ResponseEntity<String> checkIfId(@RequestParam("user_id") String user_id) {
 	        try {
 	            int count = mapper.checkUserId(user_id);
@@ -118,7 +122,7 @@ public class RestUserController {
 	        }
 	    }
 	
-	@PostMapping("/Findid")
+	@PostMapping(value="/Findid")
 	public ResponseEntity<UserDTO> findUserId(HttpSession session, @RequestBody UserDTO dto) {
 	    ResponseEntity<UserDTO> result = null;
 	    
@@ -137,7 +141,7 @@ public class RestUserController {
 	}
 	
 	
-	@PostMapping("/Findpw")
+	@PostMapping(value="/Findpw")
 	public ResponseEntity<UserDTO> findUserPw(HttpSession session, @RequestBody UserDTO dto) {
 	    ResponseEntity<UserDTO> result = null;
 	    
@@ -156,7 +160,7 @@ public class RestUserController {
 	
 	}
 	
-	@DeleteMapping("/selfDelete/{user_id}")
+	@DeleteMapping(value="/selfDelete/{user_id}")
 	public ResponseEntity<?> delete(@PathVariable("user_id") String userId, UserDTO dto) {
 		dto.setUser_id(userId);
 		if (service.delete(dto) > 0) {
@@ -168,5 +172,37 @@ public class RestUserController {
 		}
 	}
 	
+	@GetMapping(value="/userlist")
+	public ResponseEntity<?> userlist(HttpServletRequest request, UserDTO dto) {
+	    HttpSession session = request.getSession();
+	    String loggedInUserID = (String) session.getAttribute("loginID");
+
+	    if (loggedInUserID != null) {
+	        // 로그인된 사용자일 때의 처리
+	        UserDTO id = service.selectOne(dto);
+
+	        if (id != null) {
+	            return ResponseEntity.status(HttpStatus.OK).body(dto);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+	        }
+	    } else {
+	        // 로그인되지 않은 상태일 때의 처리
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
+	    }
+	}
 	
+	@PostMapping(value="/update/{user_id}")
+	public ResponseEntity<String> update(@PathVariable("user_id") String userId, @RequestBody UserDTO dto) {
+	    dto.setUser_id(userId);
+	    int updateResult = service.update(dto);
+
+	    if (updateResult > 0) {
+	        log.info("** update HttpStatus.OK => " + HttpStatus.OK);
+	        return new ResponseEntity<>("** 회원수정 성공 **", HttpStatus.OK);
+	    } else {
+	        log.info("** update HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
+	        return new ResponseEntity<>("** 회원수정 실패, Data_NotFound **", HttpStatus.BAD_GATEWAY);
+	    }
+	}
 }

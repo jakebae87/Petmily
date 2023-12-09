@@ -31,8 +31,7 @@
 	<update id="update">
 		update user set
 		
-	
-			user_name=#{user_name}, user_email=#{user_email}, user_birthday=#{user_birthday}, user_phone=#{user_phone}, zipcode=#{zipcode}, 
+			user_name=#{user_name}, user_password=#{user_password},user_email=#{user_email}, user_birthday=#{user_birthday}, user_phone=#{user_phone}, zipcode=#{zipcode}, 
 			addr=#{addr}, addr_detail=#{addr_detail} 
 		
 		where user_id=#{user_id}

@@ -40,6 +40,9 @@ export default function Profile() {
     }
   }, []);
 
+  //수정하기
+  
+
   //회원탈퇴
   const ondelete = (user_id) => {
 

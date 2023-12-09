@@ -26,8 +26,6 @@
 <hr>
 &nbsp;<span class="textlink" onclick="Loginf()">Login</span>&nbsp;
 &nbsp;<span class="textlink" onclick="Joinf()">Join</span>&nbsp;
-&nbsp;<span class="textlink" onclick="Findidf()">findid</span>&nbsp;
-&nbsp;<span class="textlink" onclick="Findpwf()">findpw</span>&nbsp;
 &nbsp;<span class="textlink" onclick="UserList()">userList</span>&nbsp; 
 <c:if test="${not empty sessionScope.loginID}">
 	&nbsp;<span class="textlink" onclick="userLogout()">Logout</span>&nbsp;

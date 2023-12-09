@@ -161,12 +161,14 @@
   text-decoration: none;
   color: black;
   display: block;
-  transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 적용 */
+  transition: background-color 0.3s ease;
+  /* 배경색 전환 애니메이션 적용 */
 }
 
 .productDetailMenu>li.active>a {
   background-color: rgb(25, 50, 100);
-  color: aliceblue; /* 활성화된 메뉴의 글자색 변경 */
+  color: aliceblue;
+  /* 활성화된 메뉴의 글자색 변경 */
 }
 
 .productDetailTitle h2 span {

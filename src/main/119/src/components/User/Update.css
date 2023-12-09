@@ -1,15 +1,15 @@
-.Signup * {
+.Update * {
     padding: 0;
     margin: 0;
     border: none;
 }
 
-.Signup {
+.Update {
     /* font-size: 14px; */
     margin: auto;
 }
 
-.Signup h1 {
+.Update h1 {
     margin: 60px auto;
     text-align: center;
 }
@@ -21,7 +21,7 @@
     margin-left: 10px;
 }
 
-.sign_up {
+.update {
     width: 700px;
     padding: 0 40px 60px 40px;
     box-sizing: border-box;
@@ -30,7 +30,7 @@
 
 }
 
-.Signup>select {
+.Update>select {
     width: 50px;
     padding: 10px;
     display: block;
@@ -45,7 +45,7 @@
     text-align: center;
 } */
 
-.signupbox {
+.updatebox {
     width: 100%;
     height: 48px;
     padding: 0 10px;
@@ -107,7 +107,7 @@
     margin-bottom: 10px;
 }
 
-.signupbox::placeholder {
+.updatebox::placeholder {
     color: #D2D2D2;
 }
 
@@ -119,7 +119,7 @@
     color: #D2D2D2;
 }
 
-.signupBtn {
+.updateBtn {
     width: 500px;
     height: 48px;
     color: #ffffff;
@@ -149,10 +149,10 @@
     font-style: bold;
 }
 
-.Signup>input {
+.Update>input {
     text-align: center;
 }
 
-.Signup select option[value=""][disabled] {
+.Update select option[value=""][disabled] {
     display: none;
 }
