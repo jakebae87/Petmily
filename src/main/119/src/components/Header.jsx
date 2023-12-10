@@ -1,12 +1,16 @@
 import "./Header.css";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom'
 
 import PetmilyLogo from '../assets/Images/Petmily_logo.png';
 import glassLogo from '../assets/Images/magnifying-glass-30.png';
 
 function Header() {
+    const [isSideMenuOpen, setSideMenuOpen] = useState(false);
 
+    useEffect(() => {
+        setSideMenuOpen(false);
+    }, [window.location.pathname]);
 
     const isLoggedIn =
         sessionStorage.getItem("loggedInUser");
@@ -74,7 +78,7 @@ function Header() {
                 <nav>
                     <ul className="mainMenu">
                         <li>
-                            <input type="checkbox" id="sideBtn" />
+                            <input type="checkbox" id="sideBtn" checked={isSideMenuOpen} onChange={() => setSideMenuOpen(!isSideMenuOpen)} />
                             <label for="sideBtn">
                                 <span></span>
                                 <span></span>

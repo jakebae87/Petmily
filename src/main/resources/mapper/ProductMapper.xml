@@ -11,18 +11,31 @@
 	</select> -->
 	
 	<select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_image, pmp.promotion_discount
+		SELECT p.*, pmp.promotion_image, pmp.promotion_discount, COUNT(r.product_id) AS review_cnt
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+		WHERE p.product_id = #{product_id}
+		GROUP BY p.product_id
+		
+		<!-- SELECT p.*, pmp.promotion_image, pmp.promotion_discount
 		FROM PRODUCT as p
 		JOIN PROMOTION_PRODUCT as pmp
 		ON p.promotion_id = pmp.promotion_id
-		WHERE p.product_id = #{product_id}
+		WHERE p.product_id = #{product_id} -->
 	</select>
 	
 	<select id="selectList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_image, pmp.promotion_discount
+		SELECT p.*, pmp.promotion_image, pmp.promotion_discount, COUNT(r.product_id) AS review_cnt
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+		GROUP BY p.product_id
+		
+		<!-- SELECT p.*, pmp.promotion_image, pmp.promotion_discount
 		FROM PRODUCT as p
 		JOIN PROMOTION_PRODUCT as pmp
-		ON p.promotion_id = pmp.promotion_id
+		ON p.promotion_id = pmp.promotion_id -->
 	</select>
 	
 	<select id="selectPromotionList" resultType="com.team119.petmily.domain.ProductDTO">
@@ -30,10 +43,13 @@
 		  CASE
 		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
 		    ELSE 0
-		  END AS promotion_discount
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
 	    WHERE p.promotion_id = #{promotion_id}
+	    GROUP BY p.product_id
 	</select>
     
 	<select id="selectedList" resultType="com.team119.petmily.domain.ProductDTO">
@@ -41,11 +57,14 @@
 		  CASE
 		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
 		    ELSE 0
-		  END AS promotion_discount
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
 		WHERE (#{param1} = 'all' OR p.product_kind = #{param1} OR p.product_kind = 'all')
 		AND (#{param2} = 'all' OR p.product_category = #{param2} OR p.product_category = 'all')
+		GROUP BY p.product_id
 	</select>
 	
 	<select id="selectThisMonthList" resultType="com.team119.petmily.domain.ProductDTO">
@@ -53,10 +72,13 @@
 			CASE
 			  WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
 			  ELSE 0
-			END AS promotion_discount
+			END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
 		WHERE MONTH(p.product_regdate) = MONTH(CURDATE())
+		GROUP BY p.product_id
 	</select>
 	
 	<select id="selectPopularList" resultType="com.team119.petmily.domain.ProductDTO">
@@ -64,10 +86,13 @@
 		  CASE
 		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
 		    ELSE 0
-		  END AS promotion_discount
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
 		WHERE p.product_sales >= 50
+		GROUP BY p.product_id
 		ORDER BY p.product_sales DESC
 	</select>
 	
@@ -76,9 +101,12 @@
 		  CASE
 		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
 		    ELSE 0
-		  END AS promotion_discount
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+		GROUP BY p.product_id
 		HAVING promotion_discount > 0
 		ORDER BY promotion_discount DESC
 	</select>
@@ -88,10 +116,13 @@
 		  CASE
 		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
 		    ELSE 0
-		  END AS promotion_discount
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 	    FROM PRODUCT AS p
 	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+	    LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
 	    WHERE p.product_name LIKE CONCAT('%', #{searchKeyword}, '%')
+	    GROUP BY p.product_id
 	</select>
 	
 	<select id="pinquiryList" resultType="com.team119.petmily.domain.InquiryDTO">		

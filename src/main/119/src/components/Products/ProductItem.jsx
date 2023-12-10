@@ -32,7 +32,7 @@ const ProductItem = ({ it, calcProductPrice, setCartItems }) => {
             </Link>
             <div>
                 <div>
-                    <p className="productName"><Link to={`/products/productdetail/${it.product_id}`}>{it.product_name} <span><i id='star' class="fa-solid fa-star"></i>{it.product_rating.toFixed(1)}</span></Link></p>
+                    <p className="productName"><Link to={`/products/productdetail/${it.product_id}`}>{it.product_name} <span><i id='star' class="fa-solid fa-star"></i>{it.product_rating.toFixed(1)} (리뷰 {it.review_cnt})</span></Link></p>
                     <p className="productComments">{it.product_description}</p>
                     {it.promotion_discount ? (
                         <p className="productPrice">

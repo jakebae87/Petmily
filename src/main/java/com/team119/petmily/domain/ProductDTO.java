@@ -32,4 +32,5 @@ public class ProductDTO extends PromotionProductDTO {
 	private MultipartFile uploadfilef2;
 	private double product_rating;
 	private String product_origin;
+	private int review_cnt;
 }

@@ -85,6 +85,10 @@
     margin-right: 10px;
 }
 
+.sortButtons button:hover {
+    color: black;
+}
+
 .sortButtons button.active {
     color: black;
     border-left: 5px solid rgb(25, 50, 100);

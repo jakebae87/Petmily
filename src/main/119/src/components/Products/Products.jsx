@@ -22,6 +22,8 @@ function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, add
                 return products.slice().sort((a, b) => calcProductPrice(a.product_price, a.promotion_discount) - calcProductPrice(b.product_price, b.promotion_discount));
             case "HighAvgStar":
                 return products.slice().sort((a, b) => b.product_rating - a.product_rating);
+            case "HighCntReview":
+                return products.slice().sort((a, b) => b.review_cnt - a.review_cnt);
             default:
                 return products;
         }
@@ -29,9 +31,9 @@ function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, add
 
     return (
         <Routes>
-            <Route path="/:kind/:category" element={<AllProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} setCartItems={setCartItems}/>} />
+            <Route path="/:kind/:category" element={<AllProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} setCartItems={setCartItems} />} />
             <Route path="/promotionproducts/:id" element={<PromotionProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} />} />
-            <Route path="/searchedproducts" element={<SearchedProducts calcProductPrice={calcProductPrice} addCart={addCart} />} />
+            <Route path="/searchedproducts" element={<SearchedProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} />} />
             <Route path="/newproducts" element={<NewProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} />} />
             <Route path="/popularproducts" element={<PopularProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} />} />
             <Route path="/discountedproducts" element={<DiscountedProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} />} />
