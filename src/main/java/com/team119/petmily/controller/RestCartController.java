@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.OrderProductDTO;
+import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.service.CartService;
 import com.team119.petmily.service.OrderDetailService;
 import com.team119.petmily.service.OrderProductService;
@@ -164,6 +166,24 @@ public class RestCartController {
 	}
 	
 	// ===============================================================
+	
+	@PostMapping(value = "/order")
+	public ResponseEntity<String> order(@RequestBody OrderProductDTO dto) {
+		
+	    try {
+	        // Service 처리
+	        if (opservice.insert(dto) > 0) {
+	            return ResponseEntity.status(HttpStatus.OK).body("주문 성공");
+	        } else {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("주문 실패");
+	        }
+	    } catch (Exception e) {
+	        log.error("** 주문 중 에러 발생: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
+	    }
+	}
+	
+	
 	
 //	@PostMapping("/order")
 //	public ResponseEntity<?> order() {

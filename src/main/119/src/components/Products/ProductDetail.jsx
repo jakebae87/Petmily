@@ -64,7 +64,6 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
 	
     axios.post(url)
         .then((response) => {
-            alert("장바구니에 상품이 추가되었습니다");
             axios.get("/rscart/cartList")
                 .then((response) => {
                 setCartItems(response.data);
@@ -72,6 +71,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                 .catch((err) => {
                 alert(`** checkdata 서버연결 실패 => ${err.message}`);
                 });
+            alert("장바구니에 상품이 추가되었습니다");
         }).catch( err => {
                     if ( err.response.status ) alert(err.response.data);  				
                     else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);

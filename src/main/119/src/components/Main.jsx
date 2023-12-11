@@ -41,14 +41,18 @@ function Main() {
   const [nothing, setNothing] = useState(1);
 
   useEffect(() => {
-    axios
-      .get("/rscart/cartList")
-      .then((response) => {
-        setCartItems(response.data);
-      })
-      .catch((err) => {
-        alert(`** checkdata 서버연결 실패 => ${err.message}`);
-      });
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+  
+    if (loggedInUser) {
+      axios
+        .get("/rscart/cartList")
+        .then((response) => {
+          setCartItems(response.data);
+        })
+        .catch((err) => {
+          alert(`** checkdata 서버연결 실패 => ${err.message}`);
+        });
+    }
   }, [nothing]);
 
   // 장바구니 체크된 상품
@@ -188,7 +192,6 @@ function Main() {
           element={
             <User
               cartItems={cartItems}
-              setCartItems={setCartItems}
               nothing={nothing}
               setNothing={setNothing}
               addCart={addCart}

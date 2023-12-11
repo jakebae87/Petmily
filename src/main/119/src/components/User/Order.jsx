@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import OrderItem from "./OrderItem";
 import DaumPostcode from 'react-daum-postcode';
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const totalPrice = () => {
@@ -14,6 +16,8 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const [loginUser, setLoginUser] = useState([]);
   // true: 주문자 정보와 동일, false: 새로운 배송지
   const [useSameAddress, setUseSameAddress] = useState(true);
+  // 결제수단
+  const [payMethod, setPayMethod] = useState("카드");
   // 회원이름
   const [orderName, setOrderName] = useState("");
   // 회원전화번호
@@ -24,6 +28,11 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const [orderAddr, setOrderAddr] = useState("");
   // 회원상세주소
   const [orderAddrD, setOrderAddrD] = useState("");
+  // 배송요청사항
+  const [orderReq, setOrderReq] = useState("조심히 안전하게 와주세요");
+  
+  // 주문완료시 이동 링크
+  const navigate = useNavigate();
 
   // 회원 정보 불러오기
   useEffect(() => {
@@ -69,7 +78,39 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
       setIsPostOpen(!isPostOpen);
   };
 
-  console.log(orderItems);
+  // 결제 방법을 선택할 때 호출되는 함수입니다.
+  const payMethodChange = (e) => {
+    const selectedMethod = e.target.value;
+    setPayMethod(selectedMethod);
+  };
+
+  // 주문
+  function order() {
+    // 주문내역 DTO
+    const OrderProductDTO = {
+      user_id: loginUser.user_id,
+      order_total_price: totalPrice() + 3000,
+      pay_method: payMethod,
+      order_name: orderName,
+      order_email: loginUser.user_email,
+      order_tel: orderPhone,
+      order_zipcode: orderZipcode,
+      order_addr: orderAddr,
+      order_addr_detail: orderAddrD,
+      order_req: orderReq,
+  };
+  console.log(OrderProductDTO);
+  
+  axios.post('/rscart/order', OrderProductDTO)
+  .then(response => {
+    alert("주문완료이 완료되었습니다.");
+    navigate("/");
+  })
+  .catch(error => {
+    alert('주문에 실패했습니다. 다시 시도해주세요.');
+  });
+}
+
 
   return (
     <div>
@@ -126,7 +167,7 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
             </table>
           </div>
         </div>
-        <form action="post" id="orderForm">
+        <form id="orderForm">
           <div className="orderArea">
             <ul type="square" className="listTitle">
               <li>
@@ -247,6 +288,7 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                             setOrderZipcode("");
                             setOrderAddr("");
                             setOrderAddrD("");
+                            setOrderReq(orderReq);
                           }}
                         />
                         &nbsp;
@@ -345,7 +387,7 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                         id="order_req"
                         name="order_req"
                         rows="3"
-                        value="조심히 안전하게 와주세요"
+                        value={orderReq}
                       ></textarea>
                     </td>
                   </tr>
@@ -371,10 +413,11 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                 <tbody>
                   <tr>
                     <td>
-                      <input type="text" id="user_tel" name="user_tel" value={(totalPrice() + 3000).toLocaleString()} />
+                      {/* <span type="text" id="order_total_price" name="order_total_price" value={(totalPrice() + 3000).toLocaleString()} /> */}
+                      <span>{(totalPrice() + 3000).toLocaleString()}</span>
                     </td>
                     <td>
-                      <select id="pay_method" name="pay_method">
+                      <select id="pay_method" name="pay_method" value={payMethod} onChange={payMethodChange}>
                         <option value="카드">카드</option>
                         <option value="계좌이체">계좌이체</option>
                       </select>
@@ -386,9 +429,11 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
           </div>
 
           <div className="payArea">
-            <button type="submit" className="productPay">
-              결제하기
-            </button>
+            <Link to="/">
+              <button className="productPay" onClick={order}>
+                결제하기
+              </button>
+            </Link>
           </div>
         </form>
       </div>
