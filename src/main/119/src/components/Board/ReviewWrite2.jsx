@@ -17,6 +17,11 @@ export default function ReviewWrite() {
 
     const navigate = useNavigate();
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : null;
+
     const reviewSubmit = async () => {
         let formData = new FormData(document.getElementById('reviewForm'));
 
@@ -39,11 +44,6 @@ export default function ReviewWrite() {
 			error message = ${error.message}`);
         });
     }
-
-
-
-
-
 
     const getProductData = () => {
         axios.get(`/rsproduct/productDetail/${id}`)
@@ -92,6 +92,7 @@ export default function ReviewWrite() {
 
                         <input type="hidden" name="review_point" value={score} />
                         <input type="hidden" name="product_id" value={id} />
+                        <input type="hidden" name="review_writer" value={userName} />
 
                         <textarea name="review_content" rows="30" cols="100"></textarea>
                     </form>

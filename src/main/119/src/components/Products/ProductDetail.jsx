@@ -81,7 +81,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
     const scrollToAnchor = (anchorId) => {
         const element = document.getElementById(anchorId);
         if (element) {
-            const offsetPosition = element.offsetTop - 152;
+            const offsetPosition = element.offsetTop - 151;
             window.scrollTo({
                 top: offsetPosition,
                 behavior: "smooth",
@@ -325,8 +325,8 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                     <img src={`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(productDetailData.product_detailimagepath)}`} className="detailImage" alt="productDetail1" />
                 </div>
 
-                <div id="productReview" className="productReview" ref={productReviewRef}>
-                    <div className="productDetailTitle">
+                <div className="productReview" ref={productReviewRef}>
+                    <div id="productReview" className="productDetailTitle">
                         <h2>상품후기 <span>({review.length})건</span></h2>
                         <Link to={`/board/reviewWrite2/${id}`}>후기작성</Link>
                     </div>
@@ -370,8 +370,8 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                     </div>
                 </div>
 
-                <div id="productQA" className="productQA" ref={productQARef}>
-                    <div className="productDetailTitle">
+                <div className="productQA" ref={productQARef}>
+                    <div id="productQA" className="productDetailTitle">
                         <h2>상품문의 <span>({inquiry.length})건</span></h2>
                         <Link to={`/board/inquiryWrite2/${id}`}>문의작성</Link>
                     </div>
@@ -410,8 +410,8 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                     </div>
                 </div>
 
-                <div id="buyGuide" className="buyGuide" ref={buyGuideRef}>
-                    <div className="productReviewTitle">
+                <div className="buyGuide" ref={buyGuideRef}>
+                    <div id="buyGuide" className="productReviewTitle">
                         <h2>구매안내</h2>
                     </div>
 
