@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -18,20 +18,21 @@ export default function ReviewWrite() {
 
     const navigate = useNavigate();
 
-    const isLoggedIn =
-        sessionStorage.getItem("loggedInUser");
-    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
-    const userName = user ? user.user_name : null;
-
     const reviewSubmit = async () => {
-        let formData = new FormData(document.getElementById('reviewForm'));
+        const selectedFilesInput = document.querySelector('input[type="file"]');
+        const selectedFiles = selectedFilesInput.files;
 
+        if (selectedFiles.length !== 2) {
+            alert("후기 작성시에 이미지는 반드시 2장 업로드해야 합니다.");
+        }
+
+        let formData = new FormData(document.getElementById('reviewForm'));
         await axios.post(
             "/review/insert",
             formData,
             {
                 headers: {
-                    "Content-Type": "multipart/form-data" 
+                    "Content-Type": "multipart/form-data"
                 }
             }
         ).then(
@@ -111,7 +112,6 @@ export default function ReviewWrite() {
 
                         <input type="hidden" name="review_point" value={score} />
                         <input type="hidden" name="product_id" value={selectedValue} />
-                        <input type="hidden" name="review_writer" value={userName} />
 
                         <textarea name="review_content" rows="30" cols="100"></textarea>
                     </form>
