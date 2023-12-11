@@ -17,6 +17,7 @@ export default function ReviewWrite() {
     const [selectedValue, setSelectedValue] = useState('');
 
     const navigate = useNavigate();
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const reviewSubmit = async () => {
         const selectedFilesInput = document.querySelector('input[type="file"]');
@@ -27,6 +28,7 @@ export default function ReviewWrite() {
         }
 
         let formData = new FormData(document.getElementById('reviewForm'));
+        
         await axios.post(
             "/review/insert",
             formData,
@@ -42,8 +44,8 @@ export default function ReviewWrite() {
             }
         ).catch(error => {
             console.error(`에러 응답 = ${error.response},
-			error status = ${error.response.status},
-			error message = ${error.message}`);
+        error status = ${error.response.status},
+        error message = ${error.message}`);
         });
     }
 

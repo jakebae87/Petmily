@@ -3,6 +3,8 @@ package com.team119.petmily.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -202,7 +204,7 @@ public class RestBoardController {
 		return result;
 	}
 
-	@PostMapping(value = "/review/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/review/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> reviewInsert(ReviewDTO dto) throws IllegalStateException, IOException {
 		ResponseEntity<?> result = null;
 
@@ -211,49 +213,83 @@ public class RestBoardController {
 		String file1, file2 = "";
 		String file3, file4 = "";
 
-//		MultipartFile[] uploadfile1 = dto.getUploadfile1();
-//		if (uploadfile1 != null && !uploadfile1[0].isEmpty()) {
-//			String fileName = URLEncoder.encode(uploadfile1[0].getOriginalFilename(), "UTF-8");
-//			System.out.println(fileName);
-//			fileName = fileName.replaceAll("\\+", "%20");
-//			System.out.println(fileName);
-//			
-//			file1 = realPath + fileName; // 저장경로 완성
-//			uploadfile1[0].transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
-////			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
-////			uploadfile1[0].transferTo(new File(file1));
-//
-//			file2 = uploadfile1[0].getOriginalFilename();
-//		} if (!uploadfile1[1].isEmpty()) {
-//			String fileName = URLEncoder.encode(uploadfile1[1].getOriginalFilename(), "UTF-8");
-//			fileName = fileName.replaceAll("\\+", "%20");
-//			
-//			file3 = realPath +fileName;
-//			uploadfile1[1].transferTo(new File(file3));
-////			file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
-////			uploadfile1[1].transferTo(new File(file3));
-//
-//			file4 = uploadfile1[1].getOriginalFilename();
-//		}
-//
-//		dto.setReview_image1(file2);
-//		dto.setReview_image2(file4);
-
 		MultipartFile[] uploadfile1 = dto.getUploadfile1();
 		if (uploadfile1 != null && uploadfile1.length > 0) {
+		    // 첫 번째 파일 처리
+		    file1 = realPath + uploadfile1[0].getOriginalFilename();
+		    file2 = uploadfile1[0].getOriginalFilename();
 
-			file1 = realPath + uploadfile1[0].getOriginalFilename(); // 저장경로 완성
-			uploadfile1[0].transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
+		    // 중복 파일명 처리
+		    File file = new File(file1);
+		    while (file.exists()) {
+		        String extension = "";
+		        int dotIndex = file2.lastIndexOf('.');
+		        if (dotIndex != -1) {
+		            extension = file2.substring(dotIndex);
+		            file2 = file2.substring(0, dotIndex);
+		        }
 
-			file2 = uploadfile1[0].getOriginalFilename();
+		        // 괄호 안의 숫자만 추출하여 증가시키기
+		        int start = file2.lastIndexOf('(');
+		        int end = file2.lastIndexOf(')');
+		        if (start != -1 && end != -1 && start < end) {
+		            String numberStr = file2.substring(start + 1, end);
+		            try {
+		                int fileIndex = Integer.parseInt(numberStr) + 1;
+		                String incrementedNumber = String.valueOf(fileIndex);
+		                file2 = file2.substring(0, start + 1) + incrementedNumber + ")" + extension;
+		            } catch (NumberFormatException e) {
+		                // 숫자 변환이 실패할 경우 새로운 괄호를 추가
+		                file2 = file2 + "(1)" + extension;
+		            }
+		        } else {
+		            file2 = file2 + "(1)" + extension;
+		        }
 
-			if (uploadfile1.length > 1) {
+		        file1 = realPath + file2;
+		        file = new File(file1);
+		    }
 
-				file3 = realPath + uploadfile1[1].getOriginalFilename(); // 저장경로 완성
-				uploadfile1[1].transferTo(new File(file3)); // 해당경로에 저장(붙여넣기)
+		    uploadfile1[0].transferTo(new File(file1));
 
-				file4 = uploadfile1[1].getOriginalFilename();
-			}
+		    // 두 번째 파일 처리
+		    if (uploadfile1.length > 1) {
+		        file3 = realPath + uploadfile1[1].getOriginalFilename();
+		        file4 = uploadfile1[1].getOriginalFilename();
+
+		        // 중복 파일명 처리 (두 번째 파일)
+		        File file2nd = new File(file3);
+		        while (file2nd.exists()) {
+		            String extension = "";
+		            int dotIndex = file4.lastIndexOf('.');
+		            if (dotIndex != -1) {
+		                extension = file4.substring(dotIndex);
+		                file4 = file4.substring(0, dotIndex);
+		            }
+
+		            // 괄호 안의 숫자만 추출하여 증가시키기
+		            int start = file4.lastIndexOf('(');
+		            int end = file4.lastIndexOf(')');
+		            if (start != -1 && end != -1 && start < end) {
+		                String numberStr = file4.substring(start + 1, end);
+		                try {
+		                    int fileIndex = Integer.parseInt(numberStr) + 1;
+		                    String incrementedNumber = String.valueOf(fileIndex);
+		                    file4 = file4.substring(0, start + 1) + incrementedNumber + ")" + extension;
+		                } catch (NumberFormatException e) {
+		                    // 숫자 변환이 실패할 경우 새로운 괄호를 추가
+		                    file4 = file4 + "(1)" + extension;
+		                }
+		            } else {
+		                file4 = file4 + "(1)" + extension;
+		            }
+
+		            file3 = realPath + file4;
+		            file2nd = new File(file3);
+		        }
+
+		        uploadfile1[1].transferTo(new File(file3));
+		    }
 		}
 
 		dto.setReview_image1(file2);
@@ -261,10 +297,10 @@ public class RestBoardController {
 
 		if (boardService.insertReview(dto) > 0) { // Transaction_Test, insert2
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 등록 성공");
-			log.info("HttpStatus.OK => " + HttpStatus.OK);
+			log.info("Insert new Review HttpStatus => " + HttpStatus.OK);
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 등록 실패");
-			log.info("HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
+			log.info("Insert new Review HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		}
 
 		return result;

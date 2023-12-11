@@ -24,8 +24,9 @@ export default function ReviewUpdate() {
     // 상품후기의 별점 수 받기 끝
 
     const navigate = useNavigate();
-
-    const [selectedFile1, setSelectedFile1] = useState('');
+    
+    const [selectedFile1, setSelectedFile1] = useState(null);
+    const [selectedFile2, setSelectedFile2] = useState(null);
 
     const handleFileChange1 = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -34,9 +35,10 @@ export default function ReviewUpdate() {
             reader.onload = function (event) {
                 setSelectedFile1(event.target.result);
             };
+        } else {
+            setSelectedFile1(null); // 파일이 선택되지 않았을 때 null로 설정
         }
     };
-    const [selectedFile2, setSelectedFile2] = useState('');
 
     const handleFileChange2 = (e) => {
         if (e.target.files && e.target.files[0]) {
@@ -45,14 +47,25 @@ export default function ReviewUpdate() {
             reader.onload = function (event) {
                 setSelectedFile2(event.target.result);
             };
+        } else {
+            setSelectedFile2(null); // 파일이 선택되지 않았을 때 null로 설정
         }
     };
+
 
     const reviewUpdate = async () => {
         let formData = new FormData(document.getElementById('reviewForm'));
 
         const pointToAdd = clickedStars !== 0 ? clickedStars : review.review_point;
         formData.append('review_point', pointToAdd);
+
+        if (selectedFile1) {
+            formData.append('uploadfile1', selectedFile1);
+        }
+
+        if (selectedFile2) {
+            formData.append('uploadfile2', selectedFile2);
+        }
 
         await axios.post(
             `/review/updateBoard/`,
