@@ -24,16 +24,11 @@
 	<delete id="delete">
 		delete from cart where user_id = #{user_id} and product_id = #{product_id}
 	</delete>
+	<delete id="deleteP">
+		delete from cart where user_id = #{user_id}
+	</delete>
 	
 	<!-- 4. insert -->
-<!-- 	<insert id="insert"> -->
-<!-- 		insert into cart -->
-<!-- 		values (#{user_id}, #{product_id}, #{product_cnt}) -->
-<!-- 	</insert> -->
-<!-- 	<select id="getQuantity" resultType="java.lang.Integer"> -->
-<!--         SELECT product_cnt FROM cart WHERE user_id = #{param1} AND product_id = #{param2} -->
-<!--     </select> -->
-
     <insert id="insert">
         INSERT INTO cart (user_id, product_id, product_cnt)
         VALUES (#{param1}, #{param2}, #{param3})

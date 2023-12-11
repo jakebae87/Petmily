@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const totalPrice = () => {
     return orderItems.reduce(
-      (total, item) => total + item.product_price * item.product_cnt,
+      (total, item) => total + calcProductPrice(item.product_price, item.promotion_discount) * item.product_cnt,
       0
     );
   };
@@ -98,8 +98,8 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
       order_addr: orderAddr,
       order_addr_detail: orderAddrD,
       order_req: orderReq,
+      orderItems: JSON.stringify(orderItems)
   };
-  console.log(OrderProductDTO);
   
   axios.post('/rscart/order', OrderProductDTO)
   .then(response => {
@@ -110,7 +110,6 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
     alert('주문에 실패했습니다. 다시 시도해주세요.');
   });
 }
-
 
   return (
     <div>

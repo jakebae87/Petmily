@@ -88,4 +88,8 @@ public class ProductServiceImpl implements ProductService {
 	public int delete(ProductDTO dto) {
 		return mapper.delete(dto);
 	}
+	@Override
+	public int updateP() {
+		return mapper.updateP();
+	}
 }

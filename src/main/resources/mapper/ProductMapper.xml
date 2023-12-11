@@ -120,6 +120,13 @@
 		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_detailimagepath=#{product_detailimagepath}, product_rating=#{product_rating}, product_origin=#{product_origin}
 		where product_id=#{product_id}
 	</update>
+	<update id="updateP">
+		UPDATE product p
+		JOIN order_detail od ON p.product_id = od.product_id
+		SET p.product_stock = p.product_stock - od.product_cnt,
+		    p.product_sales = p.product_sales + od.product_cnt
+		WHERE od.order_key = (select * from (select IFNULL(Max(order_key), 0)+1 from order_product) as temp);
+	</update>
 	
 	<update id="updateProductRating">
 		UPDATE Product

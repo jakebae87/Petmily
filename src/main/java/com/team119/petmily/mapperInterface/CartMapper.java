@@ -15,6 +15,7 @@ public interface CartMapper {
 		
 	// delete
 	int delete(CartDTO vo);
+	int deleteP(String user_id);
 	
 	// insert: Join
 //	int insert(CartDTO vo);

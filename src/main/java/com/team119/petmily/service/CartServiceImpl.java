@@ -33,6 +33,10 @@ public class CartServiceImpl implements CartService {
 	public int delete(CartDTO dto) {
 		return mapper.delete(dto);
 	}
+	@Override
+	public int deleteP(String user_id) {
+		return mapper.deleteP(user_id);
+	}
 
 	// ** insert
 //	@Override

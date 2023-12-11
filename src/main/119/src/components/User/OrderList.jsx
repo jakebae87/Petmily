@@ -48,7 +48,7 @@ export default function OrderList() {
                 <th scope="col">이미지</th>
                 <th scope="col">상품정보</th>
                 <th scope="col">수량</th>
-                <th scope="col">상품구매금액</th>
+                <th scope="col">상품별금액</th>
                 <th scope="col">주문처리상태</th>
               </tr>
             </thead>

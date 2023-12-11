@@ -28,10 +28,8 @@
 	
 	<!-- 4. insert -->
 	<insert id="insert">
-		insert into order_detail (order_key, product_id, product_cnt,
-		product_kind_price, delivery_status)
-		values(#{order_key}, #{product_id}, #{product_cnt},
-		#{product_kind_price}, #{delivery_status});
+		insert into order_detail (order_key, product_id, product_cnt, product_kind_price)
+		values((select * from (select IFNULL(Max(order_key), 0)+1 from order_product) as temp), #{product_id}, #{product_cnt},	#{product_kind_price});
 	</insert>
 	
 	<!-- 5. update -->
