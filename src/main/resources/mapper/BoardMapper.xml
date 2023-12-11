@@ -269,7 +269,8 @@
 	</delete>
 	
 	<update id="updateBoardReview">
-		UPDATE REVIEW SET REVIEW_TITLE = #{review_title}, PRODUCT_ID = #{product_id}, REVIEW_POINT = #{review_point}, REVIEW_CONTENT = #{review_content}
+		UPDATE REVIEW SET REVIEW_TITLE = #{review_title}, PRODUCT_ID = #{product_id}, REVIEW_POINT = #{review_point}, 
+		REVIEW_CONTENT = #{review_content}, REVIEW_IMAGE1 = #{review_image1}, REVIEW_IMAGE2 = #{review_image2}
 		WHERE REVIEW_ID = #{review_id}
 	</update>
 

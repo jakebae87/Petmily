@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -19,14 +19,20 @@ export default function ReviewWrite() {
     const navigate = useNavigate();
 
     const reviewSubmit = async () => {
-        let formData = new FormData(document.getElementById('reviewForm'));
+        const selectedFilesInput = document.querySelector('input[type="file"]');
+        const selectedFiles = selectedFilesInput.files;
 
+        if (selectedFiles.length !== 2) {
+            alert("후기 작성시에 이미지는 반드시 2장 업로드해야 합니다.");
+        }
+
+        let formData = new FormData(document.getElementById('reviewForm'));
         await axios.post(
             "/review/insert",
             formData,
             {
                 headers: {
-                    "Content-Type": "multipart/form-data" 
+                    "Content-Type": "multipart/form-data"
                 }
             }
         ).then(

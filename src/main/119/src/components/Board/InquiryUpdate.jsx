@@ -66,7 +66,7 @@ export default function InquiryUpdate() {
     return (
         <div className="write">
             <div className="cateTitle">
-                <h1>상품문의 수정</h1>{inquiry.product_id}
+                <h1>상품문의 수정</h1>
             </div>
 
             <div>

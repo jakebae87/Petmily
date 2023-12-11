@@ -11,13 +11,13 @@ export default function ReviewUpdate() {
     const [selectedValue, setSelectedValue] = useState('');
     const [review, setReview] = useState({
         review_title: '',
+        review_writer: '',
         product_id: '',
         review_point: 0,
         review_content: ''
     });
 
     // 상품후기의 별점 수 받기 시작
-    const [score, setScore] = useState(0);
     const onChangeScore = (data) => {
         setClickedStars(data);
     }
@@ -25,21 +25,51 @@ export default function ReviewUpdate() {
 
     const navigate = useNavigate();
 
-    const reviewUpdate = async () => {
-        try {
-            await axios.post(`/review/updateBoard/`, {
-                review_id: id,
-                review_title: review.review_title,
-                product_id: selectedValue || review.product_id,
-                review_content: review.review_content,
-                review_point: clickedStars
-            });
-            alert(`상품후기 수정이 완료되었습니다.`);
-            navigate(`/community/review/${id}`);
-        } catch (error) {
-            console.error('상품후기 수정 에러:', error);
+    const [selectedFile1, setSelectedFile1] = useState('');
+
+    const handleFileChange1 = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            let reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = function (event) {
+                setSelectedFile1(event.target.result);
+            };
         }
     };
+    const [selectedFile2, setSelectedFile2] = useState('');
+
+    const handleFileChange2 = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            let reader = new FileReader();
+            reader.readAsDataURL(e.target.files[0]);
+            reader.onload = function (event) {
+                setSelectedFile2(event.target.result);
+            };
+        }
+    };
+
+    const reviewUpdate = async () => {
+        let formData = new FormData(document.getElementById('reviewForm'));
+
+        const pointToAdd = clickedStars !== 0 ? clickedStars : review.review_point;
+        formData.append('review_point', pointToAdd);
+
+        await axios.post(
+            `/review/updateBoard/`,
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            }).then(response => {
+                alert(`상품후기 수정이 완료되었습니다.`);
+                navigate(`/community/review/${id}`);
+            }).catch(error => {
+                console.error(`에러 응답 = ${error.response},
+			error status = ${error.response.status},
+			error message = ${error.message}`);
+            });
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,7 +82,7 @@ export default function ReviewUpdate() {
         };
         fetchData(); // 컴포넌트가 마운트되거나 id 값이 변경될 때마다 호출
     }, [id]);
-    
+
 
     const fetchData = async () => {
         const searchInput = document.getElementById('searchInput').value;
@@ -82,12 +112,7 @@ export default function ReviewUpdate() {
 
             <div>
                 <div className="selectStarRegist">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        onChange={handleInputChange}
-                        value={review.product_name}
-                    />
+                    <input type="text" id="searchInput" onChange={handleInputChange} value={review.product_name} />
                     <div id="searchResult">
                         <select id="product_id" style={{
                             width: '150px',
@@ -109,24 +134,73 @@ export default function ReviewUpdate() {
                 </div>
 
                 <div>
-                    <form>
+                    <form id="reviewForm">
                         <input
                             id="review_title"
+                            name="review_title"
                             type="text"
                             placeholder="제목을 입력하세요."
                             maxLength="100"
                             value={review.review_title}
                             onChange={(e) => setReview({ ...review, review_title: e.target.value })}
                             required
-                        /> <Star star={review.review_point} onChangeScore={onChangeScore} />
+                        />
+                        <div className="productRating">
+                            <Star star={review.review_point} onChangeScore={onChangeScore} />
+                        </div><br />
+
+                        <div style={{ display: 'flex' }}>
+                            <div>
+                                {selectedFile1 ? (
+                                    <img
+                                        className='selectImage2'
+                                        style={{ width: '150px', height: '150px' }}
+                                        src={selectedFile1}
+                                        alt='상품후기 이미지1'
+                                    />
+                                ) : (
+                                    <img
+                                        className='selectImage1'
+                                        style={{ width: '150px', height: '150px' }}
+                                        src={process.env.PUBLIC_URL + `/Images/reviews/${review.review_image1}`}
+                                        alt='상품후기 이미지1'
+                                    />
+                                )}
+                                <input type="hidden" name="review_image1" value={review.review_image1} /><br />
+                                <input type="file" name="uploadfile1" id="uploadfile1" size="20" onChange={handleFileChange1} />
+                            </div>
+
+                            <div>
+                                {selectedFile2 ? (
+                                    <img
+                                        className='selectImage2'
+                                        style={{ width: '150px', height: '150px' }}
+                                        src={selectedFile2}
+                                        alt='상품후기 이미지2'
+                                    />
+                                ) : (
+                                    <img
+                                        className='selectImage2'
+                                        style={{ width: '150px', height: '150px' }}
+                                        src={process.env.PUBLIC_URL + `/Images/reviews/${review.review_image2}`}
+                                        alt='상품후기 이미지2'
+                                    />
+                                )}
+                                <input type="hidden" name="review_image2" value={review.review_image2} /><br />
+                                <input type="file" name="uploadfile2" id="uploadfile2" size="20" onChange={handleFileChange2} />
+                            </div>
+                        </div>
                         <textarea
                             id="review_content"
+                            name="review_content"
                             rows="30"
                             cols="100"
                             value={review.review_content}
                             onChange={(e) => setReview({ ...review, review_content: e.target.value })}
                         ></textarea>
-                        <input type='hidden' id='product_id' value={selectedValue ? selectedValue.toString() : review.product_id} />
+                        <input type='hidden' name='review_id' value={id} />
+                        <input type='hidden' name='review_writer' value={review.review_writer} />
+                        <input type='hidden' name='product_id' value={selectedValue ? selectedValue.toString() : review.product_id} />
                     </form>
                 </div>
             </div>
