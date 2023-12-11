@@ -179,10 +179,6 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
     const buyGuideRef = useRef(null);
 
     useEffect(() => {
-
-    }, []);
-
-    useEffect(() => {
         const calculateOffsets = () => {
             if (productDetailImgRef.current && productReviewRef.current && productQARef.current && buyGuideRef.current) {
                 setProductDetailImgOffset(productDetailImgRef.current.offsetTop - 152);
@@ -332,7 +328,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                 <div id="productReview" className="productReview" ref={productReviewRef}>
                     <div className="productDetailTitle">
                         <h2>상품후기 <span>({review.length})건</span></h2>
-                        <Link to="/board/reviewWrite">후기작성</Link>
+                        <Link to={`/board/reviewWrite2/${id}`}>후기작성</Link>
                     </div>
 
                     <div className="boardList">
@@ -377,7 +373,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                 <div id="productQA" className="productQA" ref={productQARef}>
                     <div className="productDetailTitle">
                         <h2>상품문의 <span>({inquiry.length})건</span></h2>
-                        <Link to="/board/inquiryWrite">문의작성</Link>
+                        <Link to={`/board/inquiryWrite2/${id}`}>문의작성</Link>
                     </div>
 
                     <div className="boardList">
