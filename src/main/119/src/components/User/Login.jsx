@@ -1,7 +1,8 @@
 import axios from "axios";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function Login() {
     const navigate = useNavigate();
@@ -51,26 +52,26 @@ function Login() {
         const REDIERCT_URI2 = "http://localhost:3000/KakaoLogin";
         const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIERCT_URI2}&response_type=code`;
 
+
         window.location.href = KAKAO_AUTH_URL;
 
-        const code = new URL(window.location.href).searchParams.get("code");
+        useEffect(() => {
+            const { code } = new URLSearchParams(window.location.search);
+            if (code) {
+                sendCodeToBackend(code);
+            }
+        }, []); // 코드가 변경될 때만 실행
 
-        // 백엔드로 인가 코드를 전송하는 axios 요청
         const sendCodeToBackend = async (code) => {
             try {
                 const response = await axios.get(`/oauth/kakao?code=${code}`);
-                console.log(response.data); // 백엔드에서 보낸 데이터 확인
-
+                console.log(response.data);
+                navigate("/"); // 백엔드 응답 후 홈페이지로 리다이렉트
             } catch (error) {
                 console.error('Error sending code to backend:', error);
             }
         };
-
-        // 인가 코드를 백엔드로 전송
-        if (code) {
-            sendCodeToBackend(code);
-        }
-    };
+    }
 
     return (
         <div className="Login">
