@@ -38,16 +38,13 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
   );
 }
 
-const ManageReview = ({ board, deleteBoard }) => {
+const ManageReview = () => {
   const [review, setReview] = useState([]);
   const [searchPeriod, setSearchPeriod] = useState("all");
   const [searchCriteria, setSearchCriteria] = useState("subject");
   const [searchWord, setSearchWord] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const [searchInput, setSearchInput] = useState("");
-
-  const navigate = useNavigate();
+  const itemsPerPage = 3;
 
   function reviewDelete(id) {
     let url = "/review/delete/" + id;
@@ -64,14 +61,6 @@ const ManageReview = ({ board, deleteBoard }) => {
         error message = ${error.message}`);
       });
   }
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setReview([]); // 검색 결과 초기화
-    setSearchPeriod(e.target.searchPeriod.value);
-    setSearchCriteria(e.target.searchCriteria.value);
-    setSearchWord(e.target.searchWord.value); // 검색어 업데이트
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -159,7 +148,7 @@ const ManageReview = ({ board, deleteBoard }) => {
               <td>{r.review_writer}</td>
               <td>{r.review_regdate}</td>
               <td>
-                <Link to={`/board/inquiryUpdate/${r.inquiry_id}`}>
+                <Link to={`/board/reviewUpdate/${r.review_id}`}>
                   <input
                     type="button"
                     id="updateButton"
@@ -171,7 +160,7 @@ const ManageReview = ({ board, deleteBoard }) => {
               <td>
                 <input
                   onClick={() => {
-                    reviewDelete(r.inquiry_id);
+                    reviewDelete(r.review_id);
                   }}
                   type="button"
                   id="deleteButton"

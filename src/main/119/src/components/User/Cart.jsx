@@ -1,14 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
+import axios from "axios";
 
-export default function Cart({ cartItems, nothing, setNothing, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder, calcProductPrice }) {
+export default function Cart({ cartItems, setCartItems, nothing, setNothing, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder, calcProductPrice }) {
+  // 장바구니 불러오기
+  useEffect(() => {
+    const loggedInUser = sessionStorage.getItem("loggedInUser");
+
+    if (loggedInUser) {
+      axios
+        .get("/rscart/cartList")
+        .then((response) => {
+          setCartItems(response.data);
+        })
+        .catch((err) => {
+          alert(`** checkdata 서버연결 실패 => ${err.message}`);
+        });
+    } else {
+      alert("로그인 해주세요");
+    }
+  }, [setCartItems, nothing]);
+
+  console.log(cartItems);
+  console.log(setCartItems);
+
   // 체크된 상품 가격
   const totalPrice = () => {
     const selectedTotalPrice = checkedItems.reduce((total, item) => {
       const selectedItem = cartItems.find((cart) => cart.product_id === item);
       if (selectedItem) {
-        return total + calcProductPrice(selectedItem.product_price, selectedItem.promotion_discount) * selectedItem.product_cnt;
+        return (
+          total +
+          calcProductPrice(
+            selectedItem.product_price,
+            selectedItem.promotion_discount
+          ) *
+            selectedItem.product_cnt
+        );
       }
       return total;
     }, 0);
@@ -16,8 +45,8 @@ export default function Cart({ cartItems, nothing, setNothing, onDelete, increQu
   };
 
   const cartItem = cartItems.map((item) => (
-      <CartItem
-      user_id = {item.user_id}
+    <CartItem
+      user_id={item.user_id}
       product_id={item.product_id}
       product_cnt={item.product_cnt}
       product_name={item.product_name}
@@ -33,8 +62,8 @@ export default function Cart({ cartItems, nothing, setNothing, onDelete, increQu
       increQuantity={increQuantity}
       decreQuantity={decreQuantity}
       calcProductPrice={calcProductPrice}
-      />
-  ))
+    />
+  ));
 
   return (
     <div className="Cart">
@@ -83,9 +112,7 @@ export default function Cart({ cartItems, nothing, setNothing, onDelete, increQu
                 <th scope="col">선택</th>
               </tr>
             </thead>
-            <tbody>
-            {cartItem}
-            </tbody>
+            <tbody>{cartItem}</tbody>
             <tfoot>
               <tr>
                 <th colSpan="7">
