@@ -9,7 +9,20 @@ export default function InquiryWrite() {
     
     const navigate = useNavigate();
 
-    const inquirySubmit = async() => {
+    const inquirySubmit = async () => {
+
+        if (!selectedValue) {
+            alert("상품명을 선택해주세요.");
+            return;
+        }
+
+        const inquiryTitleInput = document.querySelector('input[id="inquiry_title"]');
+        const inquiryTitle = inquiryTitleInput.value.trim();
+
+        if (!inquiryTitle) {
+            alert("제목을 입력하세요.");
+            return;
+        }
         let url = "/inquiry/insert";
         
             await axios({

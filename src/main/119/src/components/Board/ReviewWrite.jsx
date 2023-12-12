@@ -17,7 +17,6 @@ export default function ReviewWrite() {
     const [selectedValue, setSelectedValue] = useState('');
 
     const navigate = useNavigate();
-    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const reviewSubmit = async () => {
         const selectedFilesInput = document.querySelector('input[type="file"]');
@@ -25,6 +24,20 @@ export default function ReviewWrite() {
 
         if (selectedFiles.length !== 2) {
             alert("후기 작성시에 이미지는 반드시 2장 업로드해야 합니다.");
+            return;
+        }
+
+        if (!selectedValue) {
+            alert("상품명을 선택해주세요.");
+            return;
+        }
+
+        const reviewTitleInput = document.querySelector('input[name="review_title"]');
+        const reviewTitle = reviewTitleInput.value.trim();
+
+        if (!reviewTitle) {
+            alert("제목을 입력하세요.");
+            return;
         }
 
         let formData = new FormData(document.getElementById('reviewForm'));

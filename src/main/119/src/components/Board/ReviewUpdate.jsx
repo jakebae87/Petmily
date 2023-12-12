@@ -59,14 +59,6 @@ export default function ReviewUpdate() {
         const pointToAdd = clickedStars !== 0 ? clickedStars : review.review_point;
         formData.append('review_point', pointToAdd);
 
-        if (selectedFile1) {
-            formData.append('uploadfile1', selectedFile1);
-        }
-
-        if (selectedFile2) {
-            formData.append('uploadfile2', selectedFile2);
-        }
-
         await axios.post(
             `/review/updateBoard/`,
             formData,

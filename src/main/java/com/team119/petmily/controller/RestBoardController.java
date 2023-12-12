@@ -308,14 +308,13 @@ public class RestBoardController {
 
 	@PostMapping(value = "/review/updateBoard", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> updateBoardReview(ReviewDTO dto) throws IllegalStateException, IOException {
-		System.out.println(dto);
 		ResponseEntity<?> result = null;
 
 		String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\reviews\\";
 		String file1, file2 = "";
 		String file3, file4 = "";
 
-		if (dto.getUploadfile1() != null) {
+		if (!dto.getUploadfile1()[0].isEmpty()) {
 			MultipartFile[] uploadfile1 = dto.getUploadfile1();
 			if (uploadfile1 != null && uploadfile1.length > 0
 					&& dto.getReview_image1() != uploadfile1[0].getOriginalFilename()) {
@@ -329,7 +328,7 @@ public class RestBoardController {
 			dto.setReview_image1(dto.getReview_image1());
 		}
 
-		if (dto.getUploadfile2() != null) {
+		if (!dto.getUploadfile2().isEmpty()) {
 			MultipartFile uploadfile2 = dto.getUploadfile2();
 			if (uploadfile2 != null && dto.getReview_image2() != uploadfile2.getOriginalFilename()) {
 				file3 = realPath + uploadfile2.getOriginalFilename(); // 저장경로 완성
