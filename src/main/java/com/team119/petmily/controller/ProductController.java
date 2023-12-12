@@ -62,14 +62,15 @@ public class ProductController {
 		String file="bbb.gif";
 		
 		if ( uploadfilef!=null && !uploadfilef.isEmpty() ) {
-			String realPath = request.getRealPath("/");
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef2.getOriginalFilename();
+//			uploadfilef2.transferTo(new File(file));
 			
-			if ( realPath.contains(".eclipse.")) 
-				realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
-			else realPath+="resources\\uploadImages\\";
-			
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\promotion\\";
 			String file1 = realPath + uploadfilef.getOriginalFilename();
-			uploadfilef.transferTo(new File(file1)); 
+			uploadfilef.transferTo(new File(file1));
 			
 			file = uploadfilef.getOriginalFilename();
 		}
@@ -101,14 +102,15 @@ public class ProductController {
 		
 		MultipartFile uploadfilef = dto.getUploadfilef();
 		if (uploadfilef!=null && !uploadfilef.isEmpty()) {
-			String realPath = request.getRealPath("/");
-	
-			if ( realPath.contains(".eclipse.")) 
-				realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
-			else realPath+="resources\\uploadImages\\";
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef2.getOriginalFilename();
+//			uploadfilef2.transferTo(new File(file));
 			
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\promotion\\";
 			String file1 = realPath + uploadfilef.getOriginalFilename();
-			uploadfilef.transferTo(new File(file1)); 
+			uploadfilef.transferTo(new File(file1));
 						
 			String file = uploadfilef.getOriginalFilename();
 			dto.setPromotion_image(file);
@@ -158,23 +160,45 @@ public class ProductController {
 	@PostMapping(value="/pinsert")
 	public String pinsert(HttpServletRequest request, ProductDTO dto, Model model) throws IllegalStateException, IOException {
 		
+		// 썸네일이미지
 		MultipartFile uploadfilef = dto.getUploadfilef();
-		String file="bbb.gif";
+		String mainImageFile="bbb.gif";
 		
 		if ( uploadfilef!=null && !uploadfilef.isEmpty() ) {
-			String realPath = request.getRealPath("/");
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef.getOriginalFilename();
+//			uploadfilef.transferTo(new File(file));
 			
-			if ( realPath.contains(".eclipse.")) 
-				realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
-			else realPath+="resources\\uploadImages\\";
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\products\\";
+			String file = realPath + uploadfilef.getOriginalFilename();
+			uploadfilef.transferTo(new File(file));
 			
-			String file1 = realPath + uploadfilef.getOriginalFilename();
-			uploadfilef.transferTo(new File(file1)); 
-			
-			file = uploadfilef.getOriginalFilename();
+			mainImageFile = uploadfilef.getOriginalFilename();
 		}
 		
-		dto.setProduct_mainimagepath(file);
+		dto.setProduct_mainimagepath(mainImageFile);
+		
+		// 상세이미지
+		MultipartFile uploadfilef2 = dto.getUploadfilef2();
+		String detailImageFile="productDetail1.jpg";
+		
+		if ( uploadfilef2!=null && !uploadfilef2.isEmpty() ) {
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef2.getOriginalFilename();
+//			uploadfilef2.transferTo(new File(file));
+			
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\products\\";
+			String file = realPath + uploadfilef2.getOriginalFilename();
+			uploadfilef2.transferTo(new File(file));
+			
+			detailImageFile = uploadfilef2.getOriginalFilename();
+		}
+		
+		dto.setProduct_detailimagepath(detailImageFile);
 		
 		if (pservice.insert(dto) > 0) {
 			log.info("** pinsert 성공 **");
@@ -200,22 +224,44 @@ public class ProductController {
 		// => 처리결과에 따른 화면 출력을 위해서 dto 의 값을 Attribute에 보관
 		model.addAttribute("ptable", dto);	
 	
+		// 기본이미지
 		MultipartFile uploadfilef = dto.getUploadfilef();
 		if (uploadfilef!=null && !uploadfilef.isEmpty()) {
-			String realPath = request.getRealPath("/");
-	
-			if ( realPath.contains(".eclipse.")) 
-				realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
-			else realPath+="resources\\uploadImages\\";
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef.getOriginalFilename();
+//			uploadfilef.transferTo(new File(file));
 			
-			String file1 = realPath + uploadfilef.getOriginalFilename();
-			uploadfilef.transferTo(new File(file1)); 
-						
-			String file = uploadfilef.getOriginalFilename();
-			dto.setProduct_mainimagepath(file);
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\products\\";
+			String file = realPath + uploadfilef.getOriginalFilename();
+			uploadfilef.transferTo(new File(file));
+			
+			String mainImageFile = uploadfilef.getOriginalFilename();
+			dto.setProduct_mainimagepath(mainImageFile);
 		} else {
 	        ProductDTO existingEvent = pservice.selectOne(dto);
 	        dto.setProduct_mainimagepath(existingEvent.getProduct_mainimagepath());
+	    }
+		
+		// 상세이미지
+		MultipartFile uploadfilef2 = dto.getUploadfilef2();
+		if (uploadfilef2!=null && !uploadfilef2.isEmpty()) {
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef2.getOriginalFilename();
+//			uploadfilef2.transferTo(new File(file));
+			
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\products\\";
+			String file = realPath + uploadfilef2.getOriginalFilename();
+			uploadfilef2.transferTo(new File(file));
+			
+			String detailImageFile = uploadfilef2.getOriginalFilename();
+			dto.setProduct_detailimagepath(detailImageFile);
+		} else {
+	        ProductDTO existingEvent = pservice.selectOne(dto);
+	        dto.setProduct_detailimagepath(existingEvent.getProduct_detailimagepath());
 	    }
 		
 		// => Service 처리
@@ -248,9 +294,8 @@ public class ProductController {
 	}
 	
 	@GetMapping("/pImageList/{ii}")
-	public String pImageListID(@PathVariable("ii") int id, ProductImageDTO dto, Model model) {
-		dto.setProduct_id(id);
-		model.addAttribute("pitable", piservice.selectListByID(dto));
+	public String pImageListID(@PathVariable("ii") int id, Model model) {
+		model.addAttribute("pitable", piservice.selectListByID(id));
 		log.info("** pImageListID 성공 **");
 		return "/product/productImage";
 	} // pImageListID
@@ -270,14 +315,15 @@ public class ProductController {
 		String file="bbb.gif";
 		
 		if ( uploadfilef!=null && !uploadfilef.isEmpty() ) {
-			String realPath = request.getRealPath("/");
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef2.getOriginalFilename();
+//			uploadfilef2.transferTo(new File(file));
 			
-			if ( realPath.contains(".eclipse.")) 
-				realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
-			else realPath+="resources\\uploadImages\\";
-			
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\products\\";
 			String file1 = realPath + uploadfilef.getOriginalFilename();
-			uploadfilef.transferTo(new File(file1)); 
+			uploadfilef.transferTo(new File(file1));
 			
 			file = uploadfilef.getOriginalFilename();
 		}
@@ -308,14 +354,15 @@ public class ProductController {
 	
 		MultipartFile uploadfilef = dto.getUploadfilef();
 		if (uploadfilef!=null && !uploadfilef.isEmpty()) {
-			String realPath = request.getRealPath("/");
-	
-			if ( realPath.contains(".eclipse.")) 
-				realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
-			else realPath+="resources\\uploadImages\\";
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef2.getOriginalFilename();
+//			uploadfilef2.transferTo(new File(file));
 			
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\products\\";
 			String file1 = realPath + uploadfilef.getOriginalFilename();
-			uploadfilef.transferTo(new File(file1)); 
+			uploadfilef.transferTo(new File(file1));
 						
 			String file = uploadfilef.getOriginalFilename();
 			dto.setProduct_imagepath(file);
@@ -368,14 +415,15 @@ public class ProductController {
 		String file="bbb.gif";
 		
 		if ( uploadfilef!=null && !uploadfilef.isEmpty() ) {
-			String realPath = request.getRealPath("/");
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef2.getOriginalFilename();
+//			uploadfilef2.transferTo(new File(file));
 			
-			if ( realPath.contains(".eclipse.")) 
-				realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
-			else realPath+="resources\\uploadImages\\";
-			
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\event\\";
 			String file1 = realPath + uploadfilef.getOriginalFilename();
-			uploadfilef.transferTo(new File(file1)); 
+			uploadfilef.transferTo(new File(file1));
 			
 			file = uploadfilef.getOriginalFilename();
 		}
@@ -406,14 +454,15 @@ public class ProductController {
 		
 		MultipartFile uploadfilef = dto.getUploadfilef();
 		if (uploadfilef!=null && !uploadfilef.isEmpty()) {
-			String realPath = request.getRealPath("/");
-	
-			if ( realPath.contains(".eclipse.")) 
-				realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
-			else realPath+="resources\\uploadImages\\";
+			// 스프링부트 폴더에 저장
+//			String realPath="C:\\Team119\\Petmily\\src\\main\\webapp\\resources\\uploadImages\\";
+//			String file = realPath + uploadfilef2.getOriginalFilename();
+//			uploadfilef2.transferTo(new File(file));
 			
+			// react 폴더에 저장
+			String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\event\\";
 			String file1 = realPath + uploadfilef.getOriginalFilename();
-			uploadfilef.transferTo(new File(file1)); 
+			uploadfilef.transferTo(new File(file1));
 						
 			String file = uploadfilef.getOriginalFilename();
 			dto.setEvent_imagepath(file);

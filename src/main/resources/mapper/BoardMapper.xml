@@ -77,7 +77,7 @@
 	
 	<insert id="insertInquiry">
 		INSERT INTO INQUIRY (INQUIRY_TITLE, PRODUCT_ID, INQUIRY_WRITER, INQUIRY_CONTENT) VALUES
-		(#{inquiry_title},#{product_id},'관리자',#{inquiry_content})
+		(#{inquiry_title},#{product_id}, #{inquiry_writer}, #{inquiry_content})
 	</insert>
 
 
@@ -242,7 +242,7 @@
 	
 	<insert id="insertReview">
 		INSERT INTO REVIEW (REVIEW_TITLE, PRODUCT_ID, REVIEW_WRITER, REVIEW_POINT, REVIEW_CONTENT, REVIEW_IMAGE1, REVIEW_IMAGE2) VALUES
-		(#{review_title},#{product_id},'관리자',#{review_point}, #{review_content}, #{review_image1}, #{review_image2})
+		(#{review_title},#{product_id},#{review_writer},#{review_point}, #{review_content}, #{review_image1}, #{review_image2})
 	</insert>
 
 	<select id="getReview"
@@ -284,7 +284,7 @@
 	
 	<insert id="insertReply">
 		INSERT INTO REVIEW_REPLY (REVIEW_ID, REPLY_WRITER, REPLY_CONTENT) VALUES
-		(#{review_id},'더미맨',#{reply_content})
+		(#{review_id},#{reply_writer},#{reply_content})
 	</insert>
 	
 	<delete id="deleteReply">

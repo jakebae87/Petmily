@@ -28,5 +28,9 @@ public class ProductDTO extends PromotionProductDTO {
 	
 	private String product_mainimagepath;
 	private MultipartFile uploadfilef;
+	private String product_detailimagepath;
+	private MultipartFile uploadfilef2;
 	private double product_rating;
+	private String product_origin;
+	private int review_cnt;
 }

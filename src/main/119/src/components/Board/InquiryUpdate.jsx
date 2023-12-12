@@ -41,7 +41,7 @@ export default function InquiryUpdate() {
         };
         fetchData(); // 컴포넌트가 마운트되거나 id 값이 변경될 때마다 호출
     }, [id]);
-    
+
 
     const fetchData = async () => {
         const searchInput = document.getElementById('searchInput').value;
@@ -60,7 +60,7 @@ export default function InquiryUpdate() {
     };
     const handleSelectChange = (event) => {
         const selectedProductId = event.target.value; // select 태그의 option 중 해당하는 상품명을 변수에 담는다.
-        setSelectedValue(selectedProductId);    
+        setSelectedValue(selectedProductId);
     };
 
     return (

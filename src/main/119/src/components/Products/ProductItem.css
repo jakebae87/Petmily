@@ -59,10 +59,19 @@
 .ProductItem .gotoCart button {
     background-color: white;
     border: none;
+    cursor: pointer;
 }
 
 .ProductItem .gotoCart img {
     width: 30px;
     height: 30px;
     margin: 2.5px 0;
+}
+
+.productName span {
+    font-size: 0.8em;
+}
+
+.productName #star {
+    color: red;
 }

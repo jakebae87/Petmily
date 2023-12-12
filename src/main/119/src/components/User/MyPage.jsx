@@ -125,7 +125,7 @@ export default function MyPage() {
             <p>회원이신 고객님의 개인정보를 관리하는 공간입니다.</p>
           </a>
         </Link>
-        <Link to="/user/mypage/manageBoard">
+        <Link to="/user/mypage/manageBoard/inquiry">
           <a href="" className="board">
             <div className="orderListImg">
               <img src={board} alt="" />

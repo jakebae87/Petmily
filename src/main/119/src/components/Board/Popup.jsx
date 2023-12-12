@@ -3,6 +3,11 @@ import React from 'react';
 
 function Popup({ showPopup, closePopup, data }) {
 
+  const isLoggedIn =
+    sessionStorage.getItem("loggedInUser");
+  const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+  const userName = user ? user.user_name : ''; // 유저 이름 변수
+
   const replySubmit = async () => {
     let url = '/review/reply/insert';
 
@@ -12,14 +17,14 @@ function Popup({ showPopup, closePopup, data }) {
       headers: { 'Content-Type': 'application/json' },
       data: {
         review_id: data,
-        // reply_writer: document.getElementById('reply_writer').value,
+        reply_writer: userName,
         reply_content: document.getElementById('reply_content').value
       }
     }).then(response => {
-        alert(`댓글 등록 완료되었습니다.`);
-        closePopup();
-        window.location.reload();
-      }
+      alert(`댓글 등록 완료되었습니다.`);
+      closePopup();
+      window.location.reload();
+    }
     ).catch(error => {
       console.error(`에러 응답 = ${error.response},
 			error status = ${error.response.status},
@@ -35,11 +40,11 @@ function Popup({ showPopup, closePopup, data }) {
             <tr>
               <div style={{ width: '15%' }}>
                 <th>작성자</th>
-                <td>더미맨</td>
+                <td>{userName}</td>
               </div>
               <div style={{ width: '75%' }}>
                 <th>내용</th>
-                <td><input id='reply_content' style={{ width: '550px',height:'30px' }} type='text'/></td>
+                <td><input id='reply_content' style={{ width: '550px', height: '30px' }} type='text' /></td>
               </div>
               <div>
                 <input onClick={replySubmit} type='button' value='등록'></input>

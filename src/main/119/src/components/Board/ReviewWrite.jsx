@@ -13,6 +13,11 @@ export default function ReviewWrite() {
     }
     // 상품후기의 별점 수 받기 끝
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : ''; // 유저 이름 변수
+
     const [searchResult, setSearchResult] = useState([]); // 검색한 값이 db에 있으면 searchResult에 저장한다.
     const [selectedValue, setSelectedValue] = useState('');
 
@@ -126,6 +131,7 @@ export default function ReviewWrite() {
                         />
 
                         <input type="hidden" name="review_point" value={score} />
+                        <input type="hidden" name="review_writer" value={userName} />
                         <input type="hidden" name="product_id" value={selectedValue} />
 
                         <textarea name="review_content" rows="30" cols="100"></textarea>

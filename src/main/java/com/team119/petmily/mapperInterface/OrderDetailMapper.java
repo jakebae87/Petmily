@@ -3,12 +3,14 @@ package com.team119.petmily.mapperInterface;
 import java.util.List;
 
 import com.team119.petmily.domain.OrderDetailDTO;
+import com.team119.petmily.domain.OrderProductDTO;
 import com.team119.petmily.pagination.SearchCriteria;
 
 public interface OrderDetailMapper {
 
 	// selectList
 	List<OrderDetailDTO> selectList();
+	List<OrderProductDTO> selectListP(String user_id);
 
 	// selectOne: Detail
 	OrderDetailDTO selectOne(OrderDetailDTO vo);

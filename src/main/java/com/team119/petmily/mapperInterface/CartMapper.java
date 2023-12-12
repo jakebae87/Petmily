@@ -3,27 +3,31 @@ package com.team119.petmily.mapperInterface;
 import java.util.List;
 
 import com.team119.petmily.domain.CartDTO;
+import com.team119.petmily.domain.InquiryDTO;
+import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.pagination.SearchCriteria;
 
 public interface CartMapper {
 
 	// selectList
-	List<CartDTO> selectList();
+	List<CartDTO> selectList(String user_id);
 	
 	// selectOne: Detail
 	CartDTO selectOne(CartDTO vo);
 		
 	// delete
 	int delete(CartDTO vo);
+	int deleteP(String user_id);
 	
 	// insert: Join
-//	int insert(CartDTO vo);
-//	Integer getQuantity(String user_id, int product_id);
 	void insert(String user_id, int product_id, int product_cnt);
-	int insertP(int product_id);
+	void insertP(String user_id, int product_id);
 		
 	// update
 	int update(CartDTO vo);
+	void upCnt(String user_id, int product_id);
+	void downCnt(String user_id, int product_id);
 
 	// ** Board_SrarchCri_Paging
 	// => Cri + 검색조건
@@ -33,4 +37,10 @@ public interface CartMapper {
 	// ** Board_Cri_Paging
 	List<CartDTO> bcriList(SearchCriteria cri); // 출력할 Data만 select
 	int criTotalCount(); // 전체 rows 갯수
+	
+	// ** 마이페이지 문의 목록	
+	List<InquiryDTO> getInquiryList(String review_writer);
+
+	// ** 마이페이지 리뷰 목록
+	List<ReviewDTO> getReviewList();
 }

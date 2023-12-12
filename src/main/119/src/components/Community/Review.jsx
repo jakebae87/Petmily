@@ -38,6 +38,11 @@ function Review() {
     const itemsPerPage = 10;
     const [searchInput, setSearchInput] = useState("");
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : ''; // 유저 이름 변수
+
     const handleSearch = (e) => {
         e.preventDefault();
         setReview([]); // 검색 결과 초기화
@@ -45,6 +50,16 @@ function Review() {
         setSearchCriteria(e.target.searchCriteria.value);
         setSearchWord(e.target.searchWord.value); // 검색어 업데이트
     };
+
+    function AccessWirte() {
+        if (userName != '') {
+            return (
+                <div className="board_write">
+                    <Link to="/board/reviewWrite">글쓰기</Link>
+                </div>
+            );
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -152,9 +167,7 @@ function Review() {
                                 />
                                 <input type="submit" value="검색" />
                             </div>
-                            <div className="board_write">
-                                <Link to="/board/reviewWrite">글쓰기</Link>
-                            </div>
+                            <AccessWirte/>
                         </div>
                     </form>
                 </div>

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderProductDTO {
+public class OrderProductDTO extends ProductDTO {
 	private int order_key;
 	private String user_id;
 	private int order_total_price;
@@ -28,4 +28,5 @@ public class OrderProductDTO {
 	private String order_addr;
 	private String order_addr_detail;
 	private String order_req;
+	private String orderItems;
 }

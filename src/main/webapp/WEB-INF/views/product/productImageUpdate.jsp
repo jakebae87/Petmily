@@ -27,7 +27,18 @@
 				<input type="file" name="uploadfilef" id="uploadfilef">
 			</td></tr>
 		<tr><th>PRODUCT_VALUE1</th>
-			<td><input type="text" name="product_value1" value="${requestScope.pitable.product_value1}"></td></tr>
+			<td>
+				<select name="product_value1" id="product_value1">
+					<option value="${requestScope.pitable.product_value1}" selected>${requestScope.pitable.product_value1}</option>
+					<option value="1">1: 기타 이미지1</option>
+		            <option value="2">2: 기타 이미지2</option>
+		            <option value="3">3: 기타 이미지3</option>
+		            <option value="4">4: 기타 이미지4</option>
+		            <option value="5">5: 기타 이미지5</option>
+		            <option value="6">6: 기타 이미지6</option>
+				</select>
+			</td>
+		</tr>
 		
 		<tr><th></th>
 			<td><input type="submit" value="수정">&nbsp;&nbsp;&nbsp;

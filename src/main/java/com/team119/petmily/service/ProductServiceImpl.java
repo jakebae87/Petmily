@@ -5,24 +5,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team119.petmily.domain.CartDTO;
+import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.ProductDTO;
-
+import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.mapperInterface.ProductMapper;
+import com.team119.petmily.pagination.SearchCriteria;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	ProductMapper mapper;
+
+	@Override
+	public ProductDTO selectOne(ProductDTO dto) {
+		return mapper.selectOne(dto);
+	}
 	
 	@Override
 	public List<ProductDTO> selectList() {
 		return mapper.selectList();
-	}
-	
-	@Override
-	public List<ProductDTO> selectPromotionInfoList() {
-		return mapper.selectPromotionInfoList();
 	}
 	
 	@Override
@@ -36,8 +40,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<ProductDTO> selectThisWeekList() {
-		return mapper.selectThisWeekList();
+	public List<ProductDTO> selectThisMonthList() {
+		return mapper.selectThisMonthList();
 	}
 	
 	@Override
@@ -56,8 +60,13 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public ProductDTO selectOne(ProductDTO dto) {
-		return mapper.selectOne(dto);
+	public List<ReviewDTO> pReviewList(int id) {
+		return mapper.pReviewList(id);
+	}
+	
+	@Override
+	public List<InquiryDTO> pinquiryList(int id) {
+		return mapper.pinquiryList(id);
 	}
 	
 	@Override
@@ -65,12 +74,22 @@ public class ProductServiceImpl implements ProductService {
 		return mapper.insert(dto);
 	}
 	
+	@Override
 	public int update(ProductDTO dto) {
 		return mapper.update(dto);
+	}
+	
+	@Override
+	public int updateProductRating() {
+		return mapper.updateProductRating();
 	}
 
 	@Override
 	public int delete(ProductDTO dto) {
 		return mapper.delete(dto);
+	}
+	@Override
+	public int updateP() {
+		return mapper.updateP();
 	}
 }

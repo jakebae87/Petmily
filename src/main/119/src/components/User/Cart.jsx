@@ -1,20 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import CartItem from "./CartItem";
 
-export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder }) {
+export default function Cart({ cartItems, nothing, setNothing, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder, calcProductPrice }) {
   // 체크된 상품 가격
   const totalPrice = () => {
-    const selectedTotalPrice = checkedItems.reduce((total, itemId) => {
-      const selectedItem = cartItems.find((cart) => cart.id === itemId);
+    const selectedTotalPrice = checkedItems.reduce((total, item) => {
+      const selectedItem = cartItems.find((cart) => cart.product_id === item);
       if (selectedItem) {
-        return total + selectedItem.price * selectedItem.quantity;
+        return total + calcProductPrice(selectedItem.product_price, selectedItem.promotion_discount) * selectedItem.product_cnt;
       }
       return total;
     }, 0);
     return selectedTotalPrice;
   };
+
+  const cartItem = cartItems.map((item) => (
+      <CartItem
+      user_id = {item.user_id}
+      product_id={item.product_id}
+      product_cnt={item.product_cnt}
+      product_name={item.product_name}
+      product_price={item.product_price}
+      promotion_discount={item.promotion_discount}
+      product_mainimagepath={item.product_mainimagepath}
+      cartItems={cartItems}
+      nothing={nothing}
+      setNothing={setNothing}
+      onDelete={onDelete}
+      checkChange={checkChange}
+      checkedItems={checkedItems}
+      increQuantity={increQuantity}
+      decreQuantity={decreQuantity}
+      calcProductPrice={calcProductPrice}
+      />
+  ))
 
   return (
     <div className="Cart">
@@ -63,14 +83,9 @@ export default function Cart({ cartItems, onDelete, increQuantity, decreQuantity
                 <th scope="col">선택</th>
               </tr>
             </thead>
-            <CartItem
-              cartItems={cartItems}
-              onDelete={onDelete}
-              checkChange={checkChange}
-              checkedItems={checkedItems}
-              increQuantity={increQuantity}
-              decreQuantity={decreQuantity}
-            />
+            <tbody>
+            {cartItem}
+            </tbody>
             <tfoot>
               <tr>
                 <th colSpan="7">

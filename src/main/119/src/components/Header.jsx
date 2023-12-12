@@ -1,12 +1,30 @@
 import "./Header.css";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom'
 
 import PetmilyLogo from '../assets/Images/Petmily_logo.png';
 import glassLogo from '../assets/Images/magnifying-glass-30.png';
 
 function Header() {
+    const [isSideMenuOpen, setSideMenuOpen] = useState(false);
+
+    useEffect(() => {
+        setSideMenuOpen(false);
+    }, [window.location.pathname]);
+
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : ''; // 유저 이름 변수
+
+    const isAdmin = user && user.user_id === 'admin'; // 'admin'인지 확인
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("loggedInUser");
+    };
+
     const navigate = useNavigate();
+
 
     const handleEnterPress = (e) => {
         navigate("/products/searchedproducts");
@@ -37,10 +55,25 @@ function Header() {
                 </div>
 
                 <div className="userMenu">
-                    <Link to="user/login">로그인</Link>
-                    <Link to="user/signup">회원가입</Link>
-                    <Link to="user/mypage">마이페이지</Link>
-                    <Link to="user/cart">장바구니</Link>
+                    {isLoggedIn ? (
+                        <>
+                            <span>{userName}님</span>
+                            <Link to="/" onClick={handleLogout}>
+                                로그아웃
+                            </Link>
+                            {isAdmin ? (
+                                <Link to="http://localhost:8080/home">관리자페이지</Link> // 'admin'일 때의 링크
+                            ) : (
+                                <Link to="/user/mypage">마이페이지</Link> // 일반 사용자의 링크
+                            )}
+                            <Link to="/user/cart">장바구니</Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/user/login">로그인</Link>
+                            <Link to="/user/signup">회원가입</Link>
+                        </>
+                    )}
                 </div>
             </div>
 
@@ -48,7 +81,7 @@ function Header() {
                 <nav>
                     <ul className="mainMenu">
                         <li>
-                            <input type="checkbox" id="sideBtn" />
+                            <input type="checkbox" id="sideBtn" checked={isSideMenuOpen} onChange={() => setSideMenuOpen(!isSideMenuOpen)} />
                             <label for="sideBtn">
                                 <span></span>
                                 <span></span>

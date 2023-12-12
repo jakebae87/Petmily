@@ -1,80 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team119.petmily.mapperInterface.ProductMapper">
+	
+	<!-- <select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT * FROM PRODUCT WHERE product_id=#{product_id}
+	</select> -->
+	
 	<!-- <select id="selectList" resultType="com.team119.petmily.domain.ProductDTO">
 		select * from PRODUCT
 	</select> -->
 	
-	<select id="selectList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_image, pmp.promotion_discount
+	<select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, pmp.promotion_image, pmp.promotion_discount, COUNT(r.product_id) AS review_cnt
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+		WHERE p.product_id = #{product_id}
+		GROUP BY p.product_id
+		
+		<!-- SELECT p.*, pmp.promotion_image, pmp.promotion_discount
 		FROM PRODUCT as p
 		JOIN PROMOTION_PRODUCT as pmp
 		ON p.promotion_id = pmp.promotion_id
+		WHERE p.product_id = #{product_id} -->
 	</select>
 	
-	<select id="selectPromotionInfoList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT *
-	    FROM PROMOTION_PRODUCT
-	    WHERE promotion_id IN (1, 2, 3, 4, 5)
+	<select id="selectList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, pmp.promotion_image, pmp.promotion_discount, COUNT(r.product_id) AS review_cnt
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+		GROUP BY p.product_id
+		
+		<!-- SELECT p.*, pmp.promotion_image, pmp.promotion_discount
+		FROM PRODUCT as p
+		JOIN PROMOTION_PRODUCT as pmp
+		ON p.promotion_id = pmp.promotion_id -->
 	</select>
 	
 	<select id="selectPromotionList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
-	    FROM PRODUCT AS p
-	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-	    WHERE p.promotion_id = #{p.promotion_id}
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+	    WHERE p.promotion_id = #{promotion_id}
+	    GROUP BY p.product_id
 	</select>
     
 	<select id="selectedList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-		WHERE (#{param1} = 'all' OR p.product_kind = #{param1})
-		AND (#{param2} = 'all' OR p.product_category = #{param2})
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+		WHERE (#{param1} = 'all' OR p.product_kind = #{param1} OR p.product_kind = 'all')
+		AND (#{param2} = 'all' OR p.product_category = #{param2} OR p.product_category = 'all')
+		GROUP BY p.product_id
 	</select>
 	
-	<select id="selectThisWeekList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
+	<select id="selectThisMonthList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT p.*, 
+			CASE
+			  WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+			  ELSE 0
+			END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-		WHERE WEEK(p.product_regdate) = WEEK(CURDATE())
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+		WHERE MONTH(p.product_regdate) = MONTH(CURDATE())
+		GROUP BY p.product_id
 	</select>
 	
 	<select id="selectPopularList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 		FROM PRODUCT AS p
 		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
 		WHERE p.product_sales >= 50
+		GROUP BY p.product_id
 		ORDER BY p.product_sales DESC
 	</select>
 	
 	<select id="selectDiscountedList" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT p.*, pmp.promotion_discount
-	    FROM PRODUCT AS p
-	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
-	    WHERE pmp.promotion_discount > 0
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
+		FROM PRODUCT AS p
+		JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+		LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
+		GROUP BY p.product_id
+		HAVING promotion_discount > 0
+		ORDER BY promotion_discount DESC
 	</select>
 	
 	<select id="selectSearchedList" resultType="com.team119.petmily.domain.ProductDTO">		
-		SELECT p.*, pmp.promotion_discount
+		SELECT p.*, 
+		  CASE
+		    WHEN CURDATE() BETWEEN pmp.promotion_start AND pmp.promotion_end THEN pmp.promotion_discount
+		    ELSE 0
+		  END AS promotion_discount,
+		  COUNT(r.product_id) AS review_cnt
 	    FROM PRODUCT AS p
 	    JOIN PROMOTION_PRODUCT AS pmp ON p.promotion_id = pmp.promotion_id
+	    LEFT JOIN REVIEW AS r ON p.product_id = r.product_id
 	    WHERE p.product_name LIKE CONCAT('%', #{searchKeyword}, '%')
+	    GROUP BY p.product_id
 	</select>
 	
-	<select id="selectOne" resultType="com.team119.petmily.domain.ProductDTO">
-		SELECT * FROM PRODUCT WHERE product_id=#{product_id}
+	<select id="pinquiryList" resultType="com.team119.petmily.domain.InquiryDTO">		
+		SELECT i.*
+		FROM INQUIRY i LEFT JOIN PRODUCT p 
+		ON p.PRODUCT_ID = i.PRODUCT_ID
+		WHERE i.PRODUCT_ID = #{p.PRODUCT_ID}
+		ORDER BY INQUIRY_REGDATE DESC
+	</select>
+	
+	<select id="pReviewList" resultType="com.team119.petmily.domain.ReviewDTO">
+		SELECT r.*
+		FROM REVIEW r LEFT JOIN PRODUCT p
+		ON p.PRODUCT_ID = r.PRODUCT_ID
+		WHERE r.PRODUCT_ID = #{p.PRODUCT_ID}
+		ORDER BY REVIEW_REGDATE DESC
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO PRODUCT(promotion_id, product_kind, product_category, product_name, product_description, product_price, product_stock, product_sales, product_mainimagepath, product_rating)
-		VALUE (#{promotion_id}, #{product_kind}, #{product_category}, #{product_name}, #{product_description}, #{product_price}, #{product_stock}, #{product_sales}, #{product_mainimagepath}, #{product_rating})
+		INSERT INTO PRODUCT(promotion_id, product_kind, product_category, product_name, product_description, product_price, product_stock, product_sales, product_mainimagepath, product_detailimagepath, product_rating, product_origin)
+		VALUE (#{promotion_id}, #{product_kind}, #{product_category}, #{product_name}, #{product_description}, #{product_price}, #{product_stock}, #{product_sales}, #{product_mainimagepath}, #{product_detailimagepath}, #{product_rating}, #{product_origin})
 	</insert>
 	
 	<update id="update">
 		UPDATE PRODUCT
-		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_rating=#{product_rating}
+		SET promotion_id=#{promotion_id}, product_kind=#{product_kind}, product_category=#{product_category}, product_name=#{product_name}, product_description=#{product_description}, product_price=#{product_price}, product_stock=#{product_stock}, product_sales=#{product_sales}, product_regdate=#{product_regdate}, product_mainimagepath=#{product_mainimagepath}, product_detailimagepath=#{product_detailimagepath}, product_rating=#{product_rating}, product_origin=#{product_origin}
 		where product_id=#{product_id}
+	</update>
+	<update id="updateP">
+		UPDATE product p
+		JOIN order_detail od ON p.product_id = od.product_id
+		SET p.product_stock = p.product_stock - od.product_cnt,
+		    p.product_sales = p.product_sales + od.product_cnt
+		WHERE od.order_key = (select * from (select IFNULL(Max(order_key), 0)+1 from order_product) as temp);
+	</update>
+	
+	<update id="updateProductRating">
+		UPDATE Product
+		SET product_rating = (
+		    SELECT AVG(review_point) AS average_rating
+		    FROM Review
+		    WHERE Review.product_id = Product.product_id
+		    GROUP BY product_id
+		)
+		WHERE EXISTS (
+		    SELECT 1
+		    FROM Review
+		    WHERE Review.product_id = Product.product_id
+		)
 	</update>
 	
 	<delete id="delete">

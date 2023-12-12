@@ -21,12 +21,11 @@ const categoryTitles = {
     clothesAccessorie: "의류/악세사리"
 };
 
-function AllProducts({ addCart }) {
+function AllProducts({ calcProductPrice, sortProducts, addCart, setCartItems }) {
     const { kind, category } = useParams();
     const [productData, setProductData] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
 
-    const getData = () => {
+    const fetchData = () => {
         axios.get(`/rsproduct/productList/${kind}/${category}`)
             .then((response) => {
                 setProductData(response.data);
@@ -38,26 +37,38 @@ function AllProducts({ addCart }) {
     };
 
     useEffect(() => {
+        fetchData();
         setCurrentPage(1);
-        getData();
+        handleSort("newest");
     }, [kind, category]);
 
+    // 페이지네이션
+    const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 9;
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = productData.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
+
+    // 정렬
+    const [sortOption, setSortOption] = useState("default");
+
+    const handleSort = (option) => {
+        setSortOption(option);
+        setCurrentPage(1); // 페이지를 처음으로 리셋
+    };
+
+    const currentItems = sortProducts(productData, sortOption).slice(indexOfFirstItem, indexOfLastItem);
 
     return (
         <div className="Products">
             <div className="cateTitle">
                 <h1>{kindTitles[kind] || ""} {categoryTitles[category] || ""}</h1>
             </div>
-            <hr />
 
+            <hr />
             <div className="productClassification">
                 <ul>
                     <li><NavLink to={`/products/all/${category}`}>전체</NavLink></li>
@@ -76,17 +87,25 @@ function AllProducts({ addCart }) {
                 </ul>
             </div>
 
+            <div className="sortButtons">
+                <button className={sortOption === "newest" ? "active" : ""} onClick={() => handleSort("newest")}>최신 등록일순</button>
+                <button className={sortOption === "highToLow" ? "active" : ""} onClick={() => handleSort("highToLow")}>가격 높은순</button>
+                <button className={sortOption === "lowToHigh" ? "active" : ""} onClick={() => handleSort("lowToHigh")}>가격 낮은순</button>
+                <button className={sortOption === "HighAvgStar" ? "active" : ""} onClick={() => handleSort("HighAvgStar")}>평점 높은순</button>
+                <button className={sortOption === "HighCntReview" ? "active" : ""} onClick={() => handleSort("HighCntReview")}>리뷰 많은순</button>
+            </div>
+
             <div className="productList">
                 {currentItems.map((item) => (
-                    <ProductItem key={item.product_id} it={item} addCart={addCart} />
+                    <ProductItem key={item.product_id} it={item} calcProductPrice={calcProductPrice} addCart={addCart} setCartItems={setCartItems} />
                 ))}
             </div>
 
             {/* 페이지네이션 컴포넌트 */}
             <div className="pagination">
                 {currentPage > 1 && (
-                    <a className="prev-page" onClick={() => paginate(currentPage - 1)}>
-                        이전 페이지
+                    <a className="first-page" onClick={() => paginate(1)}>
+                        처음 페이지
                     </a>
                 )}
 
@@ -101,8 +120,8 @@ function AllProducts({ addCart }) {
                 ))}
 
                 {currentPage < Math.ceil(productData.length / itemsPerPage) && (
-                    <a className="next-page" onClick={() => paginate(currentPage + 1)}>
-                        다음 페이지
+                    <a className="last-page" onClick={() => paginate(Math.ceil(productData.length / itemsPerPage))}>
+                        마지막 페이지
                     </a>
                 )}
             </div>

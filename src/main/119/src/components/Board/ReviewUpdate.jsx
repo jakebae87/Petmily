@@ -6,7 +6,6 @@ import Star from "./Star";
 
 export default function ReviewUpdate() {
     const { id } = useParams();
-    const [clickedStars, setClickedStars] = useState(0);
     const [searchResult, setSearchResult] = useState([]); // 검색한 값이 db에 있으면 searchResult에 저장한다.
     const [selectedValue, setSelectedValue] = useState('');
     const [review, setReview] = useState({
@@ -16,6 +15,7 @@ export default function ReviewUpdate() {
         review_point: 0,
         review_content: ''
     });
+    const [clickedStars, setClickedStars] = useState(review.review_point || 0);
 
     // 상품후기의 별점 수 받기 시작
     const onChangeScore = (data) => {
@@ -24,7 +24,7 @@ export default function ReviewUpdate() {
     // 상품후기의 별점 수 받기 끝
 
     const navigate = useNavigate();
-    
+
     const [selectedFile1, setSelectedFile1] = useState(null);
     const [selectedFile2, setSelectedFile2] = useState(null);
 
