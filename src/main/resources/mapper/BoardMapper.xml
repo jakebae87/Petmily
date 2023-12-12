@@ -227,8 +227,8 @@
 	</update>
 
 	<insert id="insertFaq">
-		INSERT INTO FAQ (FAQ_TITLE, QUESTION_TYPE,
-		FAQ_CONTENT) VALUES (#{faq_title},#{question_type},#{faq_content})
+		INSERT INTO FAQ (FAQ_TITLE, FAQ_WRITER ,QUESTION_TYPE,
+		FAQ_CONTENT) VALUES (#{faq_title},'펫밀리',#{question_type},#{faq_content})
 	</insert>
 
 	<delete id="deleteFaq">
