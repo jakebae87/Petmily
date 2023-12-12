@@ -17,11 +17,10 @@ function Header() {
     const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
     const userName = user ? user.user_name : ''; // 유저 이름 변수
 
-
+    const isAdmin = user && user.user_id === 'admin'; // 'admin'인지 확인
 
     const handleLogout = () => {
         sessionStorage.removeItem("loggedInUser");
-        window.location.reload(); // 로그아웃 후 페이지 새로고침
     };
 
     const navigate = useNavigate();
@@ -62,7 +61,11 @@ function Header() {
                             <Link to="/" onClick={handleLogout}>
                                 로그아웃
                             </Link>
-                            <Link to="/user/mypage">마이페이지</Link>
+                            {isAdmin ? (
+                                <Link to="http://localhost:8080/home">관리자페이지</Link> // 'admin'일 때의 링크
+                            ) : (
+                                <Link to="/user/mypage">마이페이지</Link> // 일반 사용자의 링크
+                            )}
                             <Link to="/user/cart">장바구니</Link>
                         </>
                     ) : (

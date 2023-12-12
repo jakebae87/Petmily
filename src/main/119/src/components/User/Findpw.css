@@ -53,3 +53,7 @@
     border-radius: 6px;
     margin-top: 10px;
 }
+
+.findBtn:hover {
+    cursor: pointer;
+}
