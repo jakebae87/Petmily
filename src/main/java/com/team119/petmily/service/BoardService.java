@@ -94,5 +94,13 @@ public interface BoardService {
 
 	int updateBoardReview(ReviewDTO dto);
 
+	void updateNoticeCount(NoticeDTO dto);
+
+	void updateInquiryCount(InquiryDTO dto);
+
+	void updateReviewCount(ReviewDTO dto);
+
+	void updateFaqCount(FaqDTO dto);
+
 
 }

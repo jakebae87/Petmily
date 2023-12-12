@@ -201,8 +201,6 @@
 		WHERE INQUIRY_ID = #{inquiry_id}
 	</update>
 	
-	
-
 	<delete id="deleteInquiry">
 		DELETE FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
 	</delete>

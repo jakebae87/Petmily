@@ -81,6 +81,7 @@ export default function ReviewUpdate() {
             try {
                 const response = await axios.get(`/reviewDetail/${id}`);
                 setReview(response.data);
+                
             } catch (error) {
                 console.error('상품후기 데이터를 불러오는 중 에러:', error);
             }

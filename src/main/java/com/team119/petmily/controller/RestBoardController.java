@@ -60,6 +60,7 @@ public class RestBoardController {
 		dto.setNotice_id(id);
 		ResponseEntity<?> result = null;
 
+		boardService.updateNoticeCount(dto);
 		NoticeDTO notice = boardService.getNotice(dto);
 
 		if (notice != null) {
@@ -95,6 +96,7 @@ public class RestBoardController {
 		dto.setFaq_id(id);
 		ResponseEntity<?> result = null;
 
+		boardService.updateFaqCount(dto);
 		FaqDTO faq = boardService.getFaq(dto);
 
 		if (faq != null) {
@@ -130,6 +132,7 @@ public class RestBoardController {
 		dto.setInquiry_id(id);
 		ResponseEntity<?> result = null;
 
+		boardService.updateInquiryCount(dto);
 		InquiryDTO inquiry = boardService.getInquiry(dto);
 
 		if (inquiry != null) {
@@ -194,6 +197,8 @@ public class RestBoardController {
 	public ResponseEntity<?> reviewDetail(@PathVariable("id") int id, ReviewDTO dto) {
 		dto.setReview_id(id);
 		ResponseEntity<?> result = null;
+		
+		boardService.updateReviewCount(dto);
 		ReviewDTO review = boardService.getReview(dto);
 
 		if (review != null) {

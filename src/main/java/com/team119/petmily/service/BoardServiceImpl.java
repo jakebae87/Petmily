@@ -200,5 +200,22 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.updateBoardReview(dto);
 	}
 
+	@Override
+	public void updateNoticeCount(NoticeDTO dto) {
+		boardMapper.updateNoticeCount(dto);
+	}
+	@Override
+	public void updateInquiryCount(InquiryDTO dto) {
+		boardMapper.updateInquiryCount(dto);
+	}
+	@Override
+	public void updateReviewCount(ReviewDTO dto) {
+		boardMapper.updateReviewCount(dto);
+	}
+	@Override
+	public void updateFaqCount(FaqDTO dto) {
+		boardMapper.updateFaqCount(dto);
+	}
+
 
 } // class
