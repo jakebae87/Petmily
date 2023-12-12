@@ -35,10 +35,11 @@
 			<hr>
 			<div id="newPage"></div>
 			<div id="pTableListArea"></div>
+			<div id="insertTableArea"></div>
 			<div id="resultArea1"></div>
 			<div id="resultArea2"></div>
 			&nbsp;
-			<a href="/home">[Home]</a>&nbsp;
+			<a onclick="location.href='http://localhost:3000/'">[Home]</a>&nbsp;
 		</body>
 
 		</html>

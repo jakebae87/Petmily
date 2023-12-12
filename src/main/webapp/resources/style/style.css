@@ -104,28 +104,34 @@ a:visited {
 #pTableListArea,
 #resultArea1,
 #resultArea2,
+#insertTableArea,
 #resultArea1 th,
 #resultArea2 th,
+#insertTableArea th,
 #resultArea1 td,
-#resultArea2 td {
+#resultArea2 td,
+#insertTableArea td {
 	text-align: center;
 }
 
 #resultArea1 th,
-#resultArea2 th {
+#resultArea2 th,
+#insertTableArea th {
 	padding: 5px 5px;
 	background-color: teal;
 	color: white;
 }
 
 #resultArea1 table,
-#resultArea2 table {
+#resultArea2 table,
+#insertTableArea table {
 	margin-left:auto; 
     margin-right:auto;
 }
 
 #resultArea1 td > a,
-#resultArea2 td > a {
+#resultArea2 td > a,
+#insertTableArea td > a {
 	font-weight: bold;
     color: #0080ff;
 }

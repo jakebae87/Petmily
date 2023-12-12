@@ -8,7 +8,6 @@ function pTableListf(){
 	&nbsp;<a onclick="productf()">PRODUCT</a>&nbsp;
 	&nbsp;<a onclick="pImagef()">PRODUCT_IMAGE</a>&nbsp;
 	&nbsp;<a onclick="eventf()">EVENT</a>&nbsp;
-	<hr>
 	`;
 	document.getElementById('pTableListArea').innerHTML=resultHtml;
 	document.getElementById('newPage').innerHTML="";
@@ -28,7 +27,7 @@ function pmProductf() {
 		alert("** pmProductf response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 	
 } // pmProductf
 
@@ -46,7 +45,7 @@ function productf() {
 		alert("** productf response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 	
 } // productf
 
@@ -64,7 +63,7 @@ function pImagef() {
 		alert("** pImagef response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 	
 } // pImagef
 
@@ -82,7 +81,7 @@ function eventf() {
 		alert("** eventf response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 	
 } // eventf
 
@@ -100,6 +99,6 @@ function showImages(id) {
 		alert("** showImages response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 	
 } // showImages

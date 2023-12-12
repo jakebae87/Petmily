@@ -16,7 +16,7 @@ function pmpUpdate(id) {
 		alert("** pmpUpdate response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 } // pmpUpdate
 
 
@@ -34,7 +34,7 @@ function pUpdate(id) {
 		alert("** pUpdate response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 } // pUpdate
 
 
@@ -52,7 +52,7 @@ function piUpdate(id) {
 		alert("** piUpdate response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 } // piUpdate
 
 
@@ -70,5 +70,5 @@ function eUpdate(id) {
 		alert("** eUpdate response 실패 => " + err.message);
 	});
 	
-	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('insertTableArea').innerHTML="";
 } // eUpdate
