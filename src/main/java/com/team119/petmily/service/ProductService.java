@@ -40,4 +40,6 @@ public interface ProductService {
 	int delete(ProductDTO dto);
 
 	int updateP();
+
+	int updateD(int order_key);
 }

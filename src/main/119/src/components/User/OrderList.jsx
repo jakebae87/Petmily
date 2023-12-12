@@ -36,12 +36,10 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
   );
 }
 
-
-
 export default function OrderList() {
   const [orderLists, setOrderLists] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const paginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -61,6 +59,20 @@ export default function OrderList() {
       });
   }, []);
 
+  function deleteOrder(order_key) {
+    let url = "/rscart/deleteOrder/" + order_key;
+
+    axios
+      .delete(url)
+      .then((response) => {
+        alert("주문이 취소되었습니다.");
+      })
+      .catch((err) => {
+        if (err.response.status) alert(err.response.data);
+        else alert("주문취소 실패 => " + err.message);
+      });
+  }
+
   return (
     <div className="OrderList">
       <div className="orderListtitleArea">
@@ -75,12 +87,13 @@ export default function OrderList() {
         <div>
           <table className="orderListInfo">
             <colgroup>
-              <col style={{ width: 150 }} />
-              <col style={{ width: 200 }} />
-              <col style={{ width: "auto" }} />
-              <col style={{ width: 170 }} />
               <col style={{ width: 140 }} />
+              <col style={{ width: 160 }} />
               <col style={{ width: 150 }} />
+              <col style={{ width: 170 }} />
+              <col style={{ width: 130 }} />
+              <col style={{ width: 140 }} />
+              <col style={{ width: 140 }} />
             </colgroup>
             <thead>
               <tr>
@@ -95,6 +108,7 @@ export default function OrderList() {
                 <th scope="col">상품별금액</th>
                 <th scope="col">주문처리상태</th>
                 <th scope="col">후기작성</th>
+                <th scope="col">주문취소</th>
               </tr>
             </thead>
             <tbody>
@@ -151,6 +165,17 @@ export default function OrderList() {
                         value="후기쓰기"
                       />
                     </Link>
+                  </td>
+                  <td>
+                    <input
+                      type="button"
+                      id="cancelButton"
+                      name="cancelButton"
+                      onClick={() => {
+                        deleteOrder(item.order_key);
+                      }}
+                      value="주문취소"
+                    />
                   </td>
                 </tr>
               ))}

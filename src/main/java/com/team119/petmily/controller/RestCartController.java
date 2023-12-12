@@ -208,6 +208,27 @@ public class RestCartController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
 	    }
 	}
+	
+	@DeleteMapping(value = "/deleteOrder/{ii}")
+	public ResponseEntity<String> dorder(HttpSession session, @PathVariable("ii") int order_key, OrderProductDTO opdto, OrderDetailDTO oddto) {
+		
+		try {
+	        // 상품 재고/판매 수량 롤백    
+	        pservice.updateD(order_key);
+		    
+	        opdto.setOrder_key(order_key);
+	        oddto.setOrder_key(order_key);
+	        
+		    // 주문 테이블에 추가
+	        opservice.delete(opdto);
+	        odservice.delete(oddto);
+	        
+	        return ResponseEntity.status(HttpStatus.OK).body("주문 취소 완료");
+	    } catch (Exception e) {
+	        log.error("** 주문 중 에러 발생: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
+	    }
+	}
 		
 	// ===============================================================
 	
