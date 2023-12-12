@@ -10,7 +10,6 @@ const CartItem = ({
   product_mainimagepath,
   promotion_discount,
   checkedItems,
-  setCartItems,
   nothing,
   setNothing,
   checkChange,
@@ -26,13 +25,7 @@ const [quantity , setQuantity] = useState(product_cnt);
     axios
       .delete(url)
       .then((response) => {
-        axios.get("/rscart/cartList")
-        .then((response) => {
-          setCartItems(response.data);
-        })
-        .catch((err) => {
-          alert(`** checkdata 서버연결 실패 => ${err.message}`);
-        });
+        setNothing(nothing+1);
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);

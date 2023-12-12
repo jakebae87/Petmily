@@ -36,4 +36,6 @@ public interface ProductMapper {
 	int updateProductRating();
 	
 	int delete(ProductDTO dto);
+	
+	int updateP();
 }

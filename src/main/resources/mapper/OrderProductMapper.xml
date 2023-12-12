@@ -5,7 +5,7 @@
 
 	<!-- 1. selectList -->
 	<select id="selectList" resultType="com.team119.petmily.domain.OrderProductDTO">
-		select * from order_product order by order_key asc;
+		select * from order_product order by order_key asc
 	</select>
 	
 	<!-- 2. selectOne: Detail -->
@@ -21,16 +21,16 @@
 	<!-- 4. insert -->
 	<insert id="insert">
 		insert into
-		order_product (user_id, order_total_price, pay_method, order_name,
+		order_product (order_key, user_id, order_total_price, pay_method, order_name,
 		order_email, order_tel, order_zipcode, order_addr, order_addr_detail, order_req)
-		values(#{user_id}, #{order_total_price}, #{pay_method}, #{order_name},
+		values((select * from (select IFNULL(Max(order_key),0)+1 from order_product) as temp) ,#{user_id}, #{order_total_price}, #{pay_method}, #{order_name},
 		#{order_email}, #{order_tel}, #{order_zipcode}, #{order_addr}, #{order_addr_detail}, #{order_req})
 	</insert>
 	
 	<!-- 5. update -->
 	<update id="update">
 		update order_product set
-		order_key=#{order_key}, user_id=#{user_id}, order_total_price=#{order_total_price}, pay_method=#{pay_method},
+		user_id=#{user_id}, order_total_price=#{order_total_price}, pay_method=#{pay_method},
 		order_name=#{order_name}, order_email=#{order_email}, order_tel=#{order_tel}, order_zipcode=#{order_zipcode},
 		order_addr=#{order_addr}, order_addr_detail=#{order_addr_detail}, order_req=#{order_req}
 		where order_key=#{order_key}

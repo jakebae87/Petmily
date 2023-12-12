@@ -348,10 +348,14 @@ function Update() {
     const [newPassword2, setNewPassword2] = useState(""); // 새 비밀번호 상태 추가
     const onSaveNewPassword = (e) => {
         e.preventDefault();
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/; // 비밀번호 정규표현식
+
         if (newPassword === '' || newPassword2 === '') {
             alert("비밀번호가 입력되지 않았습니다");
         } else if (newPassword !== newPassword2) {
             alert("새 비밀번호와 확인 비밀번호가 다릅니다");
+        } else if (!passwordRegex.test(newPassword)) {
+            alert("숫자 + 영문자 + 특수문자 조합으로 8자리 이상 입력해주세요");
         } else {
             const newpassword = {
                 user_password: newPassword,
@@ -439,7 +443,7 @@ function Update() {
                                 <td>
 
                                     <button className="pwBtn" onClick={handleToggleNewPassword}>
-                                        변경
+                                        {showNewPasswordFields ? '취소' : '변경'}
                                     </button>
 
                                 </td>

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CartItem from "./CartItem";
 
-export default function Cart({ cartItems, setCartItems, nothing, setNothing, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder, calcProductPrice }) {
+export default function Cart({ cartItems, nothing, setNothing, onDelete, increQuantity, decreQuantity, checkChange, checkedItems, allCheck, allOrder, selectedOrder, calcProductPrice }) {
   // 체크된 상품 가격
   const totalPrice = () => {
     const selectedTotalPrice = checkedItems.reduce((total, item) => {
@@ -25,7 +25,6 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
       promotion_discount={item.promotion_discount}
       product_mainimagepath={item.product_mainimagepath}
       cartItems={cartItems}
-      setCartItems={setCartItems}
       nothing={nothing}
       setNothing={setNothing}
       onDelete={onDelete}
@@ -37,7 +36,6 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
       />
   ))
 
-  console.log(cartItems);
   return (
     <div className="Cart">
       <div className="titleArea">

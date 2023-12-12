@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team119.petmily.domain.CartDTO;
+import com.team119.petmily.domain.InquiryDTO;
+import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.mapperInterface.CartMapper;
 import com.team119.petmily.pagination.SearchCriteria;
 
@@ -33,30 +36,16 @@ public class CartServiceImpl implements CartService {
 	public int delete(CartDTO dto) {
 		return mapper.delete(dto);
 	}
-
-	// ** insert
-//	@Override
-//	public int insert(CartDTO dto) {
-//		return mapper.insert(dto);
-//	}
-//	@Override
-
-//	public Integer getQuantity(String user_id, int product_id) {
-//        return mapper.getQuantity(user_id, product_id);
-//	}
 	@Override
-	public void insert(String user_id, int product_id, int product_cnt) {
-//        Integer existingQuantity = mapper.getQuantity(user_id, product_id);
-
-//        if (existingQuantity == null) {
-		// 해당 상품이 장바구니에 없는 경우
-		mapper.insert(user_id, product_id, product_cnt);
-//        } else {
-		// 이미 장바구니에 있는 경우 수량 업데이트
-//            mapper.insert(user_id, product_id, product_cnt);
-//        }
+	public int deleteP(String user_id) {
+		return mapper.deleteP(user_id);
 	}
 
+	// ** insert
+	@Override
+	public void insert(String user_id, int product_id, int product_cnt) {
+		mapper.insert(user_id, product_id, product_cnt);
+	}
 	@Override
 	public void insertP(String user_id, int product_id) {
 		mapper.insertP(user_id, product_id);
@@ -91,5 +80,17 @@ public class CartServiceImpl implements CartService {
 	public int criTotalCount(SearchCriteria cri) {
 		return mapper.searchTotalCount(cri); // ver02
 		// return mapper.criTotalCount(); // ver01
+	}
+	
+	// 마이페이지 문의 목록
+	@Override
+	public List<InquiryDTO> getInquiryList(String review_writer) {
+		return mapper.getInquiryList(review_writer);
+	}
+	
+	@Override
+	// 마이페이지 리뷰 목록
+	public List<ReviewDTO> getReviewList() {
+		return mapper.getReviewList();
 	}
 }
