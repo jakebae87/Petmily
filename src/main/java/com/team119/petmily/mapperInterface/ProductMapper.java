@@ -29,7 +29,6 @@ public interface ProductMapper {
 	
 	List<InquiryDTO> pinquiryList(int id);
 	
-	
 	int insert(ProductDTO dto);
 
 	int update(ProductDTO dto);

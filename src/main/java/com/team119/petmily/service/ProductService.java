@@ -1,6 +1,7 @@
 package com.team119.petmily.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.InquiryDTO;
@@ -30,7 +31,7 @@ public interface ProductService {
 	List<ReviewDTO> pReviewList(int id);
 	
 	List<InquiryDTO> pinquiryList(int id);
-	
+    
 	int insert(ProductDTO dto);
 
 	int update(ProductDTO dto);
