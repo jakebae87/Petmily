@@ -45,28 +45,28 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const [isPostOpen, setIsPostOpen] = useState(false);
 
   const handleComplete = (data) => {
-      let fullAddress = data.address;
-      let extraAddress = "";
+    let fullAddress = data.address;
+    let extraAddress = "";
 
-      if (data.addressType === "R") {
-          if (data.bname !== "") {
-              extraAddress += data.bname;
-          }
-          if (data.buildingName !== "") {
-              extraAddress +=
-                  extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-          }
-          fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddress += data.bname;
       }
+      if (data.buildingName !== "") {
+        extraAddress +=
+          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    }
 
-      setOrderZipcode(data.zonecode);
-      setOrderAddr(fullAddress);
-      setOrderAddrD(orderAddrD);
-      setIsPostOpen(false);
+    setOrderZipcode(data.zonecode);
+    setOrderAddr(fullAddress);
+    setOrderAddrD(orderAddrD);
+    setIsPostOpen(false);
   };
   const togglePost = (e) => {
-      e.preventDefault();
-      setIsPostOpen(!isPostOpen);
+    e.preventDefault();
+    setIsPostOpen(!isPostOpen);
   };
 
   console.log(orderItems);
@@ -110,7 +110,7 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                     <span>상품구매금액 </span>
                     <strong>
                       <span className="productPrice">
-                      {totalPrice() ? `${totalPrice().toLocaleString()}원` : "가격 정보 없음"}
+                        {totalPrice() ? `${totalPrice().toLocaleString()}원` : "가격 정보 없음"}
                       </span>
                     </strong>
                     <span className="deliveryPrice"> + 배송비 3,000원 = </span>
@@ -288,12 +288,12 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                         onChange={(e) => setOrderZipcode(e.target.value)}
                       />
                       <button className="postCodeFind" onClick={togglePost}>
-                          {isPostOpen ? '우편번호 닫기' : '우편번호 찾기'}
+                        {isPostOpen ? '우편번호 닫기' : '우편번호 찾기'}
                       </button>
                       {isPostOpen && (
-                          <div>
-                              <DaumPostcode onComplete={handleComplete} autoClose={true} />
-                          </div>
+                        <div>
+                          <DaumPostcode onComplete={handleComplete} autoClose={true} />
+                        </div>
                       )}
                     </td>
                     <td>

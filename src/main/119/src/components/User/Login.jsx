@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
@@ -55,7 +55,21 @@ function Login() {
 
         const code = new URL(window.location.href).searchParams.get("code");
 
+        // 백엔드로 인가 코드를 전송하는 axios 요청
+        const sendCodeToBackend = async (code) => {
+            try {
+                const response = await axios.get(`/oauth/kakao?code=${code}`);
+                console.log(response.data); // 백엔드에서 보낸 데이터 확인
 
+            } catch (error) {
+                console.error('Error sending code to backend:', error);
+            }
+        };
+
+        // 인가 코드를 백엔드로 전송
+        if (code) {
+            sendCodeToBackend(code);
+        }
     };
 
     return (
