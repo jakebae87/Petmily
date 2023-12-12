@@ -44,6 +44,7 @@ function Notice() {
     };
 
     useEffect(() => {
+        setCurrentPage(1); // 검색 매개변수가 변경될 때 currentPage를 1로 재설정
         const fetchData = async () => {
             try {
                 const response = await axios.get('/notice/list', {
@@ -59,7 +60,8 @@ function Notice() {
             }
         };
         fetchData();
-    }, [searchPeriod, searchCriteria, searchWord]);
+    }, [searchPeriod, searchCriteria, searchWord, setCurrentPage]);
+
 
 
 
