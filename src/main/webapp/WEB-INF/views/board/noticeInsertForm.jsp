@@ -22,7 +22,7 @@
 				</tr>
 				<tr>
 					<th>글내용</th>
-					<td><input type="text" id="notice_content" /></td>
+					<td><textarea id="notice_content" cols="50" rows="10"></textarea></td>
 				</tr>
 			</table>
 		</form>
