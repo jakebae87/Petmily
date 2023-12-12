@@ -51,6 +51,7 @@ function PopularProducts({ calcProductPrice, sortProducts, addCart }) {
                 <button className={sortOption === "highToLow" ? "active" : ""} onClick={() => handleSort("highToLow")}>가격 높은순</button>
                 <button className={sortOption === "lowToHigh" ? "active" : ""} onClick={() => handleSort("lowToHigh")}>가격 낮은순</button>
                 <button className={sortOption === "HighAvgStar" ? "active" : ""} onClick={() => handleSort("HighAvgStar")}>평점 높은순</button>
+                <button className={sortOption === "HighCntReview" ? "active" : ""} onClick={() => handleSort("HighCntReview")}>리뷰 많은순</button>
             </div>
 
             <div className="productList">

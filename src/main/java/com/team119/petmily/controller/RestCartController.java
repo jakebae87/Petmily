@@ -4,18 +4,26 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team119.petmily.domain.CartDTO;
+import com.team119.petmily.domain.InquiryDTO;
+import com.team119.petmily.domain.OrderDetailDTO;
 import com.team119.petmily.domain.OrderProductDTO;
+import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.service.BoardService;
 import com.team119.petmily.service.CartService;
 import com.team119.petmily.service.OrderDetailService;
 import com.team119.petmily.service.OrderProductService;
@@ -36,6 +44,7 @@ public class RestCartController {
 	OrderDetailService odservice;
 	UserService uservice;
 	ProductService pservice;
+	BoardService boardService;
 
 	@GetMapping("/cartList")
 	// => React Connect Test
@@ -156,6 +165,52 @@ public class RestCartController {
 	
 	// ===============================================================
 	
+	@PostMapping(value = "/order")
+	public ResponseEntity<String> order(HttpSession session, @RequestBody OrderProductDTO opdto, OrderDetailDTO oddto) {
+		
+		try {
+			// orderItems를 JSON 배열로 파싱
+		    JSONParser jsonParser = new JSONParser();
+		    JSONArray jsonArray = (JSONArray) jsonParser.parse(opdto.getOrderItems());
+		    
+		    // 주문상세 insert
+		    for (Object item : jsonArray) {
+	            JSONObject jsonObject = (JSONObject) item;
+
+	            // 실제로 필요한 데이터 추출 및 사용
+	            int product_id = ((Long) jsonObject.get("product_id")).intValue();
+	            int product_cnt = ((Long) jsonObject.get("product_cnt")).intValue();
+	            int product_price = ((Long) jsonObject.get("product_price")).intValue();
+	            int promotion_discount = ((Long) jsonObject.get("promotion_discount")).intValue();
+	            
+	            int calcprice = product_price - (product_price * promotion_discount / 100);
+	            
+	            oddto.setProduct_id(product_id);
+	            oddto.setProduct_cnt(product_cnt);
+	            oddto.setProduct_kind_price(calcprice);
+	            
+	            odservice.insert(oddto);
+	            
+	            pservice.updateP();
+	        }
+		    
+		    // 주문 테이블에 추가
+		    opservice.insert(opdto);
+
+
+		    // 장바구니 삭제
+		    String user_id = (String) session.getAttribute("loginID");
+	        cservice.deleteP(user_id);
+	        
+	        return ResponseEntity.status(HttpStatus.OK).body("주문 완료");
+	    } catch (Exception e) {
+	        log.error("** 주문 중 에러 발생: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
+	    }
+	}
+		
+	// ===============================================================
+	
 	@GetMapping("/orderproductList")
 	public ResponseEntity<List<OrderProductDTO>> orderProductList(HttpSession session) {
 		String user_id = (String) session.getAttribute("loginID");
@@ -165,57 +220,40 @@ public class RestCartController {
 	
 	// ===============================================================
 	
-//	@PostMapping("/order")
-//	public ResponseEntity<?> order() {
-//		try {
-//			
-//			
-//			cservice.delete(dto);
-//			opservice.insert(dto);
-//			odservice.insert(dto);
-//			pservice.update(dto);
-//			
-//			return new ResponseEntity<>("주문 완료", HttpStatus.OK);
-//		} catch (Exception e) {
-//			log.error("Error in order", e);
-//			return new ResponseEntity<String>("주문 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//	}
+	@GetMapping(value = "/inquiry/list")
+	public ResponseEntity<?> inquiryList(HttpSession session) {
+		String review_writer = (String) session.getAttribute("loginID");
+		
+		ResponseEntity<?> result = null;
+
+		List<InquiryDTO> list = cservice.getInquiryList(review_writer);
+
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Inquiry List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Inquiry List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
 	
-//	// 주문 완료 처리
-//    @PostMapping("/order")
-//    public ResponseEntity<String> order(HttpSession session, @RequestBody OrderProductDTO dto) {
-//        try {
-//            // 세션에서 로그인 아이디를 가져오기
-//            String user_id = (String) session.getAttribute("loginID");
-//
-//            // user_id null
-//            if (user_id == null) {
-//                return new ResponseEntity<>("로그인 해주세요.", HttpStatus.UNAUTHORIZED);
-//            }
-//
-//            // 주문 정보 설정
-//            dto.setUser_id(user_id);
-//
-//            // 주문 및 상세 주문 내역 등록
-//            orderService.placeOrder(dto);
-//            
-//            // 상세 주문 내역 등록
-//            for (OrderDetailDTO orderDetailDTO : orderProductDTO.getOrderDetails()) {
-//                orderDetailDTO.setOrder_key(orderProductDTO.getOrder_key());
-//                orderDetailService.insert(orderDetailDTO);
-//            }
-//
-//            // 주문에 따른 기타 처리 (예: 재고 차감 등)
-//
-//            // 장바구니에서 주문한 상품 삭제
-//            // (이 부분은 상황에 따라 재고 차감 등이 끝난 후에 수행해야 할 수 있습니다.)
-//            cservice.delete(new CartDTO(user_id, orderProductDTO.getProduct_id()));
-//
-//            return new ResponseEntity<>("주문 완료", HttpStatus.OK);
-//        } catch (Exception e) {
-//            log.error("Error in order", e);
-//            return new ResponseEntity<>("주문 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+	// ===============================================================
+	
+	@GetMapping(value = "/review/list")
+	public ResponseEntity<?> reviewList(SearchDTO searchDTO) {
+		ResponseEntity<?> result = null;
+
+		List<ReviewDTO> list = cservice.getReviewList();
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Review List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Review List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
 }

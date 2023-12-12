@@ -56,3 +56,15 @@
 .orderListInfo tbody td {
   height: 100px;
 }
+
+/* 글쓰기 버튼 */
+ #writeButton {
+  cursor: pointer;
+  display: block;
+  width: 60px;
+  height: 25px;
+  margin: 10px auto;
+  background-color: #808080;
+  color: white;
+  border: none;
+}

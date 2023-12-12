@@ -34,12 +34,13 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
     const [productImagesData, setProductImagesData] = useState([]);
     const [quantity, setQuantity] = useState(1);
 
-    const date = new Date();
-    const formattedDate = new Intl.DateTimeFormat('ko-KR', {
+    const regDate = new Date(productDetailData.product_regdate);
+    const formattedDate = regDate.toLocaleString('ko-KR', {
         year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    }).format(date);
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'Asia/Seoul',
+    });
 
     // 수량
     const quantityChange = (event) => {
@@ -55,33 +56,33 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
     // 바로 구매하기
     const handleAddToOrder = () => {
         addOrder({ ...productDetailData, product_cnt: quantity });
-    setQuantity(1);
-  };
+        setQuantity(1);
+    };
 
-  // 장바구니 추가(3차 프젝)
-  function cartInsert(a, b) {    
-	let url="/rscart/cartInsert/" + a + "/" +b;
-	
-    axios.post(url)
-        .then((response) => {
-            alert("장바구니에 상품이 추가되었습니다");
-            axios.get("/rscart/cartList")
-                .then((response) => {
-                setCartItems(response.data);
-                })
-                .catch((err) => {
-                alert(`** checkdata 서버연결 실패 => ${err.message}`);
-                });
-        }).catch( err => {
-                    if ( err.response.status ) alert(err.response.data);  				
-                    else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
-        });
-}
+    // 장바구니 추가(3차 프젝)
+    function cartInsert(a, b) {
+        let url = "/rscart/cartInsert/" + a + "/" + b;
+
+        axios.post(url)
+            .then((response) => {
+                alert("장바구니에 상품이 추가되었습니다");
+                axios.get("/rscart/cartList")
+                    .then((response) => {
+                        setCartItems(response.data);
+                    })
+                    .catch((err) => {
+                        alert(`** checkdata 서버연결 실패 => ${err.message}`);
+                    });
+            }).catch(err => {
+                if (err.response.status) alert(err.response.data);
+                else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+            });
+    }
 
     const scrollToAnchor = (anchorId) => {
         const element = document.getElementById(anchorId);
         if (element) {
-            const offsetPosition = element.offsetTop - 152;
+            const offsetPosition = element.offsetTop - 151;
             window.scrollTo({
                 top: offsetPosition,
                 behavior: "smooth",
@@ -177,10 +178,6 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
     const productReviewRef = useRef(null);
     const productQARef = useRef(null);
     const buyGuideRef = useRef(null);
-
-    useEffect(() => {
-
-    }, []);
 
     useEffect(() => {
         const calculateOffsets = () => {
@@ -329,10 +326,10 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                     <img src={`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(productDetailData.product_detailimagepath)}`} className="detailImage" alt="productDetail1" />
                 </div>
 
-                <div id="productReview" className="productReview" ref={productReviewRef}>
-                    <div className="productDetailTitle">
+                <div className="productReview" ref={productReviewRef}>
+                    <div id="productReview" className="productDetailTitle">
                         <h2>상품후기 <span>({review.length})건</span></h2>
-                        <Link to="/board/reviewWrite">후기작성</Link>
+                        <Link to={`/board/reviewWrite2/${id}`}>후기작성</Link>
                     </div>
 
                     <div className="boardList">
@@ -374,10 +371,10 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                     </div>
                 </div>
 
-                <div id="productQA" className="productQA" ref={productQARef}>
-                    <div className="productDetailTitle">
+                <div className="productQA" ref={productQARef}>
+                    <div id="productQA" className="productDetailTitle">
                         <h2>상품문의 <span>({inquiry.length})건</span></h2>
-                        <Link to="/board/inquiryWrite">문의작성</Link>
+                        <Link to={`/board/inquiryWrite2/${id}`}>문의작성</Link>
                     </div>
 
                     <div className="boardList">
@@ -414,8 +411,8 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                     </div>
                 </div>
 
-                <div id="buyGuide" className="buyGuide" ref={buyGuideRef}>
-                    <div className="productReviewTitle">
+                <div className="buyGuide" ref={buyGuideRef}>
+                    <div id="buyGuide" className="productReviewTitle">
                         <h2>구매안내</h2>
                     </div>
 

@@ -38,4 +38,6 @@ public interface ProductService {
 	int updateProductRating();
 	
 	int delete(ProductDTO dto);
+
+	int updateP();
 }

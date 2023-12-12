@@ -24,16 +24,11 @@
 	<delete id="delete">
 		delete from cart where user_id = #{user_id} and product_id = #{product_id}
 	</delete>
+	<delete id="deleteP">
+		delete from cart where user_id = #{user_id}
+	</delete>
 	
 	<!-- 4. insert -->
-<!-- 	<insert id="insert"> -->
-<!-- 		insert into cart -->
-<!-- 		values (#{user_id}, #{product_id}, #{product_cnt}) -->
-<!-- 	</insert> -->
-<!-- 	<select id="getQuantity" resultType="java.lang.Integer"> -->
-<!--         SELECT product_cnt FROM cart WHERE user_id = #{param1} AND product_id = #{param2} -->
-<!--     </select> -->
-
     <insert id="insert">
         INSERT INTO cart (user_id, product_id, product_cnt)
         VALUES (#{param1}, #{param2}, #{param3})
@@ -118,5 +113,22 @@
 		select count(*) from cart order
 	</select>
 	
-	<!-- ******************************************************* -->
+	<!-- MyPage************************************************* -->
+	<select id="getInquiryList" resultType="com.team119.petmily.domain.InquiryDTO">
+		SELECT INQUIRY.*, 
+		(SELECT P.PRODUCT_NAME 
+	     FROM PRODUCT P 
+	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
+		FROM INQUIRY
+		WHERE inquiry_writer= #{review_writer}
+		ORDER BY INQUIRY_REGDATE DESC;
+	</select>
+	
+	<select id="getReviewList" resultType="com.team119.petmily.domain.ReviewDTO">
+		SELECT REVIEW.*, P.PRODUCT_NAME, P.PRODUCT_MAINIMAGEPATH
+	    FROM REVIEW
+	    LEFT JOIN PRODUCT P ON P.PRODUCT_ID = REVIEW.PRODUCT_ID
+		WHERE REVIEW_WRITER= #{review_writer}
+		ORDER BY REVIEW_REGDATE DESC;
+	</select>
 </mapper>

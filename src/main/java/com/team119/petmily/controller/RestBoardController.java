@@ -389,6 +389,7 @@ public class RestBoardController {
 
 		if (boardService.deleteReview(dto) > 0) {
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 삭제 완료");
+			pservice.updateProductRating();
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품후기 삭제 실패");
 		}

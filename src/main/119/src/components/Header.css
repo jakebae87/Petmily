@@ -238,3 +238,21 @@
 #sideBtn:checked+label+.sideMenu {
     left: 0;
 }
+
+#sideBtn:checked + label + .sideMenu {
+    left: 0;
+}
+
+#sideBtn:checked + label > span:nth-child(1) {
+    top: 50%;
+    transform: translate(0, -50%) rotate(45deg);
+}
+
+#sideBtn:checked + label > span:nth-child(2) {
+    opacity: 0;
+}
+
+#sideBtn:checked + label > span:nth-child(3) {
+    top: 50%;
+    transform: translate(0, -50%) rotate(-45deg);
+}
