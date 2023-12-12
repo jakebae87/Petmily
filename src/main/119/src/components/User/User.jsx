@@ -18,6 +18,7 @@ import MyPage from './MyPage';
 import Profile from './Profile';
 import ManageInquiry from './ManageInquiry';
 import InquiryDetail from "../Community/InquiryDetail";
+import ReviewDetail from "../Community/ReviewDetail";
 import ManageReview from "./ManageReview";
 import Order from './Order';
 import OrderList from './OrderList';
@@ -51,6 +52,7 @@ function User({ cartItems, nothing, setNothing, onDelete, deleteOrder, increQuan
             <Route path="/mypage/manageboard/inquiry" element={<ManageInquiry />} />
             <Route path="/mypage/manageboard/inquiry/:id" element={<InquiryDetail />} />
             <Route path="/mypage/manageboard/review" element={<ManageReview />} />
+            <Route path="/mypage/manageboard/review/:id" element={<ReviewDetail />} />
             <Route path="/order" element={<Order cartItems={cartItems} deleteOrder={deleteOrder} orderItems={orderItems} calcProductPrice={calcProductPrice} />} />
             <Route path="/orderlist" element={<OrderList />} />
             <Route path="/signup" element={<Signup />} />

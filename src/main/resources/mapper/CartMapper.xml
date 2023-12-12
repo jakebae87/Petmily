@@ -115,13 +115,13 @@
 	
 	<!-- MyPage************************************************* -->
 	<select id="getInquiryList" resultType="com.team119.petmily.domain.InquiryDTO">
-		SELECT INQUIRY.*, 
-		(SELECT P.PRODUCT_NAME 
+	    SELECT INQUIRY.*, 
+	    (SELECT P.PRODUCT_NAME 
 	     FROM PRODUCT P 
 	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
-		FROM INQUIRY
-		WHERE inquiry_writer= #{review_writer}
-		ORDER BY INQUIRY_REGDATE DESC;
+	    FROM INQUIRY
+	    WHERE inquiry_WRITER = #{param2}
+	    ORDER BY INQUIRY_REGDATE DESC;
 	</select>
 	
 	<select id="getReviewList" resultType="com.team119.petmily.domain.ReviewDTO">
