@@ -34,7 +34,7 @@ function reviewDetail(id) {
 // 3) Update Review
 function updateReview() {
 	let formData = new FormData(document.getElementById('updateReviewForm'));
-
+	
 	if (confirm("수정하시겠습니까?")) {
 		axios.post(
 			'/review/update',

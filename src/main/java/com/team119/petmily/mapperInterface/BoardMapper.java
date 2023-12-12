@@ -73,5 +73,7 @@ public interface BoardMapper {
 	int insertReply(ReviewReplyDTO dto);
 	
 	int deleteReply(ReviewReplyDTO dto);
+	
+	int updateBoardReview(ReviewDTO dto);
 
 }

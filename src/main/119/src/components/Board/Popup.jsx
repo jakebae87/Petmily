@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React from 'react';
 
-const isLoggedIn =
-  sessionStorage.getItem("loggedInUser");
-const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
-const userName = user ? user.user_name : null;
-
 function Popup({ showPopup, closePopup, data }) {
+
+  const isLoggedIn =
+    sessionStorage.getItem("loggedInUser");
+  const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+  const userName = user ? user.user_name : ''; // 유저 이름 변수
 
   const replySubmit = async () => {
     let url = '/review/reply/insert';

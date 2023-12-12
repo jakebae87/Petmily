@@ -49,7 +49,7 @@
 				<tr>
 					<th>후기 이미지1</th>
 					<td>
-						<img alt="사진1" class="selectImage1" src="/resources/uploadImages/${requestScope.review.review_image1 }"  width="80" height="100">
+						<img alt="사진1" class="selectImage1" src="/${requestScope.review.review_image1}"  width="80" height="100">
 						<input type="hidden" name="review_image1" value="${requestScope.review.review_image1 }"><br>
 						<input type="file" name="uploadfile1" id="uploadfile1" size="20">
 					</td>
@@ -57,7 +57,7 @@
 				<tr>
 					<th>후기 이미지1</th>
 					<td>
-						<img alt="사진2" class="selectImage2" src="/resources/uploadImages/${requestScope.review.review_image2 }"  width="80" height="100">
+						<img alt="사진2" class="selectImage2" src="/${requestScope.review.review_image2 }"  width="80" height="100">
 						<input type="hidden" name="review_image2" value="${requestScope.review.review_image2 }"><br>
 						<input type="file" name="uploadfile2" id="uploadfile2" size="20">
 					</td>

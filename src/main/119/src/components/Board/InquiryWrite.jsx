@@ -6,36 +6,49 @@ import axios from 'axios';
 export default function InquiryWrite() {
     const [searchResult, setSearchResult] = useState([]); // 검색한 값이 db에 있으면 searchResult에 저장한다.
     const [selectedValue, setSelectedValue] = useState('');
-    
+
+    const navigate = useNavigate();
+
     const isLoggedIn =
         sessionStorage.getItem("loggedInUser");
     const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
     const userName = user ? user.user_name : ''; // 유저 이름 변수
-    
-    const navigate = useNavigate();
 
-    const inquirySubmit = async() => {
+    const inquirySubmit = async () => {
+
+        if (!selectedValue) {
+            alert("상품명을 선택해주세요.");
+            return;
+        }
+
+        const inquiryTitleInput = document.querySelector('input[id="inquiry_title"]');
+        const inquiryTitle = inquiryTitleInput.value.trim();
+
+        if (!inquiryTitle) {
+            alert("제목을 입력하세요.");
+            return;
+        }
         let url = "/inquiry/insert";
-        
-            await axios({
-                url: url,
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                data: {
-                    inquiry_title: document.getElementById('inquiry_title').value,
-                    product_id: document.getElementById('product_id').value,
-                    inquiry_content: document.getElementById('inquiry_content').value,
-                    inquiry_writer: document.getElementById('inquiry_writer').value
-                }
 
-            }).then(response => {
-                alert(`상품문의 등록 완료되었습니다.`);
-                navigate('/community/inquiry');
-            }).catch(error => {
-                console.error(`에러 응답 = ${error.response},
+        await axios({
+            url: url,
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            data: {
+                inquiry_title: document.getElementById('inquiry_title').value,
+                inquiry_writer: document.getElementById('inquiry_writer').value,
+                product_id: document.getElementById('product_id').value,
+                inquiry_content: document.getElementById('inquiry_content').value
+            }
+
+        }).then(response => {
+            alert(`상품문의 등록 완료되었습니다.`);
+            navigate('/community/inquiry');
+        }).catch(error => {
+            console.error(`에러 응답 = ${error.response},
 			error status = ${error.response.status},
 			error message = ${error.message}`);
-            });
+        });
     }
 
     useEffect(() => {
@@ -82,7 +95,7 @@ export default function InquiryWrite() {
                     </div>
 
                     <div id="registButton">
-                        <input  onClick={inquirySubmit} value="등록" />
+                        <input onClick={inquirySubmit} value="등록" />
                     </div>
                 </div>
 
@@ -90,8 +103,8 @@ export default function InquiryWrite() {
                     <form>
                         <input id="inquiry_title" type="text" placeholder="제목을 입력하세요." maxLength="100" required />
                         <textarea id="inquiry_content" rows="30" cols="100"></textarea>
+                        <input type='hidden' id='inquiry_writer' value={userName} />
                         <input type='hidden' id='product_id' value={selectedValue ? selectedValue.toString() : ''} />
-                        <input type='hidden' id='inquiry_writer' value={userName}/>
                     </form>
                 </div>
             </div>

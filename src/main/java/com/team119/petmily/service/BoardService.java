@@ -92,5 +92,7 @@ public interface BoardService {
 
 	int deleteReply(ReviewReplyDTO dto);
 
+	int updateBoardReview(ReviewDTO dto);
+
 
 }
