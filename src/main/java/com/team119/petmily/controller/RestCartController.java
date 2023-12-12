@@ -41,29 +41,15 @@ public class RestCartController {
 	// => React Connect Test
 	public ResponseEntity<List<CartDTO>> cartList(HttpSession session) {
 		String user_id = (String) session.getAttribute("loginID");
+		
+		// 세션이 비어있으면 실행하지 않고 403 Forbidden 응답 반환
+	    if (user_id == null || user_id.isEmpty()) {
+	        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+	    }
+		
 		List<CartDTO> CartList = cservice.selectList(user_id);
 		return new ResponseEntity<>(CartList, HttpStatus.OK);
 	}
-	
-//	public ResponseEntity<?> cartInsertP(HttpSession session, @PathVariable("jj") int product_id) {
-//	    try {
-//	        // 세션에서 로그인 아이디를 가져오기
-//	        String user_id = (String) session.getAttribute("loginID");
-//	        
-//	        // user_id null
-//	        if (user_id == null) {
-//	            return new ResponseEntity<String>("로그인 해주세요.", HttpStatus.UNAUTHORIZED);
-//	        }
-//
-//	        // 세션에서 가져온 로그인 아이디와 상품 ID를 사용하여 처리
-//	        cservice.insertP(user_id, product_id);
-//
-//	        return new ResponseEntity<String>("Success", HttpStatus.OK);
-//	    } catch (Exception e) {
-//	        log.error("Error in cartInsertP", e);
-//	        return new ResponseEntity<String>("Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
-//	    }
-//	}
 
 	// ** 리액트 장바구니 상품 삭제
 	@DeleteMapping("/cdelete/{ii}/{jj}")
@@ -195,4 +181,41 @@ public class RestCartController {
 //			return new ResponseEntity<String>("주문 실패", HttpStatus.INTERNAL_SERVER_ERROR);
 //		}
 //	}
+	
+//	// 주문 완료 처리
+//    @PostMapping("/order")
+//    public ResponseEntity<String> order(HttpSession session, @RequestBody OrderProductDTO dto) {
+//        try {
+//            // 세션에서 로그인 아이디를 가져오기
+//            String user_id = (String) session.getAttribute("loginID");
+//
+//            // user_id null
+//            if (user_id == null) {
+//                return new ResponseEntity<>("로그인 해주세요.", HttpStatus.UNAUTHORIZED);
+//            }
+//
+//            // 주문 정보 설정
+//            dto.setUser_id(user_id);
+//
+//            // 주문 및 상세 주문 내역 등록
+//            orderService.placeOrder(dto);
+//            
+//            // 상세 주문 내역 등록
+//            for (OrderDetailDTO orderDetailDTO : orderProductDTO.getOrderDetails()) {
+//                orderDetailDTO.setOrder_key(orderProductDTO.getOrder_key());
+//                orderDetailService.insert(orderDetailDTO);
+//            }
+//
+//            // 주문에 따른 기타 처리 (예: 재고 차감 등)
+//
+//            // 장바구니에서 주문한 상품 삭제
+//            // (이 부분은 상황에 따라 재고 차감 등이 끝난 후에 수행해야 할 수 있습니다.)
+//            cservice.delete(new CartDTO(user_id, orderProductDTO.getProduct_id()));
+//
+//            return new ResponseEntity<>("주문 완료", HttpStatus.OK);
+//        } catch (Exception e) {
+//            log.error("Error in order", e);
+//            return new ResponseEntity<>("주문 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

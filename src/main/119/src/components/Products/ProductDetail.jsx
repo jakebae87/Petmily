@@ -28,7 +28,7 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
     );
 }
 
-const ProductDetail = ({ calcProductPrice, addCart }) => {
+const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) => {
     const { id } = useParams();
     const [productDetailData, setProductDetailData] = useState([]);
     const [productImagesData, setProductImagesData] = useState([]);
@@ -41,14 +41,42 @@ const ProductDetail = ({ calcProductPrice, addCart }) => {
         day: 'numeric'
     }).format(date);
 
+    // 수량
     const quantityChange = (event) => {
         setQuantity(parseInt(event.target.value, 10));
     };
 
-    const handleAddToCart = () => {
-        addCart({ ...productDetailData, quantity });
-        setQuantity(1);
-    };
+    // 장바구니 추가(2차 프젝)
+    // const handleAddToCart = () => {
+    //     addCart({ ...productDetailData, product_cnt :quantity });
+    //     setQuantity(1);
+    // };
+
+    // 바로 구매하기
+    const handleAddToOrder = () => {
+        addOrder({ ...productDetailData, product_cnt: quantity });
+    setQuantity(1);
+  };
+
+  // 장바구니 추가(3차 프젝)
+  function cartInsert(a, b) {    
+	let url="/rscart/cartInsert/" + a + "/" +b;
+	
+    axios.post(url)
+        .then((response) => {
+            alert("장바구니에 상품이 추가되었습니다");
+            axios.get("/rscart/cartList")
+                .then((response) => {
+                setCartItems(response.data);
+                })
+                .catch((err) => {
+                alert(`** checkdata 서버연결 실패 => ${err.message}`);
+                });
+        }).catch( err => {
+                    if ( err.response.status ) alert(err.response.data);  				
+                    else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+        });
+}
 
     const scrollToAnchor = (anchorId) => {
         const element = document.getElementById(anchorId);
@@ -259,7 +287,7 @@ const ProductDetail = ({ calcProductPrice, addCart }) => {
                                     <button
                                         className="buySoon"
                                         quantity={quantity}
-                                        onClick={() => handleAddToCart(productDetailData)}
+                                        onClick={() => handleAddToOrder(productDetailData)}
                                     >
                                         바로구매하기
                                     </button>
@@ -267,8 +295,8 @@ const ProductDetail = ({ calcProductPrice, addCart }) => {
                                 <Link to={`/user/cart`}>
                                     <button
                                         className="buyCart"
-                                        quantity={quantity}
-                                        onClick={() => handleAddToCart(productDetailData)}
+                                        //quantity={quantity}
+                                        onClick={() => cartInsert(productDetailData.product_id, quantity)}
                                     >
                                         장바구니
                                     </button>

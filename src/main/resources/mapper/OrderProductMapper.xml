@@ -21,9 +21,9 @@
 	<!-- 4. insert -->
 	<insert id="insert">
 		insert into
-		order_product (order_key, user_id, order_total_price, pay_method, order_name,
+		order_product (user_id, order_total_price, pay_method, order_name,
 		order_email, order_tel, order_zipcode, order_addr, order_addr_detail, order_req)
-		values(#{order_key}, #{user_id}, #{order_total_price}, #{pay_method}, #{order_name},
+		values(#{user_id}, #{order_total_price}, #{pay_method}, #{order_name},
 		#{order_email}, #{order_tel}, #{order_zipcode}, #{order_addr}, #{order_addr_detail}, #{order_req})
 	</insert>
 	

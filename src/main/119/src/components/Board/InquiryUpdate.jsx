@@ -13,14 +13,20 @@ export default function InquiryUpdate() {
         inquiry_content: ''
     });
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : ''; // 유저 이름 변수
+
     const navigate = useNavigate();
 
     const inquiryUpdate = async () => {
         try {
             await axios.post(`/inquiry/updateBoard/`, {
                 inquiry_id: id,
+                inquiry_writer: document.getElementById('review_writer').value,
                 inquiry_title: inquiry.inquiry_title,
-                product_id: selectedValue,
+                product_id: selectedValue || inquiry.product_id,
                 inquiry_content: inquiry.inquiry_content
             });
             alert(`상품문의 수정이 완료되었습니다.`);
@@ -116,6 +122,7 @@ export default function InquiryUpdate() {
                             onChange={(e) => setInquiry({ ...inquiry, inquiry_content: e.target.value })}
                         ></textarea>
                         <input type='hidden' id='product_id' value={selectedValue ? selectedValue.toString() : ''} />
+                        <input type='hidden' id='review_writer' value={userName}/>
                     </form>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const OrderItem = ({ orderItems, deleteOrder }) => {
+const OrderItem = ({ orderItems, deleteOrder, calcProductPrice }) => {
 
   return (
     <tbody>
@@ -17,13 +17,13 @@ const OrderItem = ({ orderItems, deleteOrder }) => {
             <span>{item.product_name}</span>
           </td>
           <td>
-            <span>{item.product_price ? `${item.product_price.toLocaleString()}원` : "가격 정보 없음"}</span>
+            <span>{calcProductPrice(item.product_price, item.promotion_discount) ? `${calcProductPrice(item.product_price, item.promotion_discount).toLocaleString()}원` : "가격 정보 없음"}</span>
           </td>
           <td>
             <span>{item.product_cnt}</span>
           </td>
           <td>
-            <span>{(item.product_price * item.product_cnt) ? `${(item.product_price * item.product_cnt).toLocaleString()}원` : "가격 정보 없음"}</span>
+            <span>{calcProductPrice(item.product_price, item.promotion_discount) * item.product_cnt ? `${(calcProductPrice(item.product_price, item.promotion_discount) * item.product_cnt).toLocaleString()}원` : "가격 정보 없음"}</span>
           </td>
           <td>
             <button

@@ -17,6 +17,11 @@ export default function InquiryDetail() {
         answer_regdate: ''
     });
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : '';
+
     const navigate = useNavigate();
     let contents = inquiry.inquiry_content;
 
@@ -66,6 +71,17 @@ export default function InquiryDetail() {
         }
     }
 
+    function WriterButton() {
+        if (userName == inquiry.inquiry_writer) {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <Link to={`/board/inquiryUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
+                    <input onClick={inquiryDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
+                </div>
+            );
+        }
+    }
+
 
     return (
         <div className="InquiryDetail">
@@ -106,9 +122,8 @@ export default function InquiryDetail() {
 
                 </table><br /><br />
                 <Answer />
-                <div id="bottomBoard">
-                    <Link to={`/board/inquiryUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
-                    <input onClick={inquiryDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
+                <div id="bottomBoard" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <WriterButton  />
                     <Link to="/community/inquiry"><input type="button" value="목록" /></Link>
                 </div>
             </div>

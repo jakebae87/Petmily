@@ -21,7 +21,7 @@ const categoryTitles = {
     clothesAccessorie: "의류/악세사리"
 };
 
-function AllProducts({ calcProductPrice, sortProducts, addCart }) {
+function AllProducts({ calcProductPrice, sortProducts, addCart, setCartItems }) {
     const { kind, category } = useParams();
     const [productData, setProductData] = useState([]);
 
@@ -96,7 +96,7 @@ function AllProducts({ calcProductPrice, sortProducts, addCart }) {
 
             <div className="productList">
                 {currentItems.map((item) => (
-                    <ProductItem key={item.product_id} it={item} calcProductPrice={calcProductPrice} addCart={addCart} />
+                    <ProductItem key={item.product_id} it={item} calcProductPrice={calcProductPrice} addCart={addCart} setCartItems={setCartItems} />
                 ))}
             </div>
 

@@ -1,17 +1,24 @@
 import { Link } from 'react-router-dom'
-import { useState } from "react";
 import axios from "axios";
 
 
 
-const ProductItem = ({ it, calcProductPrice, addCart }) => {
+const ProductItem = ({ it, calcProductPrice, setCartItems }) => {
+    
     // 장바구니 추가
     function cartInsertP(a) {    
         let url="/rscart/cartInsertP/" + a;
         
         axios.post(url)
             .then((response) => {
-                    alert("장바구니 담기 성공");
+                alert("장바구니 담기 성공");
+                axios.get("/rscart/cartList")
+                .then((response) => {
+                setCartItems(response.data);
+                })
+                .catch((err) => {
+                alert(`** checkdata 서버연결 실패 => ${err.message}`);
+                });
         }).catch( err => {
                     if ( err.response.status ) alert(err.response.data);  				
                     else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);

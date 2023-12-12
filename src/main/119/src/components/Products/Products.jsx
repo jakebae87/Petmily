@@ -11,7 +11,7 @@ import PromotionProducts from './PromotionProducts';
 import SearchedProducts from './SearchedProducts';
 import ProductDetail from './ProductDetail';
 
-function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, addOrder }) {
+function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, addOrder, setCartItems }) {
     const sortProducts = (products, option) => {
         switch (option) {
             case "newest":
@@ -29,7 +29,7 @@ function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, add
 
     return (
         <Routes>
-            <Route path="/:kind/:category" element={<AllProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart}/>} />
+            <Route path="/:kind/:category" element={<AllProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} setCartItems={setCartItems}/>} />
             <Route path="/promotionproducts/:id" element={<PromotionProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} />} />
             <Route path="/searchedproducts" element={<SearchedProducts calcProductPrice={calcProductPrice} addCart={addCart} />} />
             <Route path="/newproducts" element={<NewProducts calcProductPrice={calcProductPrice} sortProducts={sortProducts} addCart={addCart} />} />
@@ -39,6 +39,7 @@ function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, add
                 calcProductPrice={calcProductPrice}
                 addCart={addCart}
                 addOrder={addOrder}
+                setCartItems={setCartItems}
                 increQuantity={increQuantity}
                 decreQuantity={decreQuantity} />}
             />

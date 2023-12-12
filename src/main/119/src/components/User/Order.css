@@ -116,11 +116,11 @@
   width: 10vw;
 }
 
-#firstPhoneNumber,
+/* #firstPhoneNumber,
 #secondPhoneNumber,
 #lastPhoneNumber {
   text-align: center;
-}
+} */
 
 .orderInfoTable th,
 .deliveryInfoTable th {

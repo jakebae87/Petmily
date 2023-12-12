@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import OrderItem from "./OrderItem";
 import DaumPostcode from 'react-daum-postcode';
 
-export default function Order({ orderItems, deleteOrder }) {
+export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const totalPrice = () => {
     return orderItems.reduce(
       (total, item) => total + item.product_price * item.product_cnt,
@@ -43,8 +43,6 @@ export default function Order({ orderItems, deleteOrder }) {
 
   //주소 api
   const [isPostOpen, setIsPostOpen] = useState(false);
-  // const [isAddress, setIsAddress] = useState("");
-  // const [isZoneCode, setIsZoneCode] = useState();
 
   const handleComplete = (data) => {
       let fullAddress = data.address;
@@ -62,7 +60,7 @@ export default function Order({ orderItems, deleteOrder }) {
       }
 
       setOrderZipcode(data.zonecode);
-      setOrderAddr(fullAddress); // isAddress state 업데이트
+      setOrderAddr(fullAddress);
       setOrderAddrD(orderAddrD);
       setIsPostOpen(false);
   };
@@ -71,11 +69,7 @@ export default function Order({ orderItems, deleteOrder }) {
       setIsPostOpen(!isPostOpen);
   };
 
-  const postcodeComponent = useMemo(() => (
-      <div>
-          <DaumPostcode onComplete={handleComplete} autoClose={true} />
-      </div>
-  ), [handleComplete]);
+  console.log(orderItems);
 
   return (
     <div>
@@ -109,24 +103,22 @@ export default function Order({ orderItems, deleteOrder }) {
                   <th scope="col">선택</th>
                 </tr>
               </thead>
-              <OrderItem orderItems={orderItems} deleteOrder={deleteOrder} />
+              <OrderItem orderItems={orderItems} deleteOrder={deleteOrder} calcProductPrice={calcProductPrice} />
               <tfoot>
                 <tr>
                   <th colSpan="7">
                     <span>상품구매금액 </span>
                     <strong>
                       <span className="productPrice">
-                        {totalPrice().toLocaleString()}
+                      {totalPrice() ? `${totalPrice().toLocaleString()}원` : "가격 정보 없음"}
                       </span>
-                      원
                     </strong>
                     <span className="deliveryPrice"> + 배송비 3,000원 = </span>
                     <span>합계 : </span>
                     <strong>
                       <span className="cartPrice">
-                        {(totalPrice() + 3000).toLocaleString()}
+                        {totalPrice() ? `${(totalPrice() + 3000).toLocaleString()}원` : "가격 정보 없음"}
                       </span>
-                      원
                     </strong>
                   </th>
                 </tr>
@@ -182,34 +174,6 @@ export default function Order({ orderItems, deleteOrder }) {
                         value={loginUser.user_phone}
                         size="10"
                       />
-                      {/* <input
-                          type="text"
-                          id="firstPhoneNumber"
-                          name="firstPhoneNumber"
-                          value="010"
-                          size="1"
-                          readonly
-                        />
-                        &ndash;
-                        <input
-                          type="text"
-                          id="secondPhoneNumber"
-                          name="secondPhoneNumber"
-                          size="1"
-                          minlength="3"
-                          maxlength="4"
-                          required
-                        />
-                        &ndash;
-                        <input
-                          type="text"
-                          id="lastPhoneNumber"
-                          name="lastPhoneNumber"
-                          size="1"
-                          minlength="4"
-                          maxlength="4"
-                          required
-                        /> */}
                     </td>
                   </tr>
                   <tr>
@@ -225,15 +189,7 @@ export default function Order({ orderItems, deleteOrder }) {
                           size="20"
                           required
                         />
-                        {/* @ */}
                       </label>
-                      {/* <input type="text" name="email_address" />
-                        <select name="email_domain">
-                          <option value="직접입력">직접입력</option>
-                          <option value="naver.com">naver.com</option>
-                          <option value="gmail.com">gmail.com</option>
-                          <option value="daum.net">daum.net</option>
-                        </select> */}
                       <ul className="emailAlert">
                         <li>- 이메일을 통해 주문처리과정을 보내드립니다.</li>
                         <li>
@@ -307,8 +263,8 @@ export default function Order({ orderItems, deleteOrder }) {
                     <td>
                       <input
                         type="text"
-                        id="ordername"
-                        name="ordername"
+                        id="user_name"
+                        name="user_name"
                         size="5"
                         value={orderName}
                         onChange={(e) => setOrderName(e.target.value)}
@@ -323,19 +279,14 @@ export default function Order({ orderItems, deleteOrder }) {
                     <td>
                       <input
                         type="text"
-                        id="postCode"
-                        name="postCode"
+                        id="order_zipcode"
+                        name="order_zipcode"
                         size="8"
                         minlength="5"
                         maxlength="5"
                         value={orderZipcode}
                         onChange={(e) => setOrderZipcode(e.target.value)}
                       />
-                      {/* <input
-                        type="submit"
-                        name="postCodeFind"
-                        value="우편번호"
-                      /> */}
                       <button className="postCodeFind" onClick={togglePost}>
                           {isPostOpen ? '우편번호 닫기' : '우편번호 찾기'}
                       </button>
@@ -348,8 +299,8 @@ export default function Order({ orderItems, deleteOrder }) {
                     <td>
                       <input
                         type="text"
-                        id="address"
-                        name="address"
+                        id="order_addr"
+                        name="order_addr"
                         size="50"
                         value={orderAddr}
                         onChange={(e) => setOrderAddr(e.target.value)}
@@ -360,8 +311,8 @@ export default function Order({ orderItems, deleteOrder }) {
                     <td>
                       <input
                         type="text"
-                        id="address"
-                        name="address"
+                        id="order_addr_detail"
+                        name="order_addr_detail"
                         value={orderAddrD}
                         onChange={(e) => setOrderAddrD(e.target.value)}
                       />
@@ -377,40 +328,12 @@ export default function Order({ orderItems, deleteOrder }) {
                     <td>
                       <input
                         type="text"
-                        id="firstPhoneNumber"
-                        name="firstPhoneNumber"
+                        id="user_tel"
+                        name="user_tel"
                         value={orderPhone}
                         onChange={(e) => setOrderPhone(e.target.value)}
                         size="10"
                       />
-                      {/* <input
-                          type="text"
-                          id="firstPhoneNumber"
-                          name="firstPhoneNumber"
-                          value="010"
-                          size="1"
-                          readonly
-                        />
-                        &ndash;
-                        <input
-                          type="text"
-                          id="secondPhoneNumber"
-                          name="secondPhoneNumber"
-                          size="1"
-                          minlength="3"
-                          maxlength="4"
-                          required
-                        />
-                        &ndash;
-                        <input
-                          type="text"
-                          id="lastPhoneNumber"
-                          name="lastPhoneNumber"
-                          size="1"
-                          minlength="4"
-                          maxlength="4"
-                          required
-                        /> */}
                     </td>
                   </tr>
                   <tr>
@@ -419,8 +342,8 @@ export default function Order({ orderItems, deleteOrder }) {
                     </th>
                     <td>
                       <textarea
-                        name="deliveryMessage"
-                        id="deliveryMessage"
+                        id="order_req"
+                        name="order_req"
                         rows="3"
                         value="조심히 안전하게 와주세요"
                       ></textarea>
@@ -441,23 +364,19 @@ export default function Order({ orderItems, deleteOrder }) {
               <table className="payTable">
                 <thead>
                   <tr>
-                    {/* <th>총 주문금액</th> */}
                     <th>총 결제예정 금액</th>
                     <th>결제방법</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    {/* <td>
-                      <span>{(totalPrice() + 3000).toLocaleString()}</span>원
-                    </td> */}
                     <td>
-                      <span>{(totalPrice() + 3000).toLocaleString()}</span>원
+                      <input type="text" id="user_tel" name="user_tel" value={(totalPrice() + 3000).toLocaleString()} />
                     </td>
                     <td>
-                      <select id="paymethod" name="paymethod">
-                        <option>카드</option>
-                        <option>계좌이체</option>
+                      <select id="pay_method" name="pay_method">
+                        <option value="카드">카드</option>
+                        <option value="계좌이체">계좌이체</option>
                       </select>
                     </td>
                   </tr>

@@ -35,27 +35,21 @@ const calcProductPrice = (productPrice, promotionDiscount) => {
 
 function Main() {
   
-
   // 장바구니 상품
   const [cartItems, setCartItems] = useState([]);
-
-  var productCntArray = cartItems.map(function (item) {
-    return item.product_cnt;
-  });
+  // 장바구니 무한루프 방지용
+  const [nothing, setNothing] = useState(1);
 
   useEffect(() => {
     axios
       .get("/rscart/cartList")
       .then((response) => {
         setCartItems(response.data);
-        //console.log(`** checkdata 서버연결 성공 =>`, response.data);
       })
       .catch((err) => {
         alert(`** checkdata 서버연결 실패 => ${err.message}`);
       });
-  }, [productCntArray]);
-  // }, []);
-  // }, [cartItems]);
+  }, [nothing]);
 
   // 장바구니 체크된 상품
   const [checkedItems, setCheckedItems] = useState(
@@ -67,10 +61,10 @@ function Main() {
 
   // 장바구니 상품 추가
   const addCart = (it) => {
-    const existingCartItem = cartItems.find((item) => item === it);
+    const existingCartItem = cartItems.find((item) => item.product_id === it.product_id);
     if (existingCartItem) {
       const updatedCart = cartItems.map((item) =>
-        item === it
+        item.product_id === it.product_id
           ? { ...item, product_cnt: item.product_cnt + it.product_cnt }
           : item
       );
@@ -144,7 +138,7 @@ function Main() {
   const allCheck = (checked) => {
     if (checked) {
       const cartIdArray = [];
-      cartItems.map((cart) => cartIdArray.push(cart));
+      cartItems.map((cart) => cartIdArray.push(cart.product_id));
       setCheckedItems(cartIdArray);
     } else {
       setCheckedItems([]);
@@ -158,8 +152,8 @@ function Main() {
 
   // 장바구니 체크(선택)상품만 주문
   const selectedOrder = () => {
-    const selectedOrderItems = checkedItems.filter((cart) =>
-      checkedItems.includes(cart)
+    const selectedOrderItems = cartItems.filter((cart) =>
+      checkedItems.includes(cart.product_id)
     );
     setOrderItems(selectedOrderItems);
   };
@@ -178,6 +172,7 @@ function Main() {
               calcProductPrice={calcProductPrice}
               addCart={addCart}
               addOrder={addOrder}
+              setCartItems={setCartItems}
               increQuantity={increQuantity}
               decreQuantity={decreQuantity}
             />
@@ -193,6 +188,9 @@ function Main() {
           element={
             <User
               cartItems={cartItems}
+              setCartItems={setCartItems}
+              nothing={nothing}
+              setNothing={setNothing}
               addCart={addCart}
               onDelete={deleteCart}
               deleteOrder={deleteOrder}
