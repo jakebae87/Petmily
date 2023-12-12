@@ -15,7 +15,9 @@ import { Route, Routes } from "react-router-dom";
 import Cart from './Cart';
 import MyPage from './MyPage';
 import Profile from './Profile';
-import ManageBoard from './ManageBoard';
+import ManageInquiry from './ManageInquiry';
+import InquiryDetail from "../Community/InquiryDetail";
+import ManageReview from "./ManageReview";
 import Order from './Order';
 import OrderList from './OrderList';
 import Signup from './Signup';
@@ -44,7 +46,9 @@ function User({ cartItems, nothing, setNothing, onDelete, deleteOrder, increQuan
             />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/myprofile" element={<Profile />} />
-            <Route path="/mypage/manageboard" element={<ManageBoard />} />
+            <Route path="/mypage/manageboard/inquiry" element={<ManageInquiry />} />
+            <Route path="/mypage/manageboard/inquiry/:id" element={<InquiryDetail />} />
+            <Route path="/mypage/manageboard/review" element={<ManageReview />} />
             <Route path="/order" element={<Order cartItems={cartItems} deleteOrder={deleteOrder} orderItems={orderItems} calcProductPrice={calcProductPrice} />} />
             <Route path="/orderlist" element={<OrderList />} />
             <Route path="/signup" element={<Signup />} />

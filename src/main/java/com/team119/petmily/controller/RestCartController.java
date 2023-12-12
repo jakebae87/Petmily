@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team119.petmily.domain.CartDTO;
+import com.team119.petmily.domain.InquiryDTO;
+import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.OrderDetailDTO;
 import com.team119.petmily.domain.OrderProductDTO;
+import com.team119.petmily.domain.ReviewDTO;
+import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.service.BoardService;
 import com.team119.petmily.service.CartService;
 import com.team119.petmily.service.OrderDetailService;
 import com.team119.petmily.service.OrderProductService;
@@ -40,6 +45,7 @@ public class RestCartController {
 	OrderDetailService odservice;
 	UserService uservice;
 	ProductService pservice;
+	BoardService boardService;
 
 	@GetMapping("/cartList")
 	// => React Connect Test
@@ -157,15 +163,8 @@ public class RestCartController {
 			return new ResponseEntity<String>("Error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	// ===============================================================
-//	log.info("opdto = " + opdto);
 	
-//	        opservice.insert(oddto);
-	// orderItems는 JSON 형식의 문자열
-//	        ObjectMapper objectMapper = new ObjectMapper();
-//	        YourCustomType customType = objectMapper.readValue(orderItems, YourCustomType.class);
-	// 여기서 YourCustomType은 실제 데이터 형식에 맞게 수정해야 합니다.
-//	        log.info("Received data: " + customType);
+	// ===============================================================
 	
 	@PostMapping(value = "/order")
 	public ResponseEntity<String> order(HttpSession session, @RequestBody OrderProductDTO opdto, OrderDetailDTO oddto) {
@@ -218,5 +217,42 @@ public class RestCartController {
 		String user_id = (String) session.getAttribute("loginID");
 		List<OrderProductDTO> OrderProductList = odservice.selectListP(user_id);
 		return new ResponseEntity<>(OrderProductList, HttpStatus.OK);
+	}
+	
+	// ===============================================================
+	
+	@GetMapping(value = "/inquiry/list")
+	public ResponseEntity<?> inquiryList(SearchDTO searchDTO) {
+		ResponseEntity<?> result = null;
+
+		List<InquiryDTO> list = boardService.getInquiryList(searchDTO);
+
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Inquiry List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Inquiry List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+	
+	// ===============================================================
+	
+	@GetMapping(value = "/review/list")
+	public ResponseEntity<?> reviewList(SearchDTO searchDTO) {
+		ResponseEntity<?> result = null;
+
+		List<ReviewDTO> list = cservice.getReviewList();
+		if (list != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(list);
+			log.info("Review List HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Review List HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
 	}
 }
