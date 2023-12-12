@@ -15,7 +15,7 @@ function Findpw() {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const url = "/rsuser/Findpw";
+        const url = `/rsuser/Findpw/${userId}`;
         const data = {
             user_id: userId,
             user_email: userEmail
@@ -23,8 +23,8 @@ function Findpw() {
 
         axios.post(url, data)
             .then(response => {
-                if (response.data && response.data.user_password) {
-                    alert(`해당 이메일로 임시 비밀번호를 전송했습니다.`);
+                if (response.data === '임시 비밀번호가 이메일로 전송되었습니다.') {
+                    alert('임시 비밀번호가 이메일로 전송되었습니다.');
                 } else {
                     alert('해당 정보로 비밀번호를 찾을 수 없습니다.');
                 }
@@ -34,8 +34,6 @@ function Findpw() {
                 alert('비밀번호를 찾을 수 없습니다.');
             });
     }
-
-
 
     return (
         <div className="Findpw">

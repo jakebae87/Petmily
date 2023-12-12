@@ -2,15 +2,21 @@ package com.team119.petmily.controller;
 
 
 
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +25,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.mapperInterface.UserMapper;
+import com.team119.petmily.service.EmailService;
 import com.team119.petmily.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -33,11 +41,12 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @AllArgsConstructor
 public class RestUserController {
-	private static final String String = null;
+
 	UserService service;
+	EmailService eservice;
 	UserMapper mapper;
 	PasswordEncoder passwordEncoder;
-	
+
 
 
 	@PostMapping(value="/Login")
@@ -66,7 +75,6 @@ public class RestUserController {
 	        session.setAttribute("loginName", dto.getUser_name());
 	        final UserDTO userDTO = UserDTO.builder()
 	            .user_id(dto.getUser_id())
-	            .user_password(encodedPassword)
 	            .user_name(dto.getUser_name())
 	            .user_email(dto.getUser_email())
 	            .user_phone(dto.getUser_phone())
@@ -85,7 +93,8 @@ public class RestUserController {
 	    return result;
 	}	
 	
-	
+
+
 	
 	@PostMapping(value = "/Signup")
 	public ResponseEntity<String> signup(@RequestBody UserDTO dto) {
@@ -141,25 +150,88 @@ public class RestUserController {
 	}
 	
 	
-	@PostMapping(value="/Findpw")
-	public ResponseEntity<UserDTO> findUserPw(HttpSession session, @RequestBody UserDTO dto) {
-	    ResponseEntity<UserDTO> result = null;
-	    
-	    String userid = dto.getUser_id(); 
-	    String useremail = dto.getUser_email(); 
-	    String foundUserPW = service.foundUserPw(userid, useremail); 
+//	@PostMapping(value="/Findpw")
+//	public ResponseEntity<UserDTO> findUserPw(HttpSession session, @RequestBody UserDTO dto) {
+//	    ResponseEntity<UserDTO> result = null;
+//	    
+//	    String userid = dto.getUser_id(); 
+//	    String useremail = dto.getUser_email(); 
+//	    String foundUserPW = service.foundUserPw(userid, useremail); 
+//	 // 임시 비밀번호 생성 (임의로 설정)
+//	    String temporaryPassword = generateTemporaryPassword();
+//	    
+//	    UserDTO userDTO = new UserDTO();
+//	    if (foundUserPW != null) {
+//	    	// 임시 비밀번호를 DB에 업데이트하거나 사용자의 정보를 찾는 로직 추가
+//
+//	        // 사용자의 이메일로 임시 비밀번호 전송
+//	        emailService.sendTemporaryPasswordEmail(userEmail, temporaryPassword);
+//
+//	        return ResponseEntity.ok("임시 비밀번호가 이메일로 전송되었습니다.");
+//	    
+//	   
+//	    } else {
+//	        // 해당 사용자를 찾을 수 없을 때 처리
+//	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//	    }
+//	    private String generateTemporaryPassword() {
+//	        // 임시 비밀번호 생성 로직 구현 (랜덤 문자열 생성 등)
+//	        return "temporary123"; // 임시로 고정된 비밀번호 반환
+//	    }
 	
-	    UserDTO userDTO = new UserDTO();
-	    if (foundUserPW != null) {
-	        userDTO.setUser_password(foundUserPW);
-	        return ResponseEntity.ok(userDTO);
-	    } else {
-	        // 해당 사용자를 찾을 수 없을 때 처리
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	  private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	    private static final Random RANDOM = new SecureRandom();
+
+	    private String generateTemporaryPassword(int length) {
+	        if (length <= 0) {
+	            throw new IllegalArgumentException("Length must be greater than zero");
+	        }
+
+	        StringBuilder stringBuilder = new StringBuilder(length);
+	        for (int i = 0; i < length; i++) {
+	            stringBuilder.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
+	        }
+
+	        return stringBuilder.toString();
+	    }
+	    @PostMapping(value="/Findpw/{userId}")
+	    public ResponseEntity<String> findUserPw(@PathVariable String userId, @RequestBody UserDTO dto) {
+	        String useremail = dto.getUser_email(); 
+	        String foundUserPW = service.foundUserPw(userId, useremail);
+
+	        if (foundUserPW != null) {
+	            // 임시 비밀번호 생성
+	            String temporaryPassword = generateTemporaryPassword(10); // 예를 들어 10자리의 임시 비밀번호 생성
+	            
+	            log.info("foundUserPW =" + foundUserPW);
+	            log.info("temporaryPassword =" + temporaryPassword);
+	            
+	            // 임시 비밀번호를 암호화
+	            String encryptedTemporaryPassword = passwordEncoder.encode(temporaryPassword);
+
+	            // DB에 암호화된 임시 비밀번호 업데이트
+	            boolean updated = service.randompw(userId, encryptedTemporaryPassword);
+	            
+	            log.info("encryptedTemporaryPassword = " + encryptedTemporaryPassword);
+	            log.info("updated =" + updated);
+	            
+	            if (updated) {
+	                // 사용자의 이메일로 임시 비밀번호 전송
+	                eservice.sendTemporaryPasswordEmail(useremail, temporaryPassword);
+	                return ResponseEntity.ok("임시 비밀번호가 이메일로 전송되었습니다.");
+	            } else {
+	                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("임시 비밀번호 업데이트에 실패했습니다.");
+	            }
+	        } else {
+	            // 해당 사용자를 찾을 수 없을 때 처리
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 사용자 정보를 찾을 수 없습니다.");
+	        }
 	    }
 	
-	}
-	
+
+
+
+
 	@DeleteMapping(value="/selfDelete/{user_id}")
 	public ResponseEntity<?> delete(@PathVariable("user_id") String userId, UserDTO dto) {
 		dto.setUser_id(userId);
@@ -195,6 +267,7 @@ public class RestUserController {
 	@PostMapping(value="/update/{user_id}")
 	public ResponseEntity<String> update(@PathVariable("user_id") String userId, @RequestBody UserDTO dto) {
 	    dto.setUser_id(userId);
+	   
 	    int updateResult = service.update(dto);
 
 	    if (updateResult > 0) {
@@ -205,4 +278,56 @@ public class RestUserController {
 	        return new ResponseEntity<>("** 회원수정 실패, Data_NotFound **", HttpStatus.BAD_GATEWAY);
 	    }
 	}
+	
+	@PostMapping(value="/pwupdate/{user_id}")
+	public ResponseEntity<String> pwupdate(HttpServletRequest request, @PathVariable("user_id") String userId, @RequestBody UserDTO dto) {
+	    dto.setUser_id(userId);
+	    
+	    // 비밀번호 암호화
+	    String newPassword = dto.getUser_password();
+	    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    String encryptedPassword = passwordEncoder.encode(newPassword);
+	    
+	    // 암호화된 비밀번호를 DTO에 설정
+	    dto.setUser_password(encryptedPassword);
+
+	    int pwupdateResult = service.pwupdate(dto);
+	    log.info("pwupdateResult ="+pwupdateResult);
+	    if (pwupdateResult > 0) {
+	        log.info("** pwupdate HttpStatus.OK => " + HttpStatus.OK);
+	        return new ResponseEntity<>("** 비밀번호 수정 성공 **", HttpStatus.OK);
+	    } else {
+	        log.info("** pwupdate HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
+	        return new ResponseEntity<>("** 비밀번호 수정 실패, Data_NotFound **", HttpStatus.BAD_GATEWAY);
+	    }
+	}
+	@PostMapping(value="/checkPassword/{user_id}")
+	public ResponseEntity<String> checkPassword(@PathVariable("user_id") String user_id, @RequestBody UserDTO dto) {
+		 //입력받은 비밀번호
+		String inputPassword = dto.getUser_password();
+	    
+	  
+	    dto.setUser_id(user_id);
+	    
+	    //데이터베이스에서 가져온 비밀번호
+	    String storedEncryptedPassword = mapper.checkUserPw(user_id);
+	    log.info("userId ="+user_id);
+	   	log.info("inputPassword ="+ inputPassword);
+	   	log.info("storedEncryptedPassword ="+ storedEncryptedPassword);
+	    if (storedEncryptedPassword != null) {
+	        // 비밀번호 비교
+	        if ( passwordEncoder.matches(inputPassword, storedEncryptedPassword )) {
+	            // 비밀번호 일치
+	            return new ResponseEntity<>("비밀번호 확인 성공", HttpStatus.OK);
+	        } else {
+	            // 비밀번호 불일치
+	            return new ResponseEntity<>("비밀번호 확인 실패", HttpStatus.BAD_REQUEST);
+	        }
+	    } else {
+	        // 사용자가 존재하지 않을 경우 처리
+	        return new ResponseEntity<>("사용자가 존재하지 않습니다", HttpStatus.NOT_FOUND);
+	    }
+	}
+	
+	
 }

@@ -156,3 +156,7 @@
 .Signup select option[value=""][disabled] {
     display: none;
 }
+
+.signupBtn:hover {
+    cursor: pointer;
+}

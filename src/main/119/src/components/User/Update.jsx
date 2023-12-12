@@ -41,7 +41,6 @@ function Update() {
         if (userFromSession) {
             setUserName(userFromSession.user_name);
             setUserId(userFromSession.user_id);
-            setUserPassword(userFromSession.user_password);
             setUserEmail(userFromSession.user_email);
             setUserBrithday(userFromSession.user_birthday);
             setUserPhone(userFromSession.user_phone);
@@ -300,12 +299,80 @@ function Update() {
         }
         setUserPhone(currentNumber2);
     }
+
+    const [showNewPasswordFields, setShowNewPasswordFields] = useState(false);
+
+    const handleToggleNewPassword = (e) => {
+        e.preventDefault();
+        setShowNewPasswordFields(prevState => !prevState);
+    };
+
+    //    패스워드 유효성 검사
+    const [pw, setPw] = useState("");
+    const [pwMessage, setpwMessage] = useState("");
+    const [ispw, setIspw] = useState(false);
+
+    const onChangePw = (e) => {
+        const currentPw = e.target.value;
+
+        const pwRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+
+        if (!pwRegExp.test(currentPw)) {
+            setpwMessage("숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요");
+            setIspw(false);
+        } else {
+            setpwMessage("사용가능한 비밀번호 입니다");
+            setIspw(true);
+        }
+        setUserPassword(currentPw);
+    };
+
+    //패스워드 확인
+    const [pw2, setPw2] = useState("");
+    const [pwMessage2, setpwMessage2] = useState("");
+    const [ispw2, setIspw2] = useState(false);
+
+    const onChangePw2 = (e) => {
+        const currentPw2 = e.target.value;
+        setPw2(currentPw2);
+        if (pw !== currentPw2) {
+            setpwMessage2("비밀번호가 일치하지 않습니다");
+            setIspw2(false);
+        } else {
+            setpwMessage2("비밀번호가 일치합니다");
+            setIspw2(true);
+        }
+    };
+
+    const [newPassword, setNewPassword] = useState(""); // 새 비밀번호 상태 추가
+    const [newPassword2, setNewPassword2] = useState(""); // 새 비밀번호 상태 추가
+    const onSaveNewPassword = (e) => {
+        e.preventDefault();
+        if (newPassword === '' || newPassword2 === '') {
+            alert("비밀번호가 입력되지 않았습니다");
+        } else if (newPassword !== newPassword2) {
+            alert("새 비밀번호와 확인 비밀번호가 다릅니다");
+        } else {
+            const newpassword = {
+                user_password: newPassword,
+            };
+            axios.post(`/rsuser/pwupdate/${userId}`, newpassword)
+                .then(response => {
+                    alert("비밀번호가 변경되었습니다");
+                    // 비밀번호 변경 성공 시 필요한 처리를 추가할 수 있습니다.
+                })
+                .catch(error => {
+                    console.error('비밀번호 변경 실패:', error);
+                    alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+                });
+        }
+    };
+
     //모든항목 입력 검사
     const onSubmit = () => {
         const userData = {
             user_id: userId,
             user_name: userName,
-            user_password: userPassword,
             user_email: userEmail,
             user_birthday: `${birthyear}-${birthmonth}-${birthday}`,
             user_phone: `010-${number}-${number2}`,
@@ -319,7 +386,6 @@ function Update() {
                 const updatedUserData = {
                     ...JSON.parse(sessionStorage.getItem("loggedInUser")),
                     user_name: userName,
-                    user_password: userPassword,
                     user_email: userEmail,
                     user_birthday: `${birthyear}-${birthmonth}-${birthday}`,
                     user_phone: `010-${number}-${number2}`,
@@ -336,7 +402,7 @@ function Update() {
                 console.error('회원수정 실패:', error);
                 alert('회원수정에 실패했습니다. 다시 시도해주세요.');
             });
-    };
+    }
 
 
     //생년월일 선택창
@@ -371,10 +437,41 @@ function Update() {
                             <tr>
                                 <th><label for="pw">비밀번호</label></th>
                                 <td>
-                                    <input id="pw" type="password" className="updatebox" name="userPassword" value={userPassword} />
+
+                                    <button className="pwBtn" onClick={handleToggleNewPassword}>
+                                        변경
+                                    </button>
 
                                 </td>
                             </tr>
+                            {showNewPasswordFields && (
+                                <>
+                                    <tr>
+                                        <th><label htmlFor="pw">새 비밀번호</label></th>
+                                        <td>
+                                            <input id="newpw" type="password" className="updatebox" name="newpw" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                                            <span className="emessage">{pwMessage}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th><label htmlFor="pw2">새 비밀번호 확인</label></th>
+                                        <td>
+                                            <input id="newpw2" type="password" className="updatebox" name="newpw2" value={newPassword2} onChange={(e) => setNewPassword2(e.target.value)} />
+                                            <span className="emessage">{pwMessage2}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <td>
+                                            <button className="pwBtn" onClick={onSaveNewPassword}>
+                                                새 비밀번호 저장
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </>
+                            )}
+
+
 
                             <tr>
                                 <th><label for="email">이메일</label></th>

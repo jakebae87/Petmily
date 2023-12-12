@@ -40,8 +40,35 @@ export default function Profile() {
     }
   }, []);
 
-  //수정하기
-  
+  //수정하기 버튼 클릭시
+  // 수정 모달 상태
+  const [showModal, setShowModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+
+  const veiwModal = (e) => {
+    e.preventDefault();
+    setShowModal(true);
+  }
+
+
+  const onSubmitUpdate = (e) => {
+    e.preventDefault();
+    const setcurrentPassword = {
+      user_password: currentPassword,
+    }
+    axios
+      .post(`/rsuser/checkPassword/${userId}`, setcurrentPassword)
+      .then((response) => {
+        setShowModal(false);
+        navigate("/user/Update");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("현재 비밀번호가 올바르지 않습니다.");
+      });
+  };
+
+
 
   //회원탈퇴
   const ondelete = (user_id) => {
@@ -132,7 +159,31 @@ export default function Profile() {
 
               </tbody>
             </table>
-            <Link to="/user/Update"><input type="submit" class="editBtn" value="수정하기" /></Link>
+            {/* 모달 */}
+            {showModal && (
+              <div className="modal">
+                <div className="modal-content">
+                  <p>현재 비밀번호를 입력해 주세요</p>
+                  <form>
+                    <span className="close" onClick={() => setShowModal(false)}>
+                      &times;
+                    </span>
+                    <input
+                      type="password"
+                      value={currentPassword}
+                      className="modalbox"
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+                    <button type="button" onClick={onSubmitUpdate} className="modalBtn">
+                      확인
+                    </button>
+                  </form>
+                </div>
+              </div>
+            )}
+            <button onClick={veiwModal} className="editBtn">
+              수정하기
+            </button>
             <input onClick={() => ondelete(userId)} type="submit" class="deleteBtn" value="회원탈퇴" />
           </div>
         </form>
