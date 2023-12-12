@@ -29,11 +29,12 @@ import Findpw from './Findpw';
 import Success from './Success';
 import Update from './Update';
 
-function User({ cartItems, nothing, setNothing, onDelete, deleteOrder, increQuantity, decreQuantity, checkedItems, orderItems, allOrder, selectedOrder, allCheck, checkChange, calcProductPrice }) {
+function User({ cartItems, setCartItems, nothing, setNothing, onDelete, deleteOrder, increQuantity, decreQuantity, checkedItems, orderItems, allOrder, selectedOrder, allCheck, checkChange, calcProductPrice }) {
     return (
         <Routes>
             <Route path="/cart" element={<Cart
                 cartItems={cartItems}
+                setCartItems={setCartItems}
                 nothing={nothing}
                 setNothing={setNothing}
                 onDelete={onDelete}

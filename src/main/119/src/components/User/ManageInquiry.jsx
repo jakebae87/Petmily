@@ -77,8 +77,6 @@ export default function ManageInquiry() {
     return inquiry.slice(startIndex, endIndex);
   };
 
-  console.log(paginatedData());
-
   // const { id } = useParams();
 
   let contents = inquiry.inquiry_content;

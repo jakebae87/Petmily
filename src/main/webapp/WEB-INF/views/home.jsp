@@ -39,6 +39,7 @@
 			<div id="resultArea2"></div>
 			&nbsp;
 			<a href="/home">[Home]</a>&nbsp;
+			<a onclick="location.href='http://localhost:3000/'">[Home]</a>&nbsp;
 		</body>
 
 		</html>
