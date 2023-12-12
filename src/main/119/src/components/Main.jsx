@@ -40,20 +40,20 @@ function Main() {
   // 장바구니 무한루프 방지용
   const [nothing, setNothing] = useState(1);
 
-  useEffect(() => {
-    const loggedInUser = sessionStorage.getItem('loggedInUser');
+  // useEffect(() => {
+  //   const loggedInUser = sessionStorage.getItem('loggedInUser');
   
-    if (loggedInUser) {
-      axios
-        .get("/rscart/cartList")
-        .then((response) => {
-          setCartItems(response.data);
-        })
-        .catch((err) => {
-          alert(`** checkdata 서버연결 실패 => ${err.message}`);
-        });
-    }
-  }, [nothing]);
+  //   if (loggedInUser) {
+  //     axios
+  //       .get("/rscart/cartList")
+  //       .then((response) => {
+  //         setCartItems(response.data);
+  //       })
+  //       .catch((err) => {
+  //         alert(`** checkdata 서버연결 실패 => ${err.message}`);
+  //       });
+  //   }
+  // }, [nothing]);
 
   // 장바구니 체크된 상품
   const [checkedItems, setCheckedItems] = useState(
@@ -166,7 +166,12 @@ function Main() {
     <div className="Main">
       <Routes>
         {/* Home */}
-        <Route path="/" element={<Home calcProductPrice={calcProductPrice} addCart={addCart} />} />
+        <Route
+          path="/"
+          element={
+            <Home calcProductPrice={calcProductPrice} addCart={addCart} />
+          }
+        />
 
         {/* Products */}
         <Route
@@ -192,6 +197,7 @@ function Main() {
           element={
             <User
               cartItems={cartItems}
+              setCartItems={setCartItems}
               nothing={nothing}
               setNothing={setNothing}
               addCart={addCart}
