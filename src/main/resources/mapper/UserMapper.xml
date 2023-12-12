@@ -31,10 +31,15 @@
 	<update id="update">
 		update user set
 		
-	
-			user_name=#{user_name}, user_email=#{user_email}, user_birthday=#{user_birthday}, user_phone=#{user_phone}, zipcode=#{zipcode}, 
+			user_name=#{user_name},user_email=#{user_email}, user_birthday=#{user_birthday}, user_phone=#{user_phone}, zipcode=#{zipcode}, 
 			addr=#{addr}, addr_detail=#{addr_detail} 
 		
+		where user_id=#{user_id}
+	</update>
+	
+	<update id="pwupdate">
+		update user set
+			user_password=#{user_password}
 		where user_id=#{user_id}
 	</update>
 	
@@ -62,6 +67,20 @@
     <select id="checkUserId" resultType="int" parameterType="string">
         SELECT COUNT(*) FROM user WHERE user_id = #{user_id}
     </select>
+    
+    <select id="checkUserPw" resultType="string">
+        SELECT user_password
+        FROM user
+        WHERE user_id = #{user_id}
+    </select>
+
+		<!-- 임시비밀번호 데이터에 업데이트 -->
+<update id="randompw">
+    update user
+    set user_password=#{temporaryPassword}
+    where user_id=#{userId}
+</update>
+  
   
     
 </mapper>  

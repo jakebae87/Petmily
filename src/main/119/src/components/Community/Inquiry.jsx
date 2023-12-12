@@ -35,6 +35,11 @@ function Inquiry() {
     const itemsPerPage = 10;
     const [searchInput, setSearchInput] = useState("");
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : ''; // 유저 이름 변수
+
     const handleSearch = (e) => {
         e.preventDefault();
         setInquiry([]); // 검색 결과 초기화
@@ -67,6 +72,16 @@ function Inquiry() {
             return <td style={{ color: 'blue' }}>답변완료</td>
         } else {
             return <td style={{ color: 'red' }}>확인중</td>
+        }
+    }
+
+    function AccessWirte() {
+        if (userName != '') {
+            return (
+                <div className="board_write">
+                    <Link to="/board/inquiryWrite">글쓰기</Link>
+                </div>
+            );
         }
     }
 
@@ -152,9 +167,7 @@ function Inquiry() {
                                 />
                                 <input type="submit" value="검색" />
                             </div>
-                            <div className="board_write">
-                                <Link to="/board/inquiryWrite">글쓰기</Link>
-                            </div>
+                            <AccessWirte />
                         </div>
                     </form>
                 </div>

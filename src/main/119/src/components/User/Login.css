@@ -9,13 +9,14 @@
     margin: auto;
     /* margin-top: 100px; */
 }
-.Login h1{
+
+.Login h1 {
     margin: 60px auto;
     text-align: center;
 }
 
 .login_ {
-    
+
     width: 400px;
     padding: 0 40px 60px 40px;
     box-sizing: border-box;
@@ -38,7 +39,7 @@
 }
 
 
-.loginbox >input::placeholder {
+.loginbox>input::placeholder {
     color: #D2D2D2;
 }
 
@@ -52,6 +53,18 @@
     border-radius: 6px;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.loginBtn:hover {
+    cursor: pointer;
+}
+
+.kakao:hover {
+    cursor: pointer;
+}
+
+.naver:hover {
+    cursor: pointer;
 }
 
 .kakao {
@@ -87,7 +100,7 @@
 
 }
 
-.login_ >ul {
+.login_>ul {
     list-style-type: none;
     padding: 0;
     margin-bottom: 30px;

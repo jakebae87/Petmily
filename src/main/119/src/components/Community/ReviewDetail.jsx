@@ -23,6 +23,11 @@ function ReviewDetail() {
     const [replies, setReplies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : '';
+
     const navigate = useNavigate();
     let contents = review.review_content;
 
@@ -32,6 +37,28 @@ function ReviewDetail() {
             return <div id='bottomBoard'><button onClick={() => getReplies(id)}>댓글보기</button></div>
         } else {
             return null;
+        }
+    }
+
+    function WriterButton() {
+        if (userName == review.review_writer) {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <Link to={`/board/reviewUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
+                    <input onClick={reviewDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
+                </div>
+            );
+        }
+    }
+
+    function replyDeleteButton() {
+        if (userName == review.review_writer) {
+            return (
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <Link to={`/board/reviewUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
+                    <input onClick={reviewDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
+                </div>
+            );
         }
     }
 
@@ -177,7 +204,13 @@ function ReviewDetail() {
                                                 <th>작성일</th>
                                                 <td>{reply.reply_regdate}</td>
                                             </div>
-                                            <div><button onClick={()=>replyDelete(reply.reply_id)} style={{ width: '50px' }} type="button">삭제</button></div>
+                                            <div>
+                                                {userName === reply.reply_writer && (
+                                                <button onClick={() => replyDelete(reply.reply_id)} style={{ width: '50px' }} type="button">
+                                                    삭제
+                                                </button>
+                                                )}
+                                            </div>
                                         </tr>
                                     </table>
                                 </div>
@@ -186,9 +219,8 @@ function ReviewDetail() {
                     )}
                 </div>
                 <Popup data={id} showPopup={showPopup} closePopup={closePopup} />
-                <div id="bottomBoard">
-                    <Link to={`/board/reviewUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
-                    <input onClick={reviewDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
+                <div id="bottomBoard" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <WriterButton/>
                     <input onClick={replyWrite} style={{ marginRight: '50px' }} type="button" value="댓글작성" />
                     <Link to="/community/review"><input type="button" value="목록" /></Link>
                 </div>

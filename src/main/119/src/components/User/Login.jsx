@@ -33,7 +33,7 @@ function Login() {
                 if (err.response.status == 401) {
                     alert("id 또는 password 가 다릅니다");
                 } else {
-                    alert("시스템 오류, 잠시후 다시하세요 => " + err.message);
+                    alert("id 또는 password 가 다릅니다");
                 }
             });
     };

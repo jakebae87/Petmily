@@ -163,7 +163,7 @@ function Signup() {
     const onChangeEmail = (e) => {
         const currentEmail = e.target.value;
         setEmail(currentEmail);
-        const emRegExp = /[@]/;
+        const emRegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emRegExp.test(currentEmail)) {
             setEmMessage("올바른 이메일 형식이 아닙니다");

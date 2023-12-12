@@ -25,6 +25,12 @@
     text-align: center;
 }
 
+.selectStarRegist span {
+    font-size: 1.2em;
+    font-weight: bold;
+    align-self: center;
+}
+
 .selectStarRegist select {
     width: 40%;
     text-align: center;

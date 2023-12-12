@@ -1,6 +1,11 @@
 import axios from 'axios';
 import React from 'react';
 
+const isLoggedIn =
+  sessionStorage.getItem("loggedInUser");
+const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+const userName = user ? user.user_name : null;
+
 function Popup({ showPopup, closePopup, data }) {
 
   const replySubmit = async () => {
@@ -12,7 +17,7 @@ function Popup({ showPopup, closePopup, data }) {
       headers: { 'Content-Type': 'application/json' },
       data: {
         review_id: data,
-        // reply_writer: document.getElementById('reply_writer').value,
+        reply_writer: userName,
         reply_content: document.getElementById('reply_content').value
       }
     }).then(response => {
@@ -35,7 +40,7 @@ function Popup({ showPopup, closePopup, data }) {
             <tr>
               <div style={{ width: '15%' }}>
                 <th>작성자</th>
-                <td>더미맨</td>
+                <td>{userName}</td>
               </div>
               <div style={{ width: '75%' }}>
                 <th>내용</th>
