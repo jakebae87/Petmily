@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function OrderList() {
 
@@ -50,6 +51,7 @@ export default function OrderList() {
                 <th scope="col">수량</th>
                 <th scope="col">상품별금액</th>
                 <th scope="col">주문처리상태</th>
+                <th scope="col">후기작성</th>
               </tr>
             </thead>
             <tbody>
@@ -88,12 +90,21 @@ export default function OrderList() {
                   </td>
                   <td>
                     <span className="orderPrice">
-                      {(item.product_kind_price * item.product_cnt).toLocaleString()}원
+                      {(
+                        item.product_kind_price * item.product_cnt
+                      ).toLocaleString()}
+                      원
                     </span>
                   </td>
                   <td>
                     <span className="orderState">{item.delivery_status}</span>
                   </td>
+                  <td><Link to="/board/reviewWrite"><input
+                    type="button"
+                    id="writeButton"
+                    name="writeButton"
+                    value="글쓰기"
+                  /></Link></td>
                 </tr>
               ))}
             </tbody>

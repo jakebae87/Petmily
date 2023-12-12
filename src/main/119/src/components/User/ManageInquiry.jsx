@@ -57,7 +57,7 @@ export default function ManageInquiry() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/inquiry/list", {
+        const response = await axios.get("/rscart/inquiry/list", {
           params: {
             searchPeriod,
             searchCriteria,
@@ -66,7 +66,7 @@ export default function ManageInquiry() {
         });
         setInquiry(response.data);
       } catch (error) {
-        alert(`자료가 없습니다.`);
+        alert(`작성글이 없습니다.`);
       }
     };
     fetchData();
@@ -88,7 +88,7 @@ export default function ManageInquiry() {
 
   console.log(paginatedData());
 
-  const { id } = useParams();
+  // const { id } = useParams();
 
   let contents = inquiry.inquiry_content;
 
@@ -107,14 +107,14 @@ export default function ManageInquiry() {
       });
   }
 
-  useEffect(() => {
-    axios
-      .get("/inquiryDetail/" + id)
-      .then((response) => {
-        setInquiry(response.data);
-      })
-      .catch((error) => {});
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("/inquiryDetail/" + id)
+  //     .then((response) => {
+  //       setInquiry(response.data);
+  //     })
+  //     .catch((error) => {});
+  // }, []);
 
   if (contents != null) {
     contents = inquiry.inquiry_content.split("\n").map((it) => <p>{it}</p>);
@@ -196,39 +196,6 @@ export default function ManageInquiry() {
           currentPage={currentPage}
           onPageChange={setCurrentPage}
         />
-        <div name="searchs" className="searchs">
-          <form onSubmit={handleSearch}>
-            <div className="searchConditions">
-              <div>
-                <select name="searchPeriod">
-                  <option value="all">전체</option>
-                  <option value="week">7일</option>
-                  <option value="month">1개월</option>
-                  <option value="firstQuarter">3개월</option>
-                </select>
-                <select name="searchCriteria">
-                  <option value="subject">제목</option>
-                  <option value="content">내용</option>
-                </select>
-              </div>
-            </div>
-            <div className="searchInput">
-              <div>
-                <input
-                  className="searchWord"
-                  name="searchWord"
-                  type="text"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                />
-                <input type="submit" value="검색" />
-              </div>
-              <div className="board_write">
-                {/* <Link to="/board/inquiryWrite">글쓰기</Link> */}
-              </div>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   );

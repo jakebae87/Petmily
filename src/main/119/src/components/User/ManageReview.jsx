@@ -188,41 +188,6 @@ const ManageReview = ({ board, deleteBoard }) => {
           currentPage={currentPage}
           onPageChange={setCurrentPage}
         />
-
-        <div name="searchs" className="searchs">
-          <form onSubmit={handleSearch}>
-            <div className="searchConditions">
-              <div>
-                <select name="searchPeriod">
-                  <option value="all">전체</option>
-                  <option value="week">일주일</option>
-                  <option value="month">한달</option>
-                  <option value="firstQuarter">세달</option>
-                </select>
-                <select name="searchCriteria">
-                  <option value="subject">제목</option>
-                  <option value="content">내용</option>
-                  <option value="writer">글쓴이</option>
-                </select>
-              </div>
-            </div>
-            <div className="searchInput">
-              <div>
-                <input
-                  className="searchWord"
-                  name="searchWord"
-                  type="text"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                />
-                <input type="submit" value="검색" />
-              </div>
-              <div className="board_write">
-                {/* <Link to="/board/reviewWrite">글쓰기</Link> */}
-              </div>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   );

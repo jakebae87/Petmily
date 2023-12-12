@@ -39,7 +39,7 @@ public interface CartMapper {
 	int criTotalCount(); // 전체 rows 갯수
 	
 	// ** 마이페이지 문의 목록	
-	List<InquiryDTO> getInquiryList(SearchDTO searchDTO);
+	List<InquiryDTO> getInquiryList(String review_writer);
 
 	// ** 마이페이지 리뷰 목록
 	List<ReviewDTO> getReviewList();

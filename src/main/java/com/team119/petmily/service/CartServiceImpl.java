@@ -84,13 +84,13 @@ public class CartServiceImpl implements CartService {
 	
 	// 마이페이지 문의 목록
 	@Override
-	public List<ReviewDTO> getReviewList() {
-		return mapper.getReviewList();
+	public List<InquiryDTO> getInquiryList(String review_writer) {
+		return mapper.getInquiryList(review_writer);
 	}
 	
-	// 마이페이지 리뷰 목록
 	@Override
-	public List<InquiryDTO> getInquiryList(SearchDTO searchDTO) {
-		return mapper.getInquiryList(searchDTO);
+	// 마이페이지 리뷰 목록
+	public List<ReviewDTO> getReviewList() {
+		return mapper.getReviewList();
 	}
 }

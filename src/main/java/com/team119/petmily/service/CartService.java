@@ -38,7 +38,7 @@ public interface CartService {
 	int criTotalCount(SearchCriteria cri); // 출력대상인 전체 rows 갯수
 	
 	// ** 마이페이지 문의목록
-	List<InquiryDTO> getInquiryList(SearchDTO searchDTO);
+	List<InquiryDTO> getInquiryList(String review_writer);
 	
 	// ** 마이페이지 리뷰목록
 	List<ReviewDTO> getReviewList();

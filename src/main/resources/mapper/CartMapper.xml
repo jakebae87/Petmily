@@ -114,50 +114,21 @@
 	</select>
 	
 	<!-- MyPage************************************************* -->
-	
-	<select id="getReviewList" resultType="com.team119.petmily.domain.ReviewDTO">
-		SELECT REVIEW.*, P.PRODUCT_NAME, P.PRODUCT_MAINIMAGEPATH
-	    FROM REVIEW
-	    LEFT JOIN PRODUCT P ON P.PRODUCT_ID = REVIEW.PRODUCT_ID
-		WHERE (#{searchPeriod} IS NULL OR
-		    CASE 
-		        WHEN 'week' = #{searchPeriod} THEN REVIEW_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
-		        WHEN 'month' = #{searchPeriod} THEN REVIEW_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
-		        WHEN 'firstQuarter' = #{searchPeriod} THEN REVIEW_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
-		        ELSE 1=1
-		    END)
-		AND (#{searchCriteria} IS NULL OR
-		    CASE 
-		        WHEN 'subject' = #{searchCriteria} THEN LOWER(REVIEW_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
-		        WHEN 'content' = #{searchCriteria} THEN LOWER(REVIEW_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
-		        WHEN 'writer' = #{searchCriteria} THEN LOWER(REVIEW_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
-		        ELSE 1=1
-		    END)
-		AND REVIEW_WRITER= #{REVIEW_WRITER}
-		ORDER BY REVIEW_REGDATE DESC;
-	</select>
-	
 	<select id="getInquiryList" resultType="com.team119.petmily.domain.InquiryDTO">
 		SELECT INQUIRY.*, 
 		(SELECT P.PRODUCT_NAME 
 	     FROM PRODUCT P 
 	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
 		FROM INQUIRY
-		WHERE (#{searchPeriod} IS NULL OR
-		    CASE 
-		        WHEN 'week' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
-		        WHEN 'month' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
-		        WHEN 'firstQuarter' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
-		        ELSE 1=1
-		    END)
-		AND (#{searchCriteria} IS NULL OR
-		    CASE 
-		        WHEN 'subject' = #{searchCriteria} THEN LOWER(INQUIRY_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
-		        WHEN 'content' = #{searchCriteria} THEN LOWER(INQUIRY_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
-		        WHEN 'writer' = #{searchCriteria} THEN LOWER(INQUIRY_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
-		        ELSE 1=1
-		    END)
-		AND REVIEW_WRITER= #{REVIEW_WRITER}
+		WHERE inquiry_writer= #{review_writer}
 		ORDER BY INQUIRY_REGDATE DESC;
+	</select>
+	
+	<select id="getReviewList" resultType="com.team119.petmily.domain.ReviewDTO">
+		SELECT REVIEW.*, P.PRODUCT_NAME, P.PRODUCT_MAINIMAGEPATH
+	    FROM REVIEW
+	    LEFT JOIN PRODUCT P ON P.PRODUCT_ID = REVIEW.PRODUCT_ID
+		WHERE REVIEW_WRITER= #{review_writer}
+		ORDER BY REVIEW_REGDATE DESC;
 	</select>
 </mapper>

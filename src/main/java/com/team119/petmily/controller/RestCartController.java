@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.InquiryDTO;
-import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.OrderDetailDTO;
 import com.team119.petmily.domain.OrderProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
@@ -222,10 +221,12 @@ public class RestCartController {
 	// ===============================================================
 	
 	@GetMapping(value = "/inquiry/list")
-	public ResponseEntity<?> inquiryList(SearchDTO searchDTO) {
+	public ResponseEntity<?> inquiryList(HttpSession session) {
+		String review_writer = (String) session.getAttribute("loginID");
+		
 		ResponseEntity<?> result = null;
 
-		List<InquiryDTO> list = boardService.getInquiryList(searchDTO);
+		List<InquiryDTO> list = cservice.getInquiryList(review_writer);
 
 		if (list != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(list);
