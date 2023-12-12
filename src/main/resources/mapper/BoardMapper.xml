@@ -297,6 +297,19 @@
 	<select id="getProduct" resultType="com.team119.petmily.domain.ProductDTO">
 		select * from product where product_name like CONCAT('%', LOWER(#{name}), '%')
 	</select>
+	
+	<update id="updateNoticeCount">
+		UPDATE NOTICE SET NOTICE_COUNT = NOTICE_COUNT + 1 WHERE NOTICE_ID = #{notice_id}
+	</update>
+	<update id="updateInquiryCount">
+		UPDATE INQUIRY SET INQUIRY_COUNT = INQUIRY_COUNT + 1 WHERE INQUIRY_ID = #{inquiry_id}
+	</update>
+	<update id="updateReviewCount">
+		UPDATE REVIEW SET REVIEW_COUNT = REVIEW_COUNT + 1 WHERE REVIEW_ID = #{review_id}
+	</update>
+	<update id="updateFaqCount">
+		UPDATE FAQ SET FAQ_COUNT = FAQ_COUNT + 1 WHERE FAQ_ID = #{faq_id}
+	</update>
 
 </mapper>
 
