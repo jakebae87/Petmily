@@ -2,9 +2,52 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function OrderList() {
+function Pagination({ totalPages, currentPage, onPageChange }) {
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(
+      <a
+        key={i}
+        href="#"
+        className={i === currentPage ? "active" : ""}
+        onClick={() => onPageChange(i)}
+      >
+        {i}
+      </a>
+    );
+  }
 
+  return (
+    <div className="paginations">
+      <button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        &laquo;
+      </button>
+      {pages}
+      <button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        &raquo;
+      </button>
+    </div>
+  );
+}
+
+
+
+export default function OrderList() {
   const [orderLists, setOrderLists] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+
+  const paginatedData = () => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return orderLists.slice(startIndex, endIndex);
+  };
 
   useEffect(() => {
     axios
@@ -55,7 +98,7 @@ export default function OrderList() {
               </tr>
             </thead>
             <tbody>
-              {orderLists.map((item) => (
+              {paginatedData().map((item) => (
                 <tr>
                   <td>
                     <span className="orderDate">
@@ -99,16 +142,26 @@ export default function OrderList() {
                   <td>
                     <span className="orderState">{item.delivery_status}</span>
                   </td>
-                  <td><Link to="/board/reviewWrite"><input
-                    type="button"
-                    id="writeButton"
-                    name="writeButton"
-                    value="글쓰기"
-                  /></Link></td>
+                  <td>
+                    <Link to="/board/reviewWrite">
+                      <input
+                        type="button"
+                        id="writeButton"
+                        name="writeButton"
+                        value="후기쓰기"
+                      />
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          {/* 페이지네이션 UI */}
+          <Pagination
+            totalPages={Math.ceil(orderLists.length / itemsPerPage)}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>

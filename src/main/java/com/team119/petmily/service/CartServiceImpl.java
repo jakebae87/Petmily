@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.ReviewDTO;
-import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.mapperInterface.CartMapper;
 import com.team119.petmily.pagination.SearchCriteria;
 

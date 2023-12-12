@@ -43,16 +43,7 @@ export default function ManageInquiry() {
   const [searchCriteria, setSearchCriteria] = useState("subject");
   const [searchWord, setSearchWord] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const [searchInput, setSearchInput] = useState("");
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setInquiry([]); // 검색 결과 초기화
-    setSearchPeriod(e.target.searchPeriod.value);
-    setSearchCriteria(e.target.searchCriteria.value);
-    setSearchWord(e.target.searchWord.value); // 검색어 업데이트
-  };
+  const itemsPerPage = 5;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,8 +77,6 @@ export default function ManageInquiry() {
     return inquiry.slice(startIndex, endIndex);
   };
 
-  console.log(paginatedData());
-
   // const { id } = useParams();
 
   let contents = inquiry.inquiry_content;
@@ -106,15 +95,6 @@ export default function ManageInquiry() {
         error message = ${error.message}`);
       });
   }
-
-  // useEffect(() => {
-  //   axios
-  //     .get("/inquiryDetail/" + id)
-  //     .then((response) => {
-  //       setInquiry(response.data);
-  //     })
-  //     .catch((error) => {});
-  // }, []);
 
   if (contents != null) {
     contents = inquiry.inquiry_content.split("\n").map((it) => <p>{it}</p>);
