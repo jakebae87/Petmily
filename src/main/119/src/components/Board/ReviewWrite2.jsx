@@ -23,6 +23,22 @@ export default function ReviewWrite() {
     const userName = user ? user.user_name : null;
 
     const reviewSubmit = async () => {
+        const selectedFilesInput = document.querySelector('input[type="file"]');
+        const selectedFiles = selectedFilesInput.files;
+
+        if (selectedFiles.length !== 2) {
+            alert("후기 작성시에 이미지는 반드시 2장 업로드해야 합니다.");
+            return;
+        }
+
+        const reviewTitleInput = document.querySelector('input[name="review_title"]');
+        const reviewTitle = reviewTitleInput.value.trim();
+
+        if (!reviewTitle) {
+            alert("제목을 입력하세요.");
+            return;
+        }
+
         let formData = new FormData(document.getElementById('reviewForm'));
 
         await axios.post(
