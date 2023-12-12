@@ -120,7 +120,7 @@ function Review() {
                     </tr>
 
                     {paginatedData().map((r) =>
-                        <tr key={r.inquiry_id}>
+                        <tr key={r.review_id}>
                             <td style={{ textAlign: 'center' }}><Link to={`./${r.review_id}`}>{r.review_title}</Link></td>
                             <td><Link to={`/products/productdetail/${r.product_id}`}>
                                 <img style={{ width: '180px', height: '150px' }} src={process.env.PUBLIC_URL + `/Images/products/${r.product_mainimagepath}`} alt={r.product_name} />
@@ -138,7 +138,7 @@ function Review() {
                     currentPage={currentPage}
                     onPageChange={setCurrentPage}
                 />
-                
+
                 <div name="search" className="search">
                     <form onSubmit={handleSearch}>
                         <div className="searchConditions">

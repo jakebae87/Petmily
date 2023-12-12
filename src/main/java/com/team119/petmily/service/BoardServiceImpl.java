@@ -195,5 +195,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.deleteReply(dto);
 	}
 
+	@Override
+	public int updateBoardReview(ReviewDTO dto) {
+		return boardMapper.updateBoardReview(dto);
+	}
+
 
 } // class
