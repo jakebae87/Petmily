@@ -29,7 +29,7 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
 
 function Faq() {
     const [faq, setFaq] = useState([]);
-    const [searchPeriod, setSearchPeriod] = useState("all");
+    const [searchType, setSearchType] = useState("all");
     const [searchCriteria, setSearchCriteria] = useState("subject");
     const [searchWord, setSearchWord] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,7 +39,7 @@ function Faq() {
     const handleSearch = (e) => {
         e.preventDefault();
         setFaq([]); // 검색 결과 초기화
-        setSearchPeriod(e.target.searchPeriod.value);
+        setSearchType(e.target.searchType.value);
         setSearchCriteria(e.target.searchCriteria.value);
         setSearchWord(e.target.searchWord.value); // 검색어 업데이트
     };
@@ -50,7 +50,7 @@ function Faq() {
             try {
                 const response = await axios.get('/faq/list', {
                     params: {
-                        searchPeriod,
+                        searchType,
                         searchCriteria,
                         searchWord,
                     }
@@ -61,7 +61,7 @@ function Faq() {
             }
         };
         fetchData();
-    }, [searchPeriod, searchCriteria, searchWord, setCurrentPage]);
+    }, [searchType, searchCriteria, searchWord, setCurrentPage]);
 
     const paginatedData = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
@@ -118,11 +118,12 @@ function Faq() {
                     <form onSubmit={handleSearch}>
                         <div className="searchConditions">
                             <div>
-                                <select name="searchPeriod">
+                                <select name="searchType">
                                     <option value="all">전체</option>
-                                    <option value="week">일주일</option>
-                                    <option value="month">한달</option>
-                                    <option value="firstQuarter">세달</option>
+                                    <option value="delivery">결제/배송</option>
+                                    <option value="join">회원가입/정보</option>
+                                    <option value="refund">교환/환불</option>
+                                    <option value="etc">기타</option>
                                 </select>
                                 <select name="searchCriteria">
                                     <option value="subject">제목</option>
