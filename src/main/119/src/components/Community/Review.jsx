@@ -97,7 +97,7 @@ function Review() {
                     <ul>
                         <li><Link to="/community/notice">공지사항</Link></li>
                         <li><Link to="/community/inquiry">상품문의</Link></li>
-                        <li><Link to="/community/review">상품후기</Link></li>
+                        <li><a href="/community/review">상품후기</a></li>
                         <li><Link to="/community/faq">자주묻는질문</Link></li>
                     </ul>
                 </div>

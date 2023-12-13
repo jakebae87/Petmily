@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class SearchDTO {
 
 	private String searchPeriod;
+	private String searchCheck;
 	private String searchCriteria;
 	private String searchWord;
 }

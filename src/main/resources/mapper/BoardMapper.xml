@@ -18,7 +18,6 @@
 		    CASE 
 		        WHEN 'subject' = #{searchCriteria} THEN LOWER(NOTICE_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        WHEN 'content' = #{searchCriteria} THEN LOWER(NOTICE_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
-		        WHEN 'writer' = #{searchCriteria} THEN LOWER(NOTICE_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        ELSE 1=1
 		    END)
 		ORDER BY NOTICE_REGDATE DESC;
@@ -45,11 +44,10 @@
 	     FROM PRODUCT P 
 	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
 		FROM INQUIRY
-		WHERE (#{searchPeriod} IS NULL OR
+		WHERE (#{searchCheck} IS NULL OR
 		    CASE 
-		        WHEN 'week' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
-		        WHEN 'month' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
-		        WHEN 'firstQuarter' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+		        WHEN 'complete' = #{searchCheck} THEN ANSWER_CONTENT IS NOT NULL
+		        WHEN 'ongoing' = #{searchCheck} THEN ANSWER_CONTENT IS NULL
 		        ELSE 1=1
 		    END)
 		AND (#{searchCriteria} IS NULL OR
@@ -57,6 +55,11 @@
 		        WHEN 'subject' = #{searchCriteria} THEN LOWER(INQUIRY_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        WHEN 'content' = #{searchCriteria} THEN LOWER(INQUIRY_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        WHEN 'writer' = #{searchCriteria} THEN LOWER(INQUIRY_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        WHEN 'product' = #{searchCriteria} THEN LOWER(
+		        (	SELECT P.PRODUCT_NAME 
+	     			FROM PRODUCT P 
+	     			WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID)
+	     		) 	LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        ELSE 1=1
 		    END)
 		ORDER BY INQUIRY_REGDATE DESC;

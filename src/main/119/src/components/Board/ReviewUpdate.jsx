@@ -56,6 +56,11 @@ export default function ReviewUpdate() {
     const reviewUpdate = async () => {
         let formData = new FormData(document.getElementById('reviewForm'));
 
+        if (!review.review_title) {
+            alert("제목을 입력하세요.");
+            return;
+        }
+
         const pointToAdd = clickedStars !== 0 ? clickedStars : review.review_point;
         formData.append('review_point', pointToAdd);
 
