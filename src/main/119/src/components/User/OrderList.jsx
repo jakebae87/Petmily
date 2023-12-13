@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Pagination({ totalPages, currentPage, onPageChange }) {
   const pages = [];
@@ -37,6 +37,8 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
 }
 
 export default function OrderList() {
+  const navigate = useNavigate();
+
   const [orderLists, setOrderLists] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -66,6 +68,7 @@ export default function OrderList() {
       .delete(url)
       .then((response) => {
         alert("주문이 취소되었습니다.");
+        navigate("/user/orderList");
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);

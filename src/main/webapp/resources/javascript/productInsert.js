@@ -9,7 +9,7 @@ function pmpInsertTable() {
 		url
 	).then(response => {
 		console.log("** pmpInsertTable response 성공 **");
-		document.getElementById('resultArea2').innerHTML=response.data;
+		document.getElementById('insertTableArea').innerHTML=response.data;
 	}).catch(err => {
 		alert("** pmpInsertTable response 실패 => " + err.message);
 	});
@@ -24,7 +24,7 @@ function pInsertTable() {
 		url
 	).then(response => {
 		console.log("** pInsertTable response 성공 **");
-		document.getElementById('resultArea2').innerHTML=response.data;
+		document.getElementById('insertTableArea').innerHTML=response.data;
 	}).catch(err => {
 		alert("** pInsertTable response 실패 => " + err.message);
 	});
@@ -39,7 +39,7 @@ function piInsertTable() {
 		url
 	).then(response => {
 		console.log("** piInsertTable response 성공 **");
-		document.getElementById('resultArea2').innerHTML=response.data;
+		document.getElementById('insertTableArea').innerHTML=response.data;
 	}).catch(err => {
 		alert("** piInsertTable response 실패 => " + err.message);
 	});
@@ -53,7 +53,7 @@ function eInsertTable() {
 		url
 	).then(response => {
 		console.log("** eInsertForm response 성공 **");
-		document.getElementById('resultArea2').innerHTML=response.data;
+		document.getElementById('insertTableArea').innerHTML=response.data;
 	}).catch(err => {
 		alert("** eInsertForm response 실패 => " + err.message);
 	});
