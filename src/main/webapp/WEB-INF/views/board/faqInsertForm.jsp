@@ -26,11 +26,12 @@
 							<option value="결제/배송" selected>[결제/배송]</option>
 							<option value="회원가입/정보">[회원가입/정보]</option>
 							<option value="교환/환불">[교환/환불]</option>
+							<option value="기타">[기타]</option>
 					</select></td>
 				</tr>
 				<tr>
 					<th>글내용</th>
-					<td><input type="text" id="faq_content" /></td>
+					<td><textarea id="faq_content" cols="50" rows="10"></textarea></td>
 				</tr>
 			</table>
 		</form>
