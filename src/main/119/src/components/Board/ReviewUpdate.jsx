@@ -92,7 +92,7 @@ export default function ReviewUpdate() {
             }
         };
         fetchData(); // 컴포넌트가 마운트되거나 id 값이 변경될 때마다 호출
-    }, [id]);
+    }, [id],);
 
 
     const fetchData = async () => {
