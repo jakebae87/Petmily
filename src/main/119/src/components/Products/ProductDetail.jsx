@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 
@@ -33,6 +33,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
     const [productDetailData, setProductDetailData] = useState([]);
     const [productImagesData, setProductImagesData] = useState([]);
     const [quantity, setQuantity] = useState(1);
+    const navigate = useNavigate();
 
     const regDate = new Date(productDetailData.product_regdate);
     const formattedDate = regDate.toLocaleString('ko-KR', {
@@ -55,28 +56,44 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
 
     // 바로 구매하기
     const handleAddToOrder = () => {
-        addOrder({ ...productDetailData, product_cnt: quantity });
-        setQuantity(1);
+        const loggedInUser = sessionStorage.getItem("loggedInUser");
+
+        if (loggedInUser) {
+            addOrder({ ...productDetailData, product_cnt: quantity });
+            setQuantity(1);
+            navigate("/user/order");
+        } else {
+            alert("로그인 해주세요");
+        }
     };
 
     // 장바구니 추가(3차 프젝)
     function cartInsert(a, b) {
         let url = "/rscart/cartInsert/" + a + "/" + b;
 
-        axios.post(url)
+         const loggedInUser = sessionStorage.getItem("loggedInUser");
+
+        if (loggedInUser) {
+          axios
+            .post(url)
             .then((response) => {
-                alert("장바구니에 상품이 추가되었습니다");
-                axios.get("/rscart/cartList")
-                    .then((response) => {
-                        setCartItems(response.data);
-                    })
-                    .catch((err) => {
-                        alert(`** checkdata 서버연결 실패 => ${err.message}`);
-                    });
-            }).catch(err => {
-                if (err.response.status) alert(err.response.data);
-                else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+              alert("장바구니에 상품이 추가되었습니다");
+              axios
+                .get("/rscart/cartList")
+                .then((response) => {
+                  setCartItems(response.data);
+                })
+                .catch((err) => {
+                  alert(`** checkdata 서버연결 실패 => ${err.message}`);
+                });
+            })
+            .catch((err) => {
+              if (err.response.status) alert(err.response.data);
+              else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
             });
+        } else {
+          alert("로그인 해주세요");
+        }
     }
 
     const scrollToAnchor = (anchorId) => {
@@ -280,7 +297,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                         </tr>
                         <tr>
                             <td colSpan="2">
-                                <Link to={`/user/order`}>
+                                {/* <Link to={`/user/order`}> */}
                                     <button
                                         className="buySoon"
                                         quantity={quantity}
@@ -288,8 +305,8 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                                     >
                                         바로구매하기
                                     </button>
-                                </Link>
-                                <Link to={`/user/cart`}>
+                                {/* </Link> */}
+                                {/* <Link to={`/user/cart`}> */}
                                     <button
                                         className="buyCart"
                                         //quantity={quantity}
@@ -297,7 +314,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                                     >
                                         장바구니
                                     </button>
-                                </Link>
+                                {/* </Link> */}
                             </td>
                         </tr>
                     </tbody>

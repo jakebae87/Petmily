@@ -68,7 +68,8 @@ export default function OrderList() {
       .delete(url)
       .then((response) => {
         alert("주문이 취소되었습니다.");
-        navigate("/user/orderList");
+        // navigate("/user/orderList");
+        window.location.reload();
       })
       .catch((err) => {
         if (err.response.status) alert(err.response.data);
@@ -160,7 +161,7 @@ export default function OrderList() {
                     <span className="orderState">{item.delivery_status}</span>
                   </td>
                   <td>
-                    <Link to="/board/reviewWrite">
+                    <Link to={`/board/reviewWrite2/${item.product_id}`}>
                       <input
                         type="button"
                         id="writeButton"

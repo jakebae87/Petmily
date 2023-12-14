@@ -22,9 +22,6 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
     }
   }, [setCartItems, nothing]);
 
-  console.log(cartItems);
-  console.log(setCartItems);
-
   // 체크된 상품 가격
   const totalPrice = () => {
     const selectedTotalPrice = checkedItems.reduce((total, item) => {
@@ -123,7 +120,7 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
                     </span>
                     원
                   </strong>
-                  <span className="deliveryPrice"> + 배송비 3,000원 = </span>
+                  <span className="deliveryPrice"> + 배송비 { totalPrice() > 50000 ? "무료" : "3,000원"  } = </span>
                   <span>합계 : </span>
                   <strong>
                     <span className="cartPrice">

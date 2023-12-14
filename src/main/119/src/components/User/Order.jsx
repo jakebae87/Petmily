@@ -89,7 +89,7 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
     // 주문내역 DTO
     const OrderProductDTO = {
       user_id: loginUser.user_id,
-      order_total_price: totalPrice() + 3000,
+      order_total_price: totalPrice() > 50000 ? totalPrice() : totalPrice() + 3000,
       pay_method: payMethod,
       order_name: orderName,
       order_email: loginUser.user_email,
@@ -153,11 +153,11 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                       {totalPrice() ? `${totalPrice().toLocaleString()}원` : "가격 정보 없음"}
                       </span>
                     </strong>
-                    <span className="deliveryPrice"> + 배송비 3,000원 = </span>
+                    <span className="deliveryPrice"> + 배송비 {totalPrice() > 50000 ? "무료" : "3,000원"} = </span>
                     <span>합계 : </span>
                     <strong>
                       <span className="cartPrice">
-                        {totalPrice() ? `${(totalPrice() + 3000).toLocaleString()}원` : "가격 정보 없음"}
+                        {totalPrice() > 50000 ? `${totalPrice().toLocaleString()}원` : `${(totalPrice() + 3000).toLocaleString()}원`}
                       </span>
                     </strong>
                   </th>

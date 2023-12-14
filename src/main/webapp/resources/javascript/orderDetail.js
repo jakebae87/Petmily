@@ -5,7 +5,6 @@ function orderDetailList() {
 	let url = "/cart/orderDetail";
 	axios.get(url
 	).then(response => {
-		alert("** response 성공");
 		document.getElementById('resultArea2').innerHTML = response.data;
 	}).catch(err => {
 		alert("** response 실패 => " + err.message);
@@ -19,7 +18,6 @@ function orderDetailInsertf() {
 	let url = "/cart/orderDetailInsert";
 	axios.get(url
 	).then(response => {
-		alert("** response 성공");
 		document.getElementById('resultArea2').innerHTML = response.data;
 	}).catch(err => {
 		alert("** response 실패 => " + err.message);
@@ -56,7 +54,6 @@ function odDetail(order_detail_key) {
 	let url = "/cart/oddetail?jCode=U&order_detail_key=" + order_detail_key;
 	axios.get(url
 	).then(response => {
-		alert("** response 성공");
 		document.getElementById('resultArea2').innerHTML = response.data;
 	}).catch(err => {
 		alert("** response 실패 => " + err.message);
