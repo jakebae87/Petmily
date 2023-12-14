@@ -147,7 +147,16 @@ public class RestBoardController {
 	@GetMapping(value = "/product/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> searchProduct(@RequestParam("name") String name) {
 		ResponseEntity<?> result = null;
-		List<ProductDTO> product = boardService.getProduct(name);
+		
+		List<ProductDTO> product;
+		
+		if (name != null) {
+	        product = boardService.getProduct(name);
+	    } else {
+	        product = boardService.getAllProducts();
+	    }
+		
+		System.out.println(product);
 
 		if (product != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(product);

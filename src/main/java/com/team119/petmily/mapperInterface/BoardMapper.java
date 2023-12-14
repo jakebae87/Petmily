@@ -60,6 +60,8 @@ public interface BoardMapper {
 
 	List<ReviewReplyDTO> getReplyList(ReviewDTO dto);
 	
+	List<ProductDTO> getAllProducts();
+	
 	List<ProductDTO> getProduct(String name);
 	
 	int insertInquiry(InquiryDTO dto);
@@ -80,5 +82,6 @@ public interface BoardMapper {
 	void updateInquiryCount(InquiryDTO dto);
 	void updateReviewCount(ReviewDTO dto);
 	void updateFaqCount(FaqDTO dto);
+	
 
 }

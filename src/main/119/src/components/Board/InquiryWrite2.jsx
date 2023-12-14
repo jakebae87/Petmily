@@ -22,7 +22,7 @@ export default function InquiryWrite2() {
             headers: { 'Content-Type': 'application/json' },
             data: {
                 inquiry_title: document.getElementById('inquiry_title').value,
-                inquiry_writer: document.getElementById('inquiry_writer').value,
+                inquiry_writer: userName,
                 product_id: id,
                 inquiry_content: document.getElementById('inquiry_content').value
             }

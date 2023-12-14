@@ -217,5 +217,10 @@ public class BoardServiceImpl implements BoardService {
 		boardMapper.updateFaqCount(dto);
 	}
 
+	@Override
+	public List<ProductDTO> getAllProducts() {
+		return boardMapper.getAllProducts();
+	}
+
 
 } // class

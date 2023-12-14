@@ -102,5 +102,7 @@ public interface BoardService {
 
 	void updateFaqCount(FaqDTO dto);
 
+	List<ProductDTO> getAllProducts();
+
 
 }
