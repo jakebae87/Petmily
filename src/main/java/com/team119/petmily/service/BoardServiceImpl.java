@@ -1,6 +1,7 @@
 package com.team119.petmily.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -220,6 +221,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<ProductDTO> getAllProducts() {
 		return boardMapper.getAllProducts();
+	}
+
+	@Override
+	public List<ProductDTO> getProductByKind(String kind) {
+		return boardMapper.getProductByKind(kind);
+	}
+
+	@Override
+	public List<ProductDTO> getProductByCategory(Map<String, String> condition) {
+		return boardMapper.getProductByCategory(condition);
 	}
 
 

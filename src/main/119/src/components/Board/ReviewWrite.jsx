@@ -71,7 +71,6 @@ export default function ReviewWrite() {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`/product/search?name=`);
-                console.log(response);
                 setSearchResult(response.data);
             } catch (error) {
                 console.error('데이터를 불러오는 중에 오류가 발생했습니다.', error);

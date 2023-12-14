@@ -1,6 +1,7 @@
 package com.team119.petmily.mapperInterface;
 
 import java.util.List;
+import java.util.Map;
 
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
@@ -82,6 +83,9 @@ public interface BoardMapper {
 	void updateInquiryCount(InquiryDTO dto);
 	void updateReviewCount(ReviewDTO dto);
 	void updateFaqCount(FaqDTO dto);
+	
+	List<ProductDTO> getProductByKind(String kind);
+	List<ProductDTO> getProductByCategory(Map<String, String> condition);
 	
 
 }

@@ -1,6 +1,7 @@
 package com.team119.petmily.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
@@ -103,6 +104,11 @@ public interface BoardService {
 	void updateFaqCount(FaqDTO dto);
 
 	List<ProductDTO> getAllProducts();
+
+	List<ProductDTO> getProductByKind(String kind);
+
+	List<ProductDTO> getProductByCategory(Map<String, String> condition);
+
 
 
 }

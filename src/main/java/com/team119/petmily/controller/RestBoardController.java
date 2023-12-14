@@ -2,7 +2,9 @@ package com.team119.petmily.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -144,31 +146,6 @@ public class RestBoardController {
 		return result;
 	}
 
-	@GetMapping(value = "/product/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> searchProduct(@RequestParam("name") String name) {
-		ResponseEntity<?> result = null;
-		
-		List<ProductDTO> product;
-		
-		if (name != null) {
-	        product = boardService.getProduct(name);
-	    } else {
-	        product = boardService.getAllProducts();
-	    }
-		
-		System.out.println(product);
-
-		if (product != null) {
-			result = ResponseEntity.status(HttpStatus.OK).body(product);
-			log.info("Product Search HttpStatus => " + HttpStatus.OK);
-		} else {
-			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-			log.info("Product Search HttpStatus => " + HttpStatus.BAD_GATEWAY);
-		}
-
-		return result;
-	}
-
 	@PostMapping(value = "/inquiry/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> inquiryInsert(@RequestBody InquiryDTO dto) {
 		ResponseEntity<?> result = null;
@@ -204,7 +181,7 @@ public class RestBoardController {
 	public ResponseEntity<?> reviewDetail(@PathVariable("id") int id, ReviewDTO dto) {
 		dto.setReview_id(id);
 		ResponseEntity<?> result = null;
-		
+
 		boardService.updateReviewCount(dto);
 		ReviewDTO review = boardService.getReview(dto);
 
@@ -230,81 +207,81 @@ public class RestBoardController {
 
 		MultipartFile[] uploadfile1 = dto.getUploadfile1();
 		if (uploadfile1 != null && uploadfile1.length > 0) {
-		    // 첫 번째 파일 처리
-		    file1 = realPath + uploadfile1[0].getOriginalFilename();
-		    file2 = uploadfile1[0].getOriginalFilename();
+			// 첫 번째 파일 처리
+			file1 = realPath + uploadfile1[0].getOriginalFilename();
+			file2 = uploadfile1[0].getOriginalFilename();
 
-		    // 중복 파일명 처리
-		    File file = new File(file1);
-		    while (file.exists()) {
-		        String extension = "";
-		        int dotIndex = file2.lastIndexOf('.');
-		        if (dotIndex != -1) {
-		            extension = file2.substring(dotIndex);
-		            file2 = file2.substring(0, dotIndex);
-		        }
+			// 중복 파일명 처리
+			File file = new File(file1);
+			while (file.exists()) {
+				String extension = "";
+				int dotIndex = file2.lastIndexOf('.');
+				if (dotIndex != -1) {
+					extension = file2.substring(dotIndex);
+					file2 = file2.substring(0, dotIndex);
+				}
 
-		        // 괄호 안의 숫자만 추출하여 증가시키기
-		        int start = file2.lastIndexOf('(');
-		        int end = file2.lastIndexOf(')');
-		        if (start != -1 && end != -1 && start < end) {
-		            String numberStr = file2.substring(start + 1, end);
-		            try {
-		                int fileIndex = Integer.parseInt(numberStr) + 1;
-		                String incrementedNumber = String.valueOf(fileIndex);
-		                file2 = file2.substring(0, start + 1) + incrementedNumber + ")" + extension;
-		            } catch (NumberFormatException e) {
-		                // 숫자 변환이 실패할 경우 새로운 괄호를 추가
-		                file2 = file2 + "(1)" + extension;
-		            }
-		        } else {
-		            file2 = file2 + "(1)" + extension;
-		        }
+				// 괄호 안의 숫자만 추출하여 증가시키기
+				int start = file2.lastIndexOf('(');
+				int end = file2.lastIndexOf(')');
+				if (start != -1 && end != -1 && start < end) {
+					String numberStr = file2.substring(start + 1, end);
+					try {
+						int fileIndex = Integer.parseInt(numberStr) + 1;
+						String incrementedNumber = String.valueOf(fileIndex);
+						file2 = file2.substring(0, start + 1) + incrementedNumber + ")" + extension;
+					} catch (NumberFormatException e) {
+						// 숫자 변환이 실패할 경우 새로운 괄호를 추가
+						file2 = file2 + "(1)" + extension;
+					}
+				} else {
+					file2 = file2 + "(1)" + extension;
+				}
 
-		        file1 = realPath + file2;
-		        file = new File(file1);
-		    }
+				file1 = realPath + file2;
+				file = new File(file1);
+			}
 
-		    uploadfile1[0].transferTo(new File(file1));
+			uploadfile1[0].transferTo(new File(file1));
 
-		    // 두 번째 파일 처리
-		    if (uploadfile1.length > 1) {
-		        file3 = realPath + uploadfile1[1].getOriginalFilename();
-		        file4 = uploadfile1[1].getOriginalFilename();
+			// 두 번째 파일 처리
+			if (uploadfile1.length > 1) {
+				file3 = realPath + uploadfile1[1].getOriginalFilename();
+				file4 = uploadfile1[1].getOriginalFilename();
 
-		        // 중복 파일명 처리 (두 번째 파일)
-		        File file2nd = new File(file3);
-		        while (file2nd.exists()) {
-		            String extension = "";
-		            int dotIndex = file4.lastIndexOf('.');
-		            if (dotIndex != -1) {
-		                extension = file4.substring(dotIndex);
-		                file4 = file4.substring(0, dotIndex);
-		            }
+				// 중복 파일명 처리 (두 번째 파일)
+				File file2nd = new File(file3);
+				while (file2nd.exists()) {
+					String extension = "";
+					int dotIndex = file4.lastIndexOf('.');
+					if (dotIndex != -1) {
+						extension = file4.substring(dotIndex);
+						file4 = file4.substring(0, dotIndex);
+					}
 
-		            // 괄호 안의 숫자만 추출하여 증가시키기
-		            int start = file4.lastIndexOf('(');
-		            int end = file4.lastIndexOf(')');
-		            if (start != -1 && end != -1 && start < end) {
-		                String numberStr = file4.substring(start + 1, end);
-		                try {
-		                    int fileIndex = Integer.parseInt(numberStr) + 1;
-		                    String incrementedNumber = String.valueOf(fileIndex);
-		                    file4 = file4.substring(0, start + 1) + incrementedNumber + ")" + extension;
-		                } catch (NumberFormatException e) {
-		                    // 숫자 변환이 실패할 경우 새로운 괄호를 추가
-		                    file4 = file4 + "(1)" + extension;
-		                }
-		            } else {
-		                file4 = file4 + "(1)" + extension;
-		            }
+					// 괄호 안의 숫자만 추출하여 증가시키기
+					int start = file4.lastIndexOf('(');
+					int end = file4.lastIndexOf(')');
+					if (start != -1 && end != -1 && start < end) {
+						String numberStr = file4.substring(start + 1, end);
+						try {
+							int fileIndex = Integer.parseInt(numberStr) + 1;
+							String incrementedNumber = String.valueOf(fileIndex);
+							file4 = file4.substring(0, start + 1) + incrementedNumber + ")" + extension;
+						} catch (NumberFormatException e) {
+							// 숫자 변환이 실패할 경우 새로운 괄호를 추가
+							file4 = file4 + "(1)" + extension;
+						}
+					} else {
+						file4 = file4 + "(1)" + extension;
+					}
 
-		            file3 = realPath + file4;
-		            file2nd = new File(file3);
-		        }
+					file3 = realPath + file4;
+					file2nd = new File(file3);
+				}
 
-		        uploadfile1[1].transferTo(new File(file3));
-		    }
+				uploadfile1[1].transferTo(new File(file3));
+			}
 		}
 
 		dto.setReview_image1(file2);
@@ -419,7 +396,6 @@ public class RestBoardController {
 
 	@PostMapping(value = "/inquiry/updateBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void updateBoardInquiry(@RequestBody InquiryDTO dto) {
-		System.out.println(dto);
 		boardService.updateBoardInquiry(dto);
 	}
 
@@ -522,6 +498,71 @@ public class RestBoardController {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("댓글 삭제 실패");
 		}
 
+		return result;
+	}
+
+	@GetMapping(value = "/product/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProduct(@RequestParam("name") String name) {
+		ResponseEntity<?> result = null;
+
+		List<ProductDTO> product;
+
+		if (name != null) {
+			product = boardService.getProduct(name);
+		} else {
+			product = boardService.getAllProducts();
+		}
+
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			log.info("Product Search HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Search HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/product/kind/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProductByKind(@PathVariable("category") String kind) {
+		ResponseEntity<?> result = null;
+
+		List<ProductDTO> product;
+		
+		product = boardService.getProductByKind(kind);
+		
+		System.out.println(product);
+		
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			log.info("Product Category HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Category HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+		
+		return result;
+	}
+	
+	@GetMapping(value = "/product/category/{kind}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProductByKind(@PathVariable("kind") String kind, @PathVariable("category") String category) {
+		ResponseEntity<?> result = null;
+		
+		Map<String,String> condition = new HashMap<String, String>();
+		condition.put("kind", kind);
+		condition.put("category", category);
+		
+		List<ProductDTO> product = boardService.getProductByCategory(condition);
+		
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			log.info("Product Category HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Category HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+		
 		return result;
 	}
 }
