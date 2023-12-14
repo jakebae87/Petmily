@@ -26,7 +26,6 @@
 			<th>글분류</th>
 			<th>글제목</th>
 			<th>조회수</th>
-			<th>글내용</th>
 			<th>작성일</th>
 			<th>삭제</th>
 		</tr>
@@ -36,7 +35,6 @@
 					<td>${s.question_type}</td>
 					<td><a onclick="faqDetail(${s.faq_id})">${s.faq_title}</a></td>
 					<td>${s.faq_count}</td>
-					<td>${s.faq_content}</td>
 					<td>${s.faq_regdate}</td>
 					<td><a onclick="faqDelete(${s.faq_id})">삭제</a></td>
 				</tr>

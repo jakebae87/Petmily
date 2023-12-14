@@ -26,7 +26,6 @@
 			<th>답변여부</th>
 			<th>작성자</th>
 			<th>조회수</th>
-			<th>글내용</th>
 			<th>작성일</th>
 			<th>삭제</th>
 		</tr>
@@ -41,7 +40,6 @@
 						</c:if></td>
 					<td>${s.inquiry_writer}</td>
 					<td>${s.inquiry_count}</td>
-					<td>${s.inquiry_content}</td>
 					<td>${s.inquiry_regdate}</td>
 					<td><a onclick="inquiryDelete(${s.inquiry_id})">삭제</a></td>
 				</tr>

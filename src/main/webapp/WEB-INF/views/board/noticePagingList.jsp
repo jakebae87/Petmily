@@ -26,7 +26,6 @@
 			<th>글제목</th>
 			<th>작성자</th>
 			<th>조회수</th>
-			<th>글내용</th>
 			<th>작성일</th>
 			<th>삭제</th>
 		</tr>
@@ -36,7 +35,6 @@
 					<td><a onclick="noticeDetail(${s.notice_id})">${s.notice_title}</a></td>
 					<td>${s.notice_writer}</td>
 					<td>${s.notice_count}</td>
-					<td>${s.notice_content}</td>
 					<td>${s.notice_regdate}</td>
 					<td><a onclick="noticeDelete(${s.notice_id})">삭제</a></td>
 				</tr>

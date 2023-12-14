@@ -26,7 +26,6 @@
 			<th>작성자</th>
 			<th>평점</th>
 			<th>조회수</th>
-			<th>글내용</th>
 			<th>작성일</th>
 			<th>삭제</th>
 		</tr>
@@ -37,7 +36,6 @@
 					<td>${s.review_writer}</td>
 					<td>${s.review_point}</td>
 					<td>${s.review_count}</td>
-					<td>${s.review_content}</td>
 					<td>${s.review_regdate}</td>
 					<td><a onclick="reviewDelete(${s.review_id})">삭제</a></td>
 				</tr>
