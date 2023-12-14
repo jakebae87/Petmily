@@ -92,4 +92,8 @@ public class ProductServiceImpl implements ProductService {
 	public int updateP() {
 		return mapper.updateP();
 	}
+	@Override
+	public int updateD(int order_key) {
+		return mapper.updateD(order_key);
+	}
 }

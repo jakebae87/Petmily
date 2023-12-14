@@ -12,6 +12,7 @@
 </head>
 <body>
 	<h2>Promotion_Product Table List</h2>
+	&nbsp;<a class="addData" onclick="pmpInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 
 	<table border="1">
@@ -50,8 +51,6 @@
 			</tr>
 		</c:if>
 	</table>
-	
-	&nbsp;<a class="addData" onclick="pmpInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 </body>
 </html>

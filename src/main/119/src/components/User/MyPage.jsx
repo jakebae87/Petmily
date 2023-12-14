@@ -12,14 +12,14 @@ export default function MyPage() {
       <div className="mypageTitleArea">
         <ul type="square">
           <h1>마이 페이지</h1>
-          <li>
+          {/* <li>
             <div>
               주문처리 현황<span>(최근 3개월 기준)</span>
             </div>
-          </li>
+          </li> */}
         </ul>
       </div>
-      <div className="myOrder">
+      {/* <div className="myOrder">
         <div className="beforePay">
           <div>
             <span>
@@ -102,7 +102,7 @@ export default function MyPage() {
             </li>
           </ul>
         </div>
-      </div>
+      </div> */}
 
       <div className="shopMain">
         <Link to="/user/orderList">
