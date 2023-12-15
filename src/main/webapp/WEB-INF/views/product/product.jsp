@@ -15,6 +15,18 @@
 	&nbsp;<a class="addData" onclick="pInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 
+	<div id="searchBar">
+		<select name="searchType" id="searchType" onchange="keywordClear()">
+			<option value="all">전체</option>
+			<option value="product_name">Name</option>
+			<option value="product_id">ID</option>
+			<option value="product_description">Content</option>
+		</select>
+		<input type="text" name="keyword" id="keyword" value="${pageMaker.cri.keyword}">
+		<button id="searchBtn" onclick="searchPDB()">Search</button>
+	</div>
+	<br>
+	
 	<table border="1">
 		<tr>
 			<th>Delete</th>
@@ -50,10 +62,8 @@
 					<td>${s.product_stock}</td>
 					<td>${s.product_sales}</td>
 					<td><fmt:formatDate value="${s.product_regdate}" pattern="yyyy-MM-dd" /></td>
-					<td>${s.product_mainimagepath}</td>
-					<td>${s.product_detailimagepath}</td>
-					<%-- <td><img alt="MyImage" src="/resources/uploadImages/${s.product_mainimagepath}"  width="60" height="40"></td>
-					<td><img alt="MyImage" src="/resources/uploadImages/${s.product_detailimagepath}"  width="60" height="40"></td> --%>
+					<td><img alt="MyImage" src="/resources/uploadImages/${s.product_mainimagepath}"  width="60" height="40"></td>
+					<td><img alt="MyImage" src="/resources/uploadImages/${s.product_detailimagepath}"  width="60" height="40"></td>
 					<td>${s.product_rating}</td>
 					<td>${s.product_origin}</td>
 				</tr>
@@ -66,6 +76,27 @@
 			</tr>
 		</c:if>
 	</table>
+	
+	<!-- Pagination -->
+	<!-- 첫번째 페이지 이동 -->
+	<div style=text-align:center;>
+	
+	<a onclick="productf('/product/productList?currPage=1&rowsPerPage=${pageMaker.cri.rowsPerPage}')">FP</a>&nbsp;
+	
+	<!-- 페이징 번호 표시 -->
+	<c:forEach begin="${pageMaker.spageNo }" end="${pageMaker.epageNo }"
+		var="i">
+		<c:if test="${i==pageMaker.cri.currPage }">
+			<font color="Orange" size="5"><b>${i }</b></font>&nbsp;
+		</c:if>
+		<c:if test="${i!=pageMaker.cri.currPage }">
+			<a onclick="productf('/product/productList${pageMaker.makeQuery(i)}')">${i }</a>&nbsp;
+		</c:if>
+	</c:forEach>
+
+	<!-- 마지막 페이지 이동 -->
+	<a onclick="productf('/product/productList?currPage=${pageMaker.lastPageNo}&rowsPerPage=${pageMaker.cri.rowsPerPage}')">LP</a>
+	</div>
 	<hr>
 </body>
 </html>

@@ -19,9 +19,9 @@
 			<td><input type="text" name="pimage_id" value="${requestScope.pitable.pimage_id}" readonly></td></tr>
 		<tr><th>PRODUCT_id (FK)</th>
 			<td><input type="text" name="product_id" value="${requestScope.pitable.product_id}" readonly></td></tr>
+		<%-- <tr><th>PRODUCT_IMAGEPATH</th>
+			<td><input type="text" name="product_imagepath" value="${requestScope.pitable.product_imagepath}"></td></tr> --%>
 		<tr><th>PRODUCT_IMAGEPATH</th>
-			<td><input type="text" name="product_imagepath" value="${requestScope.pitable.product_imagepath}"></td></tr>
-		<tr><th>Image</th>
 			<td>
 				<input type="hidden" name="product_imagepath" value="${requestScope.pitable.product_imagepath}" readonly><br>		
 				<input type="file" name="uploadfilef" id="uploadfilef">

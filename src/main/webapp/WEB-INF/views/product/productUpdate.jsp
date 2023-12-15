@@ -22,7 +22,7 @@
 			<td>
 				<select name="promotion_id" id="promotion_id">
 				    <c:forEach var="p" items="${requestScope.pmptable}">
-				        <option value="${p.promotion_id}"<c:if test="${p.promotion_id eq 10}"> selected</c:if>>${p.promotion_id}: ${p.promotion_name}</option>
+				        <option value="${p.promotion_id}"<c:if test="${p.promotion_id eq requestScope.ptable.promotion_id}"> selected</c:if>>${p.promotion_id}: ${p.promotion_name}</option>
 				    </c:forEach>
 				</select>
 			</td>
@@ -64,18 +64,18 @@
 			<td><input type="text" name="product_sales" value="${requestScope.ptable.product_sales}"></td></tr>			
 		<tr><th>PRODUCT_REGDATE</th>
 			<td><input type="date" name="product_regdate" value='<fmt:formatDate value="${requestScope.ptable.product_regdate}" pattern="yyyy-MM-dd" />'></td></tr>			
+		<%-- <tr><th>PRODUCT_MAINIMAGEPATH</th>
+			<td><input type="text" name="product_mainimagepath" value="${requestScope.ptable.product_mainimagepath}"></td></tr>	 --%>		
 		<tr><th>PRODUCT_MAINIMAGEPATH</th>
-			<td><input type="text" name="product_mainimagepath" value="${requestScope.ptable.product_mainimagepath}"></td></tr>			
-		<tr><th>MAINIMAGE</th>
 			<td>
 				<input type="hidden" name="product_mainimagepath" value="${requestScope.ptable.product_mainimagepath}" readonly><br>		
 				<input type="file" name="uploadfilef" id="uploadfilef">
 			</td></tr>
+		<%-- <tr><th>PRODUCT_DETAILIMAGEPATH</th>
+			<td><input type="text" name="product_detailimagepath" value="${requestScope.ptable.product_detailimagepath}"></td></tr>	 --%>		
 		<tr><th>PRODUCT_DETAILIMAGEPATH</th>
-			<td><input type="text" name="product_detailimagepath" value="${requestScope.ptable.product_detailimagepath}"></td></tr>			
-		<tr><th>DETAILIMAGE</th>
 			<td>
-				<input type="hidden" name="product_mainimagepath" value="${requestScope.ptable.product_detailimagepath}" readonly><br>		
+				<input type="hidden" name="product_detailimagepath" value="${requestScope.ptable.product_detailimagepath}" readonly><br>		
 				<input type="file" name="uploadfilef2" id="uploadfilef2">
 			</td></tr>
 		<tr><th>PRODUCT_RATING</th>

@@ -16,7 +16,7 @@
 		<table border="1">
 			<tr>
 				<th>Insert</th>
-				<th>PROMOTION_ID (PK)</th>
+				<th>PROMOTION_ID (PK, 1~9 : 프로모션 상품 / 10 : 일반 상품)</th>
 				<th>PROMOTION_NAME</th>
 				<th>PROMOTION_IMAGE</th>
 				<th>PROMOTION_START (NOT NULL)</th>

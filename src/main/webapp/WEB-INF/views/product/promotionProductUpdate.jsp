@@ -18,12 +18,10 @@
 	<table>
 	  <c:if test="${not empty requestScope.pmptable}">
 		<tr><th>PROMOTION_ID (PK)</th>
-			<td><input type="text" name="promotion_id" value="${requestScope.pmptable.promotion_id}" readonly></td></tr>
+			<td><input type="text" name="promotion_id" value="${requestScope.pmptable.promotion_id}"></td></tr>
 		<tr><th>PROMOTION_NAME</th>
 			<td><input type="text" name="promotion_name" value="${requestScope.pmptable.promotion_name}"></td></tr>
 		<tr><th>PROMOTION_IMAGE</th>
-			<td><input type="text" name="promotion_image" value="${requestScope.pmptable.promotion_image}"></td></tr>
-		<tr><th>Image</th>
 			<td>
 				<input type="hidden" name="promotion_image" value="${requestScope.pmptable.promotion_image}"><br>		
 				<input type="file" name="uploadfilef" id="uploadfilef">

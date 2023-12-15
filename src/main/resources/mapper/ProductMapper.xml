@@ -177,4 +177,45 @@
 	<delete id="delete">
 		DELETE FROM PRODUCT WHERE product_id=#{product_id}
 	</delete>
+	
+	<sql id="search">
+		<!-- 1) CONCAT('%',#{keyword},'%') 처리 -->
+		<if test="keyword!=null">
+			<bind name="keyVal" value="'%'+keyword+'%'"/>
+		</if>
+		<!-- 2) LIKE 조건문 -->
+		<choose>
+			<when test="searchType!=null and searchType!='all'">
+				and ${searchType} LIKE #{keyVal} )
+			</when>	
+			<when test="searchType!=null and searchType=='all' and keyword!=null">
+				and ( product_name LIKE #{keyVal}
+					  OR product_id LIKE #{keyVal}
+					  OR product_description LIKE #{keyVal} ))
+			</when>	
+			<otherwise>)</otherwise>
+		</choose>
+	</sql>
+	
+	<select id="searchCri" resultType="com.team119.petmily.domain.ProductDTO">
+		select * from PRODUCT
+			where ( product_id>0 <include refid="search"></include>
+			ORDER BY product_id DESC
+			limit #{sno}, #{rowsPerPage}
+	</select>
+	
+	<select id="searchTotalCount" resultType="int">
+		select count(*) from PRODUCT
+			where ( product_id>0 <include refid="search"></include>
+	</select>
+
+	<select id="getProductPagedList" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT * FROM PRODUCT
+		ORDER BY product_id DESC
+		LIMIT #{sno}, #{rowsPerPage}
+	</select>
+	
+	<select id="productTotalCount" resultType="int">
+		SELECT COUNT(*) FROM PRODUCT
+	</select>
 </mapper>

@@ -5,9 +5,11 @@ import java.util.Map;
 
 import com.team119.petmily.domain.CartDTO;
 import com.team119.petmily.domain.InquiryDTO;
+import com.team119.petmily.domain.NoticeDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.pagination.Criteria;
 import com.team119.petmily.pagination.SearchCriteria;
 
 public interface ProductService {
@@ -41,4 +43,10 @@ public interface ProductService {
 	int delete(ProductDTO dto);
 
 	int updateP();
+	
+	List<ProductDTO> getProductPagedList(Criteria cri);
+	int productTotalCount();
+	
+	List<ProductDTO> searchCri(SearchCriteria cri); // 출력할 Data만 select
+	int searchTotalCount(SearchCriteria cri); // 전체 rows 갯수
 }

@@ -36,14 +36,9 @@
   font-size: 0.8em;
 }
 
-.detailThumbnail {
+.detailImages {
   width: 80px;
   height: 80px;
-  transition: transform 0.2s ease-in-out;
-}
-
-.detailThumbnail:hover {
-  transform: scale(1.8);
 }
 
 /* 상품 정보 */

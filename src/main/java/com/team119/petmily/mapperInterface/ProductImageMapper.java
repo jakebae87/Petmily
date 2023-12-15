@@ -3,6 +3,7 @@ package com.team119.petmily.mapperInterface;
 import java.util.List;
 
 import com.team119.petmily.domain.ProductImageDTO;
+import com.team119.petmily.pagination.SearchCriteria;
 
 public interface ProductImageMapper {
 	
@@ -17,4 +18,7 @@ public interface ProductImageMapper {
 	int update(ProductImageDTO dto);
 
 	int delete(ProductImageDTO dto);
+	
+	List<ProductImageDTO> searchCri(SearchCriteria cri); // 출력할 Data만 select
+	int searchTotalCount(SearchCriteria cri); // 전체 rows 갯수
 }
