@@ -91,7 +91,7 @@ export default function InquiryWrite() {
             const { product, kinds } = response.data;
 
             const formattedData = Object.values(kinds).map(category => ({
-                product_category: category // 원하는 형태로 가공하여 설정
+                product_category: category
             }));
 
             setProductByKind(formattedData);

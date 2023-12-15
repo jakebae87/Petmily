@@ -3,6 +3,7 @@ package com.team119.petmily.service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -37,4 +38,13 @@ public class EmailService {
 
         javaMailSender.send(message);
     }
+
+	public void sendEmail(String getEmailByName, String answer_content) {
+		SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(getEmailByName);	// 이메일주소
+        message.setSubject("상품 문의에 대한 답변");
+        message.setText("상품 문의에 대한 답변 내용: " + answer_content);
+
+        javaMailSender.send(message);
+	}
 }

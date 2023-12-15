@@ -13,6 +13,7 @@ import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.mapperInterface.BoardMapper;
 import com.team119.petmily.pagination.Criteria;
 
@@ -26,71 +27,67 @@ public class BoardServiceImpl implements BoardService {
 	public List<NoticeDTO> getNoticeList(SearchDTO searchDTO) {
 		return boardMapper.getNoticeList(searchDTO);
 	}
-	
+
 	@Override
 	public List<NoticeDTO> getNoticePagedList(Criteria cri) {
 		return boardMapper.getNoticePagedList(cri);
 	}
+
 	@Override
 	public int noticeTotalCount() {
 		return boardMapper.noticeTotalCount();
 	}
-	
-	
 
 	@Override
 	public List<InquiryDTO> getInquiryList(SearchDTO searchDTO) {
 		return boardMapper.getInquiryList(searchDTO);
 	}
+
 	@Override
 	public List<InquiryDTO> getInquiryPagedList(Criteria cri) {
 		return boardMapper.getInquiryPagedList(cri);
 	}
+
 	@Override
 	public int inquiryTotalCount() {
 		return boardMapper.inquiryTotalCount();
 	}
 
-	
-	
 	@Override
 	public List<ReviewDTO> getReviewList(SearchDTO searchDTO) {
 		return boardMapper.getReviewList(searchDTO);
 	}
-	
+
 	@Override
 	public List<ReviewDTO> getReviewList() {
 		return boardMapper.getReviewList();
 	}
-	
+
 	@Override
 	public List<ReviewDTO> getReviewPagedList(Criteria cri) {
 		return boardMapper.getReviewPagedList(cri);
 	}
+
 	@Override
 	public int reviewTotalCount() {
 		return boardMapper.reviewTotalCount();
 	}
-	
-	
-	
-	
-	
+
 	@Override
 	public List<FaqDTO> getFaqList(SearchDTO searchDTO) {
 		return boardMapper.getFaqList(searchDTO);
 	}
+
 	@Override
 	public List<FaqDTO> getFaqPagedList(Criteria cri) {
 		return boardMapper.getFaqPagedList(cri);
 	}
+
 	@Override
 	public int faqTotalCount() {
 		return boardMapper.faqTotalCount();
 	}
-	
-	
-	
+
 	@Override
 	public NoticeDTO getNotice(NoticeDTO dto) {
 		return boardMapper.getNotice(dto);
@@ -205,14 +202,17 @@ public class BoardServiceImpl implements BoardService {
 	public void updateNoticeCount(NoticeDTO dto) {
 		boardMapper.updateNoticeCount(dto);
 	}
+
 	@Override
 	public void updateInquiryCount(InquiryDTO dto) {
 		boardMapper.updateInquiryCount(dto);
 	}
+
 	@Override
 	public void updateReviewCount(ReviewDTO dto) {
 		boardMapper.updateReviewCount(dto);
 	}
+
 	@Override
 	public void updateFaqCount(FaqDTO dto) {
 		boardMapper.updateFaqCount(dto);
@@ -233,5 +233,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.getProductByCategory(condition);
 	}
 
+	@Override
+	public UserDTO getEmail(InquiryDTO dto) {
+		return boardMapper.getEmail(dto);
+	}
 
 } // class

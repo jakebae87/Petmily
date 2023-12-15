@@ -332,6 +332,10 @@
 	<update id="updateFaqCount">
 		UPDATE FAQ SET FAQ_COUNT = FAQ_COUNT + 1 WHERE FAQ_ID = #{faq_id}
 	</update>
+	
+	<select id ="getEmail" resultType="com.team119.petmily.domain.UserDTO">
+		SELECT * FROM USER WHERE USER_NAME = #{inquiry_writer}
+	</select>
 
 </mapper>
 

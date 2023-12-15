@@ -10,6 +10,7 @@ import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.pagination.Criteria;
 
 public interface BoardService {
@@ -109,6 +110,6 @@ public interface BoardService {
 
 	List<ProductDTO> getProductByCategory(Map<String, String> condition);
 
-
+	UserDTO getEmail(InquiryDTO dto);
 
 }

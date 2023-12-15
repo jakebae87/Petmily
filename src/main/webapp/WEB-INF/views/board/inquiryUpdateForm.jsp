@@ -19,12 +19,15 @@
 			<table id="boardDetail">
 				<tr>
 					<th>답변 내용</th>
-					<td><input type="text" id="answer_content"
-						value="${requestScope.inquiry.answer_content}"></td>
+					<td>
+						<input type="text" id="answer_content" value="${requestScope.inquiry.answer_content}">
+						<input type="hidden" id="inquiry_writer" value="${requestScope.inquiry.inquiry_writer}"/>
+					</td>
 				</tr>
 				<tr>
 					<th>답변 작성일</th>
 					<td>${requestScope.inquiry.answer_regdate}</td>
+					
 				</tr>
 			</table>
 		</form>

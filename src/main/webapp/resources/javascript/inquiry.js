@@ -43,6 +43,7 @@ function updateInquiryAnswer(id) {
 			headers: { 'Content-Type': 'application/json' },
 			data: {
 				answer_content: document.getElementById('answer_content').value,
+				inquiry_writer: document.getElementById('inquiry_writer').value,
 				inquiry_id: id,
 			}
 

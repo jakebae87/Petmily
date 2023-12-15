@@ -25,7 +25,9 @@ import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.service.BoardService;
+import com.team119.petmily.service.EmailService;
 import com.team119.petmily.service.ProductService;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +39,7 @@ import lombok.extern.log4j.Log4j2;
 public class RestBoardController {
 	BoardService boardService;
 	ProductService pservice;
+	EmailService emailService;
 
 	@GetMapping(value = "/notice/list")
 	public ResponseEntity<?> noticeList(SearchDTO searchDTO) {
@@ -391,7 +394,12 @@ public class RestBoardController {
 
 	@PostMapping(value = "/inquiry/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void inquiryUpdate(@RequestBody InquiryDTO dto) {
-		boardService.updateInquiry(dto);
+	
+		if (dto.getAnswer_content() != null) {
+			UserDTO user = boardService.getEmail(dto);
+			boardService.updateInquiry(dto);
+			emailService.sendEmail(user.getUser_email(), dto.getAnswer_content());
+		}
 	}
 
 	@PostMapping(value = "/inquiry/updateBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -527,19 +535,19 @@ public class RestBoardController {
 	@GetMapping(value = "/product/kind/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> searchProductByKind(@PathVariable("category") String kind) {
 		ResponseEntity<?> result = null;
-		
+
 		Map<String, Object> responseData = new HashMap<>();
-		
+
 		List<ProductDTO> product = boardService.getProductByKind(kind);
 		Map<String, String> kinds = new HashMap<String, String>();
-		
-		for(ProductDTO data : product) {
+
+		for (ProductDTO data : product) {
 			kinds.put(data.getProduct_category(), data.getProduct_category());
 		}
-		
+
 		responseData.put("product", product);
 		responseData.put("kinds", kinds);
-		
+
 		if (product != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(responseData);
 			log.info("Product Category HttpStatus => " + HttpStatus.OK);
@@ -547,20 +555,21 @@ public class RestBoardController {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 			log.info("Product Category HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		}
-		
+
 		return result;
 	}
-	
+
 	@GetMapping(value = "/product/category/{kind}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> searchProductByKind(@PathVariable("kind") String kind, @PathVariable("category") String category) {
+	public ResponseEntity<?> searchProductByKind(@PathVariable("kind") String kind,
+			@PathVariable("category") String category) {
 		ResponseEntity<?> result = null;
-		
-		Map<String,String> condition = new HashMap<String, String>();
+
+		Map<String, String> condition = new HashMap<String, String>();
 		condition.put("kind", kind);
 		condition.put("category", category);
-		
+
 		List<ProductDTO> product = boardService.getProductByCategory(condition);
-		
+
 		if (product != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(product);
 			log.info("Product Category HttpStatus => " + HttpStatus.OK);
@@ -568,7 +577,7 @@ public class RestBoardController {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 			log.info("Product Category HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		}
-		
+
 		return result;
 	}
 }
