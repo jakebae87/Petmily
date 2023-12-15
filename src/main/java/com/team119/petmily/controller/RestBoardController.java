@@ -527,15 +527,21 @@ public class RestBoardController {
 	@GetMapping(value = "/product/kind/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> searchProductByKind(@PathVariable("category") String kind) {
 		ResponseEntity<?> result = null;
-
-		List<ProductDTO> product;
 		
-		product = boardService.getProductByKind(kind);
+		Map<String, Object> responseData = new HashMap<>();
 		
-		System.out.println(product);
+		List<ProductDTO> product = boardService.getProductByKind(kind);
+		Map<String, String> kinds = new HashMap<String, String>();
+		
+		for(ProductDTO data : product) {
+			kinds.put(data.getProduct_category(), data.getProduct_category());
+		}
+		
+		responseData.put("product", product);
+		responseData.put("kinds", kinds);
 		
 		if (product != null) {
-			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			result = ResponseEntity.status(HttpStatus.OK).body(responseData);
 			log.info("Product Category HttpStatus => " + HttpStatus.OK);
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);

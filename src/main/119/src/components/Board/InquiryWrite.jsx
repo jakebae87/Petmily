@@ -7,7 +7,7 @@ export default function InquiryWrite() {
     const [searchResult, setSearchResult] = useState([]); // 검색한 값이 db에 있으면 searchResult에 저장한다.
     const [productByKind, setProductByKind] = useState([]); // kind 선택한 값에 대한 상품정보
     const [selectedValue, setSelectedValue] = useState('');
-    const [kind, setKind] = useState('');
+    const [kind, setKind] = useState('all');
 
     const navigate = useNavigate();
 
@@ -88,8 +88,14 @@ export default function InquiryWrite() {
 
         try {
             const response = await axios.get(`/product/kind/${selectedKind}`);
-            setProductByKind(response.data);
-            setSearchResult(response.data);
+            const { product, kinds } = response.data;
+
+            const formattedData = Object.values(kinds).map(category => ({
+                product_category: category // 원하는 형태로 가공하여 설정
+            }));
+
+            setProductByKind(formattedData);
+            setSearchResult(Object.values(product));
         } catch (error) {
             console.error('카테고리 데이터를 불러오는 중 에러:', error);
         }
