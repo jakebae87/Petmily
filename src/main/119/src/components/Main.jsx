@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Home
@@ -39,6 +39,8 @@ function Main() {
   const [cartItems, setCartItems] = useState([]);
   // 장바구니 무한루프 방지용
   const [nothing, setNothing] = useState(1);
+
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   const loggedInUser = sessionStorage.getItem('loggedInUser');
@@ -156,10 +158,16 @@ function Main() {
 
   // 장바구니 체크(선택)상품만 주문
   const selectedOrder = () => {
+    
     const selectedOrderItems = cartItems.filter((cart) =>
-      checkedItems.includes(cart.product_id)
+    checkedItems.includes(cart.product_id)
     );
     setOrderItems(selectedOrderItems);
+    if (selectedOrderItems.length > 0) {
+      navigate("/user/order");
+    } else {
+      alert("상품을 선택해주세요");
+    }
   };
 
   return (

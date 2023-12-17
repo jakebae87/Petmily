@@ -155,7 +155,7 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
               전체상품주문
             </button>
           </Link>
-          <Link to={`/user/order`}>
+          {/* <Link to={`/user/order`}> */}
             <button
               className="selectOrder"
               onClick={() => {
@@ -164,7 +164,7 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
             >
               선택상품주문
             </button>
-          </Link>
+          {/* </Link> */}
           <Link to="/products/all/all">
             <button className="returnShop">쇼핑계속하기</button>
           </Link>
