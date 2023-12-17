@@ -28,7 +28,7 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
     );
 }
 
-const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) => {
+const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems, nothing, setNothing }) => {
     const { id } = useParams();
     const [productDetailData, setProductDetailData] = useState([]);
     const [productImagesData, setProductImagesData] = useState([]);
@@ -77,15 +77,18 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
           axios
             .post(url)
             .then((response) => {
-              alert("장바구니에 상품이 추가되었습니다");
-              axios
-                .get("/rscart/cartList")
-                .then((response) => {
-                  setCartItems(response.data);
-                })
-                .catch((err) => {
-                  alert(`** checkdata 서버연결 실패 => ${err.message}`);
-                });
+                // setNothing(nothing + 1);
+                // axios
+                //   .get("/rscart/cartList")
+                //   .then((response) => {
+                //     setCartItems(response.data);
+                //   })
+                //   .catch((err) => {
+                //     alert(`** checkdata 서버연결 실패 => ${err.message}`);
+                //   });
+                alert("장바구니에 상품이 추가되었습니다");
+                navigate("/user/cart");
+                // window.location.reload();
             })
             .catch((err) => {
               if (err.response.status) alert(err.response.data);
@@ -95,6 +98,8 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
           alert("로그인 해주세요");
         }
     }
+
+    console.log(nothing);
 
     const scrollToAnchor = (anchorId) => {
         const element = document.getElementById(anchorId);
@@ -203,8 +208,6 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                 setProductReviewOffset(productReviewRef.current.offsetTop - 152);
                 setProductQAOffset(productQARef.current.offsetTop - 152);
                 setBuyGuideOffset(buyGuideRef.current.offsetTop - 152);
-
-                console.log("Offsets:", productDetailImgOffset, productReviewOffset, productQAOffset, buyGuideOffset);
             }
         };
 

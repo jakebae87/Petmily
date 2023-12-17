@@ -11,7 +11,7 @@ import PromotionProducts from './PromotionProducts';
 import SearchedProducts from './SearchedProducts';
 import ProductDetail from './ProductDetail';
 
-function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, addOrder, setCartItems }) {
+function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, addOrder, setCartItems, nothing, setNothing }) {
     const sortProducts = (products, option) => {
         switch (option) {
             case "newest":
@@ -41,6 +41,8 @@ function Products({ calcProductPrice, addCart, increQuantity, decreQuantity, add
                 calcProductPrice={calcProductPrice}
                 addCart={addCart}
                 addOrder={addOrder}
+                nothing={nothing}
+                setNothing={setNothing}
                 setCartItems={setCartItems}
                 increQuantity={increQuantity}
                 decreQuantity={decreQuantity} />}

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import axios from "axios";
 
 // Home
 import Home from "./Home/Home";
@@ -52,7 +53,7 @@ function Main() {
   //         alert(`** checkdata 서버연결 실패 => ${err.message}`);
   //       });
   //   }
-  // }, [nothing]);
+  // }, [setCartItems, nothing]);
 
   // 장바구니 체크된 상품
   const [checkedItems, setCheckedItems] = useState(
@@ -180,6 +181,8 @@ function Main() {
               calcProductPrice={calcProductPrice}
               addCart={addCart}
               addOrder={addOrder}
+              nothing={nothing}
+              setNothing={setNothing}
               setCartItems={setCartItems}
               increQuantity={increQuantity}
               decreQuantity={decreQuantity}

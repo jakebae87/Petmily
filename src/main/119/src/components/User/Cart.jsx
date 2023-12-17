@@ -10,13 +10,13 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
 
     if (loggedInUser) {
       axios
-        .get("/rscart/cartList")
-        .then((response) => {
-          setCartItems(response.data);
-        })
-        .catch((err) => {
-          alert(`** checkdata 서버연결 실패 => ${err.message}`);
-        });
+      .get("/rscart/cartList")
+      .then((response) => {
+        setCartItems(response.data);
+      })
+      .catch((err) => {
+        alert(`** checkdata 서버연결 실패 => ${err.message}`);
+      });
     } else {
       alert("로그인 해주세요");
     }
@@ -41,26 +41,26 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
     return selectedTotalPrice;
   };
 
-  const cartItem = cartItems.map((item) => (
-    <CartItem
-      user_id={item.user_id}
-      product_id={item.product_id}
-      product_cnt={item.product_cnt}
-      product_name={item.product_name}
-      product_price={item.product_price}
-      promotion_discount={item.promotion_discount}
-      product_mainimagepath={item.product_mainimagepath}
-      cartItems={cartItems}
-      nothing={nothing}
-      setNothing={setNothing}
-      onDelete={onDelete}
-      checkChange={checkChange}
-      checkedItems={checkedItems}
-      increQuantity={increQuantity}
-      decreQuantity={decreQuantity}
-      calcProductPrice={calcProductPrice}
-    />
-  ));
+  // const cartItem = cartItems.map((item) => (
+  //   <CartItem
+  //     user_id={item.user_id}
+  //     product_id={item.product_id}
+  //     product_cnt={item.product_cnt}
+  //     product_name={item.product_name}
+  //     product_price={item.product_price}
+  //     promotion_discount={item.promotion_discount}
+  //     product_mainimagepath={item.product_mainimagepath}
+  //     cartItems={cartItems}
+  //     nothing={nothing}
+  //     setNothing={setNothing}
+  //     onDelete={onDelete}
+  //     checkChange={checkChange}
+  //     checkedItems={checkedItems}
+  //     increQuantity={increQuantity}
+  //     decreQuantity={decreQuantity}
+  //     calcProductPrice={calcProductPrice}
+  //   />
+  // ));
 
   return (
     <div className="Cart">
@@ -109,7 +109,18 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
                 <th scope="col">선택</th>
               </tr>
             </thead>
-            <tbody>{cartItem}</tbody>
+            {/* <tbody>{cartItem}</tbody> */}
+            <CartItem
+              cartItems={cartItems}
+              nothing={nothing}
+              setNothing={setNothing}
+              onDelete={onDelete}
+              checkChange={checkChange}
+              checkedItems={checkedItems}
+              increQuantity={increQuantity}
+              decreQuantity={decreQuantity}
+              calcProductPrice={calcProductPrice}
+            />
             <tfoot>
               <tr>
                 <th colSpan="7">
