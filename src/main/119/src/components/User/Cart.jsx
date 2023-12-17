@@ -135,7 +135,7 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
                   <span>합계 : </span>
                   <strong>
                     <span className="cartPrice">
-                      {(totalPrice() + 3000).toLocaleString()}
+                      {totalPrice() > 50000 ? totalPrice().toLocaleString() : (totalPrice() + 3000).toLocaleString()}
                     </span>
                     원
                   </strong>

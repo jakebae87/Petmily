@@ -430,7 +430,9 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                   <tr>
                     <td>
                       {/* <span type="text" id="order_total_price" name="order_total_price" value={(totalPrice() + 3000).toLocaleString()} /> */}
-                      <span>{(totalPrice() + 3000).toLocaleString()}</span>
+                      <span>{totalPrice() > 50000
+                          ? `${totalPrice().toLocaleString()}원`
+                          : `${(totalPrice() + 3000).toLocaleString()}원`}</span>
                     </td>
                     <td>
                       <select

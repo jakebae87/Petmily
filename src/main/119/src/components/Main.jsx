@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 // Home
 import Home from "./Home/Home";
@@ -41,21 +40,6 @@ function Main() {
   const [nothing, setNothing] = useState(1);
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const loggedInUser = sessionStorage.getItem('loggedInUser');
-  
-  //   if (loggedInUser) {
-  //     axios
-  //       .get("/rscart/cartList")
-  //       .then((response) => {
-  //         setCartItems(response.data);
-  //       })
-  //       .catch((err) => {
-  //         alert(`** checkdata 서버연결 실패 => ${err.message}`);
-  //       });
-  //   }
-  // }, [setCartItems, nothing]);
 
   // 장바구니 체크된 상품
   const [checkedItems, setCheckedItems] = useState(
