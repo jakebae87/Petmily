@@ -237,6 +237,7 @@ public class RestCartController {
 	public ResponseEntity<List<OrderProductDTO>> orderProductList(HttpSession session) {
 		String user_id = (String) session.getAttribute("loginID");
 		List<OrderProductDTO> OrderProductList = odservice.selectListP(user_id);
+		System.out.println(OrderProductList);
 		return new ResponseEntity<>(OrderProductList, HttpStatus.OK);
 	}
 	

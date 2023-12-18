@@ -5,7 +5,7 @@ import axios from 'axios';
 import Star from "./Star";
 
 export default function ReviewWrite() {
-    const { id } = useParams();
+    const { id, key } = useParams();
     const [productData, setProductData] = useState([]);
 
     // 상품후기의 별점 수 받기 시작
@@ -93,6 +93,8 @@ export default function ReviewWrite() {
                         <input type="hidden" name="review_point" value={score} />
                         <input type="hidden" name="product_id" value={id} />
                         <input type="hidden" name="review_writer" value={userName} />
+                        <input type="hidden" name="order_key" value={key} />
+                        <input type="hidden" name="user_id" value={user.user_id} />
 
                         <textarea name="review_content" rows="30" cols="100"></textarea>
                     </form>

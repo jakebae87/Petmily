@@ -204,6 +204,8 @@ public class RestBoardController {
 	public ResponseEntity<?> reviewInsert(ReviewDTO dto) throws IllegalStateException, IOException {
 		ResponseEntity<?> result = null;
 		
+		System.out.println(dto);
+		
 		String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\reviews\\";
 
 		String file1, file2 = "";
