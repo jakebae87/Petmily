@@ -69,8 +69,5 @@
 			</tr>
 		</c:if>
 	</table>
-	<hr>
-	&nbsp;
-	<a href="/home">Home</a>&nbsp;
 </body>
 </html>

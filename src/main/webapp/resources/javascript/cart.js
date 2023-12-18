@@ -18,6 +18,9 @@ function cartForm() {
 	&nbsp;
 	<a href="/home">[Home]</a>
 	`;
+	document.getElementById('newPage').innerHTML = "";
+	document.getElementById('pTableListArea').innerHTML = "";
+	document.getElementById('insertTableArea').innerHTML = "";
 	document.getElementById('resultArea1').innerHTML = resultHtml;
 }
 

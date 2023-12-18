@@ -24,11 +24,6 @@
 <body>
 	<h2>[주문내역 목록 페이지]</h2>
 	<hr>
-	<c:if test="${not empty requestScope.message}">
-	=> ${requestScope.message}<br>
-		<hr>
-	</c:if>
-	<hr>
 	<table border="1" style="width: 100%; text-align: center">
 		<tr bgcolor="skyblue">
 			<th>주문번호</th>

@@ -23,25 +23,6 @@
 <body>
 	<h2>[장바구니 목록 페이지]</h2>
 	<hr>
-	<c:if test="${not empty requestScope.message}">
-	=> ${requestScope.message}<br>
-		<hr>
-	</c:if>
-		<hr>
-	<div id="searchBar">
-		<select name="searchType" id="searchType" onchange="keywordClear()">
-			<option value="all"
-				${pageMaker.cri.searchType=='all' ? 'selected' : ''}>전체</option>
-			<option value="title"
-				${pageMaker.cri.searchType=='user_id' ? 'selected' : ''}>주문아이디</option>
-			<option value="content"
-				${pageMaker.cri.searchType=='product_id' ? 'selected' : ''}>상품아이디</option>
-		</select>
-		<input type="text" name="keyword" id="keyword" value="${pageMaker.cri.keyword}">
-		<button id="searchBtn" onclick="searchDB()">Search</button>
-	</div>
-	<br>
-	<hr>
 	<table border="1" style="width: 100%; text-align: center">
 		<tr bgcolor="skyblue">
 			<th>회원아이디</th>
@@ -52,7 +33,6 @@
 		<c:if test="${not empty requestScope.banana}">
 			<c:forEach var="s" items="${requestScope.banana}">
 				<tr>
-				<%-- <td><a href="cdetail?id=${s.user_id}">${s.user_id}</a></td> --%>
 					<td>${s.user_id}</td>
 					<td>${s.product_id}</td>
 					<td>${s.product_cnt}</td>
@@ -65,9 +45,6 @@
 				<td colspan="4">장바구니가 비어있습니다</td>
 			</tr>
 		</c:if>
-		<!-- <tr>
-			<td colspan="4"><input type="submit" id="orderButton" value="주문"></td>
-		</tr> -->
 	</table>
 	<hr>
 	<div align="center">

@@ -12,26 +12,10 @@
 	<h2>[주문상세 페이지]</h2>
 	<table  style="text-align: center">
 		<c:if test="${not empty requestScope.apple}">
-<!-- 			<tr height="40"> -->
-<!-- 				<th bgcolor="Thistle">주문상세번호</th> -->
-<%-- 				<td>${requestScope.apple.order_detail_key}</td> --%>
-<!-- 			</tr> -->
 			<tr height="40">
 				<th bgcolor="Thistle">주문번호</th>
 				<td>${requestScope.apple.order_key}</td>
 			</tr>
-<!-- 			<tr height="40"> -->
-<!-- 				<th bgcolor="Thistle">상품아이디</th> -->
-<%-- 				<td>${requestScope.apple.product_id}</td> --%>
-<!-- 			</tr> -->
-<!-- 			<tr height="40"> -->
-<!-- 				<th bgcolor="Thistle">각상품개수</th> -->
-<%-- 				<td>${requestScope.apple.product_cnt}</td> --%>
-<!-- 			</tr> -->
-<!-- 			<tr height="40"> -->
-<!-- 				<th bgcolor="Thistle">상품별가격</th> -->
-<%-- 				<td>${requestScope.apple.product_kind_price}</td> --%>
-<!-- 			</tr> -->
 			<tr height="40">
 				<th bgcolor="Thistle">배송상태</th>
 				<td>${requestScope.apple.delivery_status}</td>
@@ -43,8 +27,5 @@
 			</tr>
 		</c:if>
 	</table>
-	<hr>
-	&nbsp;
-	<a href="/home">Home</a>&nbsp;
 </body>
 </html>
