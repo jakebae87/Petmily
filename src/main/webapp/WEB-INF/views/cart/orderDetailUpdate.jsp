@@ -24,8 +24,12 @@
 				</tr>
 				<tr height="40">
 					<td bgcolor="Linen">배송상태</td>
-					<td><input type="text" name="delivery_status"
-						value="${apple.delivery_status}" size="20"></td>
+					<td>
+						<select name="delivery_status">
+							<option value="배송준비중" ${requestScope.apple.delivery_status=="배송준비중" ? "selected" : ""} >배송준비중</option>
+							<option value="배송완료" ${requestScope.apple.delivery_status=="배송완료" ? "selected" : ""} >배송완료</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<td colspan=2>
