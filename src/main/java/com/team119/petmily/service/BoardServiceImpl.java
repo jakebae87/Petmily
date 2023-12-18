@@ -249,4 +249,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.updateStatus(dto);
 	}
 
+	@Override
+	public int updateStatusDelete(ReviewDTO dto) {
+		return boardMapper.updateStatusDelete(dto);
+	}
+
 } // class
