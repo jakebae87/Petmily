@@ -6,6 +6,7 @@ import java.util.Map;
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.OrderProductByUserDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
@@ -111,5 +112,9 @@ public interface BoardService {
 	List<ProductDTO> getProductByCategory(Map<String, String> condition);
 
 	UserDTO getEmail(InquiryDTO dto);
+
+	List<OrderProductByUserDTO> getProductByUser(String userName);
+
+	int updateStatus(ReviewDTO dto);
 
 }

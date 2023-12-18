@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.OrderProductByUserDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
@@ -236,6 +237,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public UserDTO getEmail(InquiryDTO dto) {
 		return boardMapper.getEmail(dto);
+	}
+
+	@Override
+	public List<OrderProductByUserDTO> getProductByUser(String userName) {
+		return boardMapper.getProductByUser(userName);
+	}
+
+	@Override
+	public int updateStatus(ReviewDTO dto) {
+		return boardMapper.updateStatus(dto);
 	}
 
 } // class

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.OrderProductByUserDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
@@ -202,7 +203,7 @@ public class RestBoardController {
 	@PostMapping(value = "/review/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> reviewInsert(ReviewDTO dto) throws IllegalStateException, IOException {
 		ResponseEntity<?> result = null;
-
+		
 		String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\reviews\\";
 
 		String file1, file2 = "";
@@ -290,7 +291,7 @@ public class RestBoardController {
 		dto.setReview_image1(file2);
 		dto.setReview_image2(file4);
 
-		if (boardService.insertReview(dto) > 0) { // Transaction_Test, insert2
+		if (boardService.insertReview(dto) > 0 && boardService.updateStatus(dto) > 0) { // Transaction_Test, insert2
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 등록 성공");
 			log.info("HttpStatus.OK => " + HttpStatus.OK);
 			pservice.updateProductRating();
@@ -394,7 +395,7 @@ public class RestBoardController {
 
 	@PostMapping(value = "/inquiry/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void inquiryUpdate(@RequestBody InquiryDTO dto) {
-	
+
 		if (dto.getAnswer_content() != null) {
 			UserDTO user = boardService.getEmail(dto);
 			boardService.updateInquiry(dto);
@@ -520,6 +521,23 @@ public class RestBoardController {
 		} else {
 			product = boardService.getAllProducts();
 		}
+
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			log.info("Product Search HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Search HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/product/searchByUser", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProductByUser(@RequestParam("user") String userName) {
+		ResponseEntity<?> result = null;
+		
+		List<OrderProductByUserDTO> product = boardService.getProductByUser(userName);
 
 		if (product != null) {
 			result = ResponseEntity.status(HttpStatus.OK).body(product);

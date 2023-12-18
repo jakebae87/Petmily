@@ -20,6 +20,8 @@ export default function ReviewWrite() {
 
     const [searchResult, setSearchResult] = useState([]); // 검색한 값이 db에 있으면 searchResult에 저장한다.
     const [selectedValue, setSelectedValue] = useState('');
+    const [orderKey, setOrderKey] = useState('');
+    const [userId, setUserId] = useState('');
 
     const navigate = useNavigate();
 
@@ -46,7 +48,7 @@ export default function ReviewWrite() {
         }
 
         let formData = new FormData(document.getElementById('reviewForm'));
-        
+
         await axios.post(
             "/review/insert",
             formData,
@@ -70,7 +72,7 @@ export default function ReviewWrite() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`/product/search?name=`);
+                const response = await axios.get(`/product/searchByUser?user=${user.user_id}`);
                 setSearchResult(response.data);
             } catch (error) {
                 console.error('데이터를 불러오는 중에 오류가 발생했습니다.', error);
@@ -94,6 +96,9 @@ export default function ReviewWrite() {
     const handleSelectChange = (event) => {
         const selectedProductId = event.target.value; // select 태그의 option 중 해당하는 상품명을 변수에 담는다.
         setSelectedValue(selectedProductId);
+        setOrderKey(event.target.options[event.target.selectedIndex].dataset.orderkey);
+        setUserId(event.target.options[event.target.selectedIndex].dataset.userid);
+
     };
 
     return (
@@ -111,12 +116,22 @@ export default function ReviewWrite() {
                             height: '50px',
                             fontSize: '16px'
                         }} value={selectedValue} onChange={handleSelectChange}>
-                            <option value="">선택하세요</option>
-                            {searchResult.map((result, index) => (
-                                <option key={index} value={result.product_id} >
-                                    {result.product_name}
-                                </option>
-                            ))}
+                            <option value="">구매상품 (구매날짜)</option>
+                            {searchResult.map((result, index) => {
+                                const date = new Date(result.order_date);
+
+                                const year = date.getFullYear();
+                                const month = String(date.getMonth() + 1).padStart(2, '0');
+                                const day = String(date.getDate()).padStart(2, '0');
+
+                                const formattedDate = `${year}-${month}-${day}`;
+
+                                return (
+                                    <option key={index} value={result.product_id} data-orderKey={result.order_key} data-userId ={result.user_id}>
+                                        {result.product_name} ({formattedDate}) 
+                                    </option>
+                                );
+                            })}
                         </select>
                     </div>
 
@@ -143,6 +158,8 @@ export default function ReviewWrite() {
                         <input type="hidden" name="review_point" value={score} />
                         <input type="hidden" name="review_writer" value={userName} />
                         <input type="hidden" name="product_id" value={selectedValue} />
+                        <input type="hidden" name="order_key" value={orderKey} />
+                        <input type="hidden" name="user_id" value={userId} />
 
                         <textarea name="review_content" rows="30" cols="100"></textarea>
                     </form>

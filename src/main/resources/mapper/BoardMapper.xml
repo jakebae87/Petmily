@@ -340,6 +340,26 @@
 	<select id ="getEmail" resultType="com.team119.petmily.domain.UserDTO">
 		SELECT * FROM USER WHERE USER_NAME = #{inquiry_writer}
 	</select>
+	
+	<select id="getProductByUser" resultType="com.team119.petmily.domain.OrderProductByUserDTO">
+		SELECT P.PRODUCT_ID, P.PRODUCT_NAME, OP.ORDER_DATE, OP.USER_ID, OP.ORDER_KEY
+		FROM PRODUCT P 
+		LEFT JOIN ORDER_DETAIL OD 
+			ON P.PRODUCT_ID = OD.PRODUCT_ID 
+		LEFT JOIN ORDER_PRODUCT OP 
+			ON OD.ORDER_KEY = OP.ORDER_KEY 
+		WHERE OP.USER_ID = #{userName}
+			AND OP.ORDER_DATE BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_ADD(CURDATE(), INTERVAL 1 DAY)
+			AND OD.DELIVERY_STATUS = '배송완료'
+			AND OD.PRODUCT_REVIEW = FALSE
+	</select>
+
+	<update id="updateStatus">
+		UPDATE ORDER_DETAIL AS OD
+		INNER JOIN ORDER_PRODUCT AS OP ON OD.ORDER_KEY = OP.ORDER_KEY
+		SET OD.PRODUCT_REVIEW = TRUE
+		WHERE OP.USER_ID = #{user_id} AND OD.ORDER_KEY = #{order_key} AND OD.PRODUCT_ID = #{product_id};
+	</update>
 
 </mapper>
 

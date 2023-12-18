@@ -5,7 +5,7 @@ import './Star.css';
 const ARRAY = [0, 1, 2, 3, 4];
 
 function Star({ star, onChangeScore }) {
-  const [clickedStars, setClickedStars] = useState(0);
+  const [clickedStars, setClickedStars] = useState(1);
 
   useEffect(() => {
     setClickedStars(star);

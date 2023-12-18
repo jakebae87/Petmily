@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="selectListP" resultType="com.team119.petmily.domain.OrderDetailDTO">
-		select op.order_date, op.order_key, pr.product_mainimagepath, pr.product_name, od.product_cnt, od.product_kind_price, od.delivery_status
+		select op.order_date, op.order_key, pr.product_mainimagepath, pr.product_name, od.product_cnt, od.product_kind_price, od.delivery_status, od.product_review
 		from order_detail od
 			inner join order_product op on od.order_key = op.order_key
 			inner join product pr on od.product_id = pr.product_id
