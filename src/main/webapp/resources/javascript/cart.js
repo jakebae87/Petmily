@@ -26,7 +26,6 @@ function cartList() {
 	let url = "/cart/cartList";
 	axios.get(url
 	).then(response => {
-		alert("** response 성공");
 		document.getElementById('resultArea2').innerHTML = response.data;
 	}).catch(err => {
 		alert("** response 실패 => " + err.message);
@@ -40,7 +39,6 @@ function cartInsertf() {
 	let url = "/cart/cartInsert";
 	axios.get(url
 	).then(response => {
-		alert("** response 성공");
 		document.getElementById('resultArea2').innerHTML = response.data;
 	}).catch(err => {
 		alert("** response 실패 => " + err.message);

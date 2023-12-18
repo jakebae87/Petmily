@@ -89,7 +89,7 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
     // 주문내역 DTO
     const OrderProductDTO = {
       user_id: loginUser.user_id,
-      order_total_price: totalPrice() + 3000,
+      order_total_price: totalPrice() >= 50000 ? totalPrice() : totalPrice() + 3000,
       pay_method: payMethod,
       order_name: orderName,
       order_email: loginUser.user_email,
@@ -143,21 +143,34 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                   <th scope="col">선택</th>
                 </tr>
               </thead>
-              <OrderItem orderItems={orderItems} deleteOrder={deleteOrder} calcProductPrice={calcProductPrice} />
+              <OrderItem
+                orderItems={orderItems}
+                deleteOrder={deleteOrder}
+                calcProductPrice={calcProductPrice}
+              />
               <tfoot>
                 <tr>
                   <th colSpan="7">
                     <span>상품구매금액 </span>
                     <strong>
                       <span className="productPrice">
-                      {totalPrice() ? `${totalPrice().toLocaleString()}원` : "가격 정보 없음"}
+                        {totalPrice()
+                          ? `${totalPrice().toLocaleString()}원`
+                          : "가격 정보 없음"}
                       </span>
                     </strong>
-                    <span className="deliveryPrice"> + 배송비 3,000원 = </span>
+                    <span className="deliveryPrice">
+                      {" "}
+                      + 배송비 {totalPrice() >= 50000
+                        ? "무료"
+                        : "3,000원"} ={" "}
+                    </span>
                     <span>합계 : </span>
                     <strong>
                       <span className="cartPrice">
-                        {totalPrice() ? `${(totalPrice() + 3000).toLocaleString()}원` : "가격 정보 없음"}
+                        {totalPrice() >= 50000
+                          ? `${totalPrice().toLocaleString()}원`
+                          : `${(totalPrice() + 3000).toLocaleString()}원`}
                       </span>
                     </strong>
                   </th>
@@ -329,12 +342,15 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                         onChange={(e) => setOrderZipcode(e.target.value)}
                       />
                       <button className="postCodeFind" onClick={togglePost}>
-                          {isPostOpen ? '우편번호 닫기' : '우편번호 찾기'}
+                        {isPostOpen ? "우편번호 닫기" : "우편번호 찾기"}
                       </button>
                       {isPostOpen && (
-                          <div>
-                              <DaumPostcode onComplete={handleComplete} autoClose={true} />
-                          </div>
+                        <div>
+                          <DaumPostcode
+                            onComplete={handleComplete}
+                            autoClose={true}
+                          />
+                        </div>
                       )}
                     </td>
                     <td>
@@ -387,6 +403,7 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                         name="order_req"
                         rows="3"
                         value={orderReq}
+                        onChange={(e) => setOrderReq(e.target.value)}
                       ></textarea>
                     </td>
                   </tr>
@@ -412,11 +429,17 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                 <tbody>
                   <tr>
                     <td>
-                      {/* <span type="text" id="order_total_price" name="order_total_price" value={(totalPrice() + 3000).toLocaleString()} /> */}
-                      <span>{(totalPrice() + 3000).toLocaleString()}</span>
+                      <span>{totalPrice() >= 50000
+                          ? `${totalPrice().toLocaleString()}원`
+                          : `${(totalPrice() + 3000).toLocaleString()}원`}</span>
                     </td>
                     <td>
-                      <select id="pay_method" name="pay_method" value={payMethod} onChange={payMethodChange}>
+                      <select
+                        id="pay_method"
+                        name="pay_method"
+                        value={payMethod}
+                        onChange={payMethodChange}
+                      >
                         <option value="카드">카드</option>
                         <option value="계좌이체">계좌이체</option>
                       </select>

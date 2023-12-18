@@ -76,11 +76,11 @@
 		<!-- 1) FirstPage, Prev -->
 		<c:choose>
 			<c:when test="${pageMaker.prev && pageMaker.spageNo>1}">
-				<a href="orderProduct${pageMaker.searchQuery(1)}">FP</a>&nbsp;
-		  		<a href="orderProduct${pageMaker.searchQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp;
+				<a onclick="orderProduct(`${pageMaker.makeQuery(1)}`)">맨앞</a>&nbsp;
+		  		<a onclick="orderProduct(`${pageMaker.makeQuery(pageMaker.spageNo-1)}`)">&LT;</a>&nbsp;&nbsp;
 			</c:when>
 			<c:otherwise>
-				<font color="Gray">FP&nbsp;&LT;&nbsp;&nbsp;</font>
+				<font color="Gray">맨앞&nbsp;&LT;&nbsp;&nbsp;</font>
 			</c:otherwise>
 		</c:choose>
 
@@ -91,19 +91,18 @@
 				<font color="Orange" size="5"><b>${i}</b></font>&nbsp;
 			</c:if>
 			<c:if test="${i!=pageMaker.cri.currPage}">
-				<a onclick="orderProduct(`${pageMaker.searchQuery(i)}`)">${i}</a>&nbsp;
-		</c:if>
+				<a onclick="orderProduct(`${pageMaker.makeQuery(i)}`)">${i}</a>&nbsp;
+			</c:if>
 		</c:forEach>
 
 		<!-- 3) Next, LastPage -->
 		<c:choose>
 			<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
-			&nbsp;<a href="orderProduct${pageMaker.searchQuery(pageMaker.epageNo+1)}">&GT;</a>
-			&nbsp;<a
-					href="orderProduct${pageMaker.searchQuery(pageMaker.lastPageNo)}">LP</a>
+			&nbsp;<a onclick="orderProduct(`${pageMaker.makeQuery(pageMaker.epageNo+1)}`)">&GT;</a>
+			&nbsp;<a onclick="orderProduct(`${pageMaker.makeQuery(pageMaker.lastPageNo)}`)">맨뒤</a>
 			</c:when>
 			<c:otherwise>
-				<font color="Gray">&nbsp;&GT;&nbsp;LP</font>
+				<font color="Gray">&nbsp;&GT;&nbsp;맨뒤</font>
 			</c:otherwise>
 		</c:choose>
 	</div>

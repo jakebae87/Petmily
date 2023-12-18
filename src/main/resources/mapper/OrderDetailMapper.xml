@@ -5,7 +5,7 @@
 
 	<!-- 1. selectList -->
 	<select id="selectList" resultType="com.team119.petmily.domain.OrderDetailDTO">
-		select * from order_detail order by order_detail_key asc;
+		select * from order_detail;
 	</select>
 	
 	<select id="selectListP" resultType="com.team119.petmily.domain.OrderDetailDTO">
