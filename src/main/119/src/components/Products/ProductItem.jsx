@@ -20,7 +20,7 @@ const ProductItem = ({ it, calcProductPrice, setCartItems }) => {
                 // alert(`** checkdata 서버연결 실패 => ${err.message}`);
                 // });
         }).catch( err => {
-                    if ( err.response.status ) alert(err.response.data);  				
+                    if ( err.response.status ) alert(err.response.data);
                     else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
         });
     }

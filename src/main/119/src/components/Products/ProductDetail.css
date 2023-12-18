@@ -39,6 +39,11 @@
 .detailImages {
   width: 80px;
   height: 80px;
+  cursor: pointer;
+}
+
+.detailImages.selected {
+  border: 2px solid black;
 }
 
 /* 상품 정보 */

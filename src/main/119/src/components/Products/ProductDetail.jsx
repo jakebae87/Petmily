@@ -34,9 +34,8 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
     const [productDetailData, setProductDetailData] = useState([]);
     const [productImagesData, setProductImagesData] = useState([]);
     const [quantity, setQuantity] = useState(1);
-
-    // 마우스 호버 시 호출되는 함수
-    const handleThumbnailHover = (imageUrl) => {
+    
+    const handleThumbnailClick = (imageUrl) => {
         setCurrentImage(imageUrl);
     };
 
@@ -218,7 +217,6 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                 <div className="productImage">
                     <img
                         src={currentImage || `${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
-                        //src={`${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
                         alt={productDetailData.product_mainimagepath}
                         width="500px"
                         height="400px"
@@ -228,19 +226,15 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                             src={`${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
                             alt={productDetailData.product_mainimagepath}
                             className="detailImages"
-                            onMouseOver={() => handleThumbnailHover(`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(productDetailData.product_mainimagepath)}`)}
+                            onClick={() => handleThumbnailClick(`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(productDetailData.product_mainimagepath)}`)}
                         />
                         {productImagesData.map((image, index) => (
                             <img
-                                // key={index}
-                                // src={`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(image.product_imagepath)}`}
-                                // alt={`Review Image ${index + 1}`}
-                                // className="detailImages"
                                 key={index}
                                 src={`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(image.product_imagepath)}`}
                                 alt={`Thumbnail ${index}`}
                                 className="detailImages"
-                                onMouseOver={() => handleThumbnailHover(`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(image.product_imagepath)}`)}
+                                onClick={() => handleThumbnailClick(`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(image.product_imagepath)}`)}
                             />
                         ))}
                     </div>
