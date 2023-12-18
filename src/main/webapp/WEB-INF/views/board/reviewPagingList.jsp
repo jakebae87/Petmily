@@ -22,7 +22,9 @@
 	<br> <br>
 	<table id="boardTable">
 		<tr>
+			<th>글번호</th>
 			<th>글제목</th>
+			<th>상품명</th>
 			<th>작성자</th>
 			<th>평점</th>
 			<th>조회수</th>
@@ -32,7 +34,9 @@
 		<c:if test="${not empty requestScope.review}">
 			<c:forEach var="s" items="${requestScope.review}">
 				<tr>
+					<td>${s.review_id}</td>
 					<td><a onclick="reviewDetail(${s.review_id})">${s.review_title}</a></td>
+					<td>${s.product_name}</td>
 					<td>${s.review_writer}</td>
 					<td>${s.review_point}</td>
 					<td>${s.review_count}</td>

@@ -56,7 +56,6 @@ export default function InquiryDetail() {
 
     function denyUpdate() {
         alert('이미 답변이 완료되어 수정이 불가합니다.');
-        return;
     }
 
     function Answer() {

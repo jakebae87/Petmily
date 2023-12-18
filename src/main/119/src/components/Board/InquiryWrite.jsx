@@ -122,21 +122,21 @@ export default function InquiryWrite() {
                 <div className="selectStarRegist">
                     <input type="text" id="searchInput" onChange={fetchData} placeholder="상품명을 입력하세요." required />
                     <div id="searchResult" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <select id="product_kind" onChange={handleKindChange}>
-                            <option value="all">전체</option>
+                        <select id="product_kind" onChange={handleKindChange} style={{width: '150px'}}>
+                            <option value="all">종류</option>
                             <option value="dog">강아지</option>
                             <option value="cat">고양이</option>
                         </select>
-                        <select id="product_category" onChange={handleCategoryChange}>
-                            <option value="all">전체</option>
+                        <select id="product_category" onChange={handleCategoryChange} style={{ width: '150px' }}>
+                            <option value="all">카테고리</option>
                             {productByKind.map((result, index) => (
                                 <option key={index} >
                                     {result.product_category}
                                 </option>
                             ))}
                         </select>
-                        <select id="product_id" value={selectedValue} onChange={handleSelectChange}>
-                            <option value="">선택하세요</option>
+                        <select id="product_id" value={selectedValue} onChange={handleSelectChange} style={{ width: '150px' }}>
+                            <option value="">상품</option>
                             {searchResult.map((result, index) => (
                                 <option key={index} value={result.product_id} >
                                     {result.product_name}

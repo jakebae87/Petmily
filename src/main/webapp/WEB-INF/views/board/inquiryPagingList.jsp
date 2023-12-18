@@ -22,7 +22,9 @@
 	<br> <br>
 	<table id="boardTable">
 		<tr>
+			<th>글번호</th>
 			<th>글제목</th>
+			<th>상품명</th>
 			<th>답변여부</th>
 			<th>작성자</th>
 			<th>조회수</th>
@@ -32,7 +34,9 @@
 		<c:if test="${not empty requestScope.inquiry}">
 			<c:forEach var="s" items="${requestScope.inquiry}">
 				<tr>
+					<td>${s.inquiry_id}</td>
 					<td><a onclick="inquiryDetail(${s.inquiry_id})">${s.inquiry_title}</a></td>
+					<td>${s.product_name}</td>
 					<td><c:if test="${not empty s.answer_content}">
 							<b style="color: blue;">답변완료</b>
 						</c:if> <c:if test="${empty s.answer_content}">

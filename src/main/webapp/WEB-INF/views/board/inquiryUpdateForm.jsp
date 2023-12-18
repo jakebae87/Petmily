@@ -20,7 +20,7 @@
 				<tr>
 					<th>답변 내용</th>
 					<td>
-						<input type="text" id="answer_content" value="${requestScope.inquiry.answer_content}">
+						<textarea id="answer_content" rows="10" cols="30"></textarea>
 						<input type="hidden" id="inquiry_writer" value="${requestScope.inquiry.inquiry_writer}"/>
 					</td>
 				</tr>

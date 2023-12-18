@@ -67,7 +67,9 @@
 
 	<select id="getInquiryPagedList"
 		resultType="com.team119.petmily.domain.InquiryDTO">
-		SELECT * FROM INQUIRY
+		SELECT *,
+		(SELECT P.PRODUCT_NAME FROM PRODUCT P WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
+		FROM INQUIRY
 		ORDER BY INQUIRY_ID DESC
 		LIMIT #{sno},
 		#{rowsPerPage}
@@ -109,7 +111,9 @@
 
 	<select id="getReviewPagedList"
 		resultType="com.team119.petmily.domain.ReviewDTO">
-		SELECT * FROM REVIEW
+		SELECT *,
+		(SELECT P.PRODUCT_NAME FROM PRODUCT P WHERE P.PRODUCT_ID = REVIEW.PRODUCT_ID) AS PRODUCT_NAME 
+		FROM REVIEW
 		ORDER BY REVIEW_ID DESC
 		LIMIT #{sno},
 		#{rowsPerPage}

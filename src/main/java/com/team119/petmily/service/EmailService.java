@@ -42,7 +42,7 @@ public class EmailService {
 	public void sendEmail(String getEmailByName, String answer_content) {
 		SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(getEmailByName);	// 이메일주소
-        message.setSubject("상품 문의에 대한 답변");
+        message.setSubject("[펫밀리]상품 문의에 대한 답변");
         message.setText("상품 문의에 대한 답변 내용: " + answer_content);
 
         javaMailSender.send(message);
