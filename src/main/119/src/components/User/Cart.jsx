@@ -41,27 +41,6 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
     return selectedTotalPrice;
   };
 
-  // const cartItem = cartItems.map((item) => (
-  //   <CartItem
-  //     user_id={item.user_id}
-  //     product_id={item.product_id}
-  //     product_cnt={item.product_cnt}
-  //     product_name={item.product_name}
-  //     product_price={item.product_price}
-  //     promotion_discount={item.promotion_discount}
-  //     product_mainimagepath={item.product_mainimagepath}
-  //     cartItems={cartItems}
-  //     nothing={nothing}
-  //     setNothing={setNothing}
-  //     onDelete={onDelete}
-  //     checkChange={checkChange}
-  //     checkedItems={checkedItems}
-  //     increQuantity={increQuantity}
-  //     decreQuantity={decreQuantity}
-  //     calcProductPrice={calcProductPrice}
-  //   />
-  // ));
-
   return (
     <div className="Cart">
       <div className="titleArea">
@@ -109,7 +88,6 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
                 <th scope="col">선택</th>
               </tr>
             </thead>
-            {/* <tbody>{cartItem}</tbody> */}
             <CartItem
               cartItems={cartItems}
               nothing={nothing}
@@ -131,11 +109,11 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
                     </span>
                     원
                   </strong>
-                  <span className="deliveryPrice"> + 배송비 { totalPrice() > 50000 ? "무료" : "3,000원"  } = </span>
+                  <span className="deliveryPrice"> + 배송비 { totalPrice() >= 50000 ? "무료" : "3,000원"  } = </span>
                   <span>합계 : </span>
                   <strong>
                     <span className="cartPrice">
-                      {totalPrice() > 50000 ? totalPrice().toLocaleString() : (totalPrice() + 3000).toLocaleString()}
+                      {totalPrice() >= 50000 ? totalPrice().toLocaleString() : (totalPrice() + 3000).toLocaleString()}
                     </span>
                     원
                   </strong>
@@ -155,16 +133,13 @@ export default function Cart({ cartItems, setCartItems, nothing, setNothing, onD
               전체상품주문
             </button>
           </Link>
-          {/* <Link to={`/user/order`}> */}
             <button
               className="selectOrder"
               onClick={() => {
                 selectedOrder();
-              }}
-            >
+              }}>
               선택상품주문
             </button>
-          {/* </Link> */}
           <Link to="/products/all/all">
             <button className="returnShop">쇼핑계속하기</button>
           </Link>
