@@ -50,6 +50,13 @@ function ReviewDetail() {
             );
         }
     }
+    function ReplyButton() {
+        if (userName != '') {
+            return (
+                <input onClick={replyWrite} style={{ marginRight: '50px' }} type="button" value="댓글작성" />
+            );
+        }
+    }
 
     function replyDeleteButton() {
         if (userName == review.review_writer) {
@@ -221,7 +228,7 @@ function ReviewDetail() {
                 <Popup data={id} showPopup={showPopup} closePopup={closePopup} />
                 <div id="bottomBoard" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <WriterButton/>
-                    <input onClick={replyWrite} style={{ marginRight: '50px' }} type="button" value="댓글작성" />
+                    <ReplyButton/>
                     <Link to="/community/review"><input type="button" value="목록" /></Link>
                 </div>
             </div>

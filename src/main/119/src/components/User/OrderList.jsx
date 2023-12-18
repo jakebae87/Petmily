@@ -36,6 +36,14 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
   );
 }
 
+function isWithin30Days(orderDate) {
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  const orderDateTime = new Date(orderDate);
+
+  return orderDateTime >= thirtyDaysAgo;
+}
+
 export default function OrderList() {
   const navigate = useNavigate();
 
@@ -117,7 +125,7 @@ export default function OrderList() {
             </thead>
             <tbody>
               {paginatedData().map((item) => (
-                <tr>
+                <tr>  
                   <td>
                     <span className="orderDate">
                       {new Date(item.order_date)
@@ -161,20 +169,24 @@ export default function OrderList() {
                     <span className="orderState">{item.delivery_status}</span>
                   </td>
                   <td>
-                    <Link to={`/board/reviewWrite2/${item.product_id}`}>
-                      <input
-                        type="button"
-                        id="writeButton"
-                        name="writeButton"
-                        value="후기쓰기"
-                      />
-                    </Link>
+                    {item.delivery_status === '배송완료' ? (
+                      item.product_review === 0 ? (
+                        isWithin30Days(item.order_date) ? (
+                          <Link to="/board/reviewWrite">
+                            <input type="button" id="writeButton" value="후기쓰기" />
+                          </Link>
+                        ) : (
+                          <span>작성일 만료</span>
+                        )
+                      ) : (
+                        <input style={{ background: 'blue' }} type="button" id="writeButton" value="작성완료" readOnly />
+                      )
+                    ) : (
+                      <input style={{ width: '80px', background: 'red' }} type="button" id="writeButton" value="배송 후 가능" />
+                    )}
                   </td>
                   <td>
-                    <input
-                      type="button"
-                      id="cancelButton"
-                      name="cancelButton"
+                    <input type="button" id="cancelButton" name="cancelButton"
                       onClick={() => {
                         deleteOrder(item.order_key);
                       }}

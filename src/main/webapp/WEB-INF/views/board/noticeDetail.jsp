@@ -19,6 +19,10 @@
 		<c:if test="${not empty requestScope.notice}">
 			<table id="boardDetail">
 				<tr>
+					<th>글번호</th>
+					<td>${requestScope.notice.notice_id}</td>
+				</tr>
+				<tr>
 					<th>글제목</th>
 					<td>${requestScope.notice.notice_title}</td>
 				</tr>

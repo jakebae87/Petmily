@@ -35,7 +35,7 @@ function Notice() {
     const itemsPerPage = 10;
     const [searchInput, setSearchInput] = useState("");
 
-    const handleSearch = (e) => {
+    const handleSearch = (e) => {   //기본 동작을 막고, 폼 제출 이벤트를 제어
         e.preventDefault();
         setNotice([]); // 검색 결과 초기화
         setSearchPeriod(e.target.searchPeriod.value);
@@ -44,6 +44,7 @@ function Notice() {
     };
 
     useEffect(() => {
+        setCurrentPage(1); // 검색 매개변수가 변경될 때 currentPage를 1로 재설정
         const fetchData = async () => {
             try {
                 const response = await axios.get('/notice/list', {
@@ -59,7 +60,8 @@ function Notice() {
             }
         };
         fetchData();
-    }, [searchPeriod, searchCriteria, searchWord]);
+    }, [searchPeriod, searchCriteria, searchWord, setCurrentPage]);
+
 
 
 
@@ -77,7 +79,7 @@ function Notice() {
 
             <div className="commnunityList">
                 <ul>
-                    <li><Link to="/community/notice">공지사항</Link></li>
+                    <li><a href="/community/notice">공지사항</a></li>
                     <li><Link to="/community/inquiry">상품문의</Link></li>
                     <li><Link to="/community/review">상품후기</Link></li>
                     <li><Link to="/community/faq">자주묻는질문</Link></li>
@@ -124,7 +126,6 @@ function Notice() {
                                 <select name="searchCriteria">
                                     <option value="subject">제목</option>
                                     <option value="content">내용</option>
-                                    <option value="writer">글쓴이</option>
                                 </select>
                             </div>
                         </div>

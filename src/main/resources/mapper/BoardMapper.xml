@@ -10,7 +10,7 @@
 		WHERE (#{searchPeriod} IS NULL OR
 		    CASE 
 		        WHEN 'week' = #{searchPeriod} THEN NOTICE_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
-		        WHEN 'month' = #{searchPeriod} THEN NOTICE_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+		        WHEN 'month' = #{searchPeriod} THEN NOTICE_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)	
 		        WHEN 'firstQuarter' = #{searchPeriod} THEN NOTICE_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
 		        ELSE 1=1
 		    END)
@@ -18,7 +18,6 @@
 		    CASE 
 		        WHEN 'subject' = #{searchCriteria} THEN LOWER(NOTICE_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        WHEN 'content' = #{searchCriteria} THEN LOWER(NOTICE_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
-		        WHEN 'writer' = #{searchCriteria} THEN LOWER(NOTICE_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        ELSE 1=1
 		    END)
 		ORDER BY NOTICE_REGDATE DESC;
@@ -45,11 +44,10 @@
 	     FROM PRODUCT P 
 	     WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
 		FROM INQUIRY
-		WHERE (#{searchPeriod} IS NULL OR
+		WHERE (#{searchCheck} IS NULL OR
 		    CASE 
-		        WHEN 'week' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
-		        WHEN 'month' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
-		        WHEN 'firstQuarter' = #{searchPeriod} THEN INQUIRY_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+		        WHEN 'complete' = #{searchCheck} THEN ANSWER_CONTENT IS NOT NULL
+		        WHEN 'ongoing' = #{searchCheck} THEN ANSWER_CONTENT IS NULL
 		        ELSE 1=1
 		    END)
 		AND (#{searchCriteria} IS NULL OR
@@ -57,6 +55,11 @@
 		        WHEN 'subject' = #{searchCriteria} THEN LOWER(INQUIRY_TITLE) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        WHEN 'content' = #{searchCriteria} THEN LOWER(INQUIRY_CONTENT) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        WHEN 'writer' = #{searchCriteria} THEN LOWER(INQUIRY_WRITER) LIKE CONCAT('%', LOWER(#{searchWord}), '%')
+		        WHEN 'product' = #{searchCriteria} THEN LOWER(
+		        (	SELECT P.PRODUCT_NAME 
+	     			FROM PRODUCT P 
+	     			WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID)
+	     		) 	LIKE CONCAT('%', LOWER(#{searchWord}), '%')
 		        ELSE 1=1
 		    END)
 		ORDER BY INQUIRY_REGDATE DESC;
@@ -64,7 +67,9 @@
 
 	<select id="getInquiryPagedList"
 		resultType="com.team119.petmily.domain.InquiryDTO">
-		SELECT * FROM INQUIRY
+		SELECT *,
+		(SELECT P.PRODUCT_NAME FROM PRODUCT P WHERE P.PRODUCT_ID = INQUIRY.PRODUCT_ID) AS PRODUCT_NAME
+		FROM INQUIRY
 		ORDER BY INQUIRY_ID DESC
 		LIMIT #{sno},
 		#{rowsPerPage}
@@ -106,7 +111,9 @@
 
 	<select id="getReviewPagedList"
 		resultType="com.team119.petmily.domain.ReviewDTO">
-		SELECT * FROM REVIEW
+		SELECT *,
+		(SELECT P.PRODUCT_NAME FROM PRODUCT P WHERE P.PRODUCT_ID = REVIEW.PRODUCT_ID) AS PRODUCT_NAME 
+		FROM REVIEW
 		ORDER BY REVIEW_ID DESC
 		LIMIT #{sno},
 		#{rowsPerPage}
@@ -121,11 +128,12 @@
 	<select id="getFaqList" resultType="com.team119.petmily.domain.FaqDTO">
 		SELECT *
 		FROM FAQ
-		WHERE (#{searchPeriod} IS NULL OR
+		WHERE (#{searchType} IS NULL OR
 		    CASE 
-		        WHEN 'week' = #{searchPeriod} THEN FAQ_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
-		        WHEN 'month' = #{searchPeriod} THEN FAQ_REGDATE >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
-		        WHEN 'firstQuarter' = #{searchPeriod} THEN FAQ_REGDATE >= DATE_SUB(NOW(), INTERVAL 3 MONTH)
+		        WHEN 'delivery' = #{searchType} THEN QUESTION_TYPE = '결제/배송'
+		        WHEN 'join' = #{searchType} THEN QUESTION_TYPE = '회원가입/정보'
+		        WHEN 'refund' = #{searchType} THEN QUESTION_TYPE = '교환/환불'
+		        WHEN 'etc' = #{searchType} THEN QUESTION_TYPE = '기타'
 		        ELSE 1=1
 		    END)
 		AND (#{searchCriteria} IS NULL OR
@@ -201,8 +209,6 @@
 		WHERE INQUIRY_ID = #{inquiry_id}
 	</update>
 	
-	
-
 	<delete id="deleteInquiry">
 		DELETE FROM INQUIRY WHERE INQUIRY_ID = #{inquiry_id}
 	</delete>
@@ -294,6 +300,26 @@
 
 	<!-- REVIEW CRUD END -->
 	
+	
+	
+	<select id="getAllProducts" resultType="com.team119.petmily.domain.ProductDTO">
+		select * from product
+	</select>
+	
+	<select id="getProductByKind" resultType="com.team119.petmily.domain.ProductDTO">
+	    SELECT *
+		FROM PRODUCT
+		WHERE 
+		    CASE 
+		        WHEN #{kind} = 'all' THEN 1=1
+		        ELSE PRODUCT_KIND = #{kind}
+		    END;
+	</select>
+	
+	<select id="getProductByCategory" resultType="com.team119.petmily.domain.ProductDTO">
+		SELECT * FROM PRODUCT WHERE PRODUCT_KIND = #{kind} AND PRODUCT_CATEGORY = #{category}
+	</select>
+	
 	<select id="getProduct" resultType="com.team119.petmily.domain.ProductDTO">
 		select * from product where product_name like CONCAT('%', LOWER(#{name}), '%')
 	</select>
@@ -309,6 +335,30 @@
 	</update>
 	<update id="updateFaqCount">
 		UPDATE FAQ SET FAQ_COUNT = FAQ_COUNT + 1 WHERE FAQ_ID = #{faq_id}
+	</update>
+	
+	<select id ="getEmail" resultType="com.team119.petmily.domain.UserDTO">
+		SELECT * FROM USER WHERE USER_NAME = #{inquiry_writer}
+	</select>
+	
+	<select id="getProductByUser" resultType="com.team119.petmily.domain.OrderProductByUserDTO">
+		SELECT P.PRODUCT_ID, P.PRODUCT_NAME, OP.ORDER_DATE, OP.USER_ID, OP.ORDER_KEY
+		FROM PRODUCT P 
+		LEFT JOIN ORDER_DETAIL OD 
+			ON P.PRODUCT_ID = OD.PRODUCT_ID 
+		LEFT JOIN ORDER_PRODUCT OP 
+			ON OD.ORDER_KEY = OP.ORDER_KEY 
+		WHERE OP.USER_ID = #{userName}
+			AND OP.ORDER_DATE BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND DATE_ADD(CURDATE(), INTERVAL 1 DAY)
+			AND OD.DELIVERY_STATUS = '배송완료'
+			AND OD.PRODUCT_REVIEW = FALSE
+	</select>
+
+	<update id="updateStatus">
+		UPDATE ORDER_DETAIL AS OD
+		INNER JOIN ORDER_PRODUCT AS OP ON OD.ORDER_KEY = OP.ORDER_KEY
+		SET OD.PRODUCT_REVIEW = TRUE
+		WHERE OP.USER_ID = #{user_id} AND OD.ORDER_KEY = #{order_key} AND OD.PRODUCT_ID = #{product_id};
 	</update>
 
 </mapper>

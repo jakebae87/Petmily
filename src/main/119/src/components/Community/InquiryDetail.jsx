@@ -30,7 +30,7 @@ export default function InquiryDetail() {
         axios.delete(
             url
         ).then(response => {
-            alert('공지사항이 삭제 되었습니다.');
+            alert('상품문의가 삭제 되었습니다.');
             navigate('/community/inquiry');
         }).catch(error => {
             console.error(`에러 응답 = ${error.response},
@@ -54,6 +54,10 @@ export default function InquiryDetail() {
         contents = inquiry.inquiry_content.split('\n').map((it) => <p>{it}</p>);
     }
 
+    function denyUpdate() {
+        alert('이미 답변이 완료되어 수정이 불가합니다.');
+    }
+
     function Answer() {
         if (inquiry.answer_content != null) {
             return (
@@ -75,13 +79,20 @@ export default function InquiryDetail() {
         if (userName == inquiry.inquiry_writer) {
             return (
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <Link to={`/board/inquiryUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
+                    {
+                        inquiry.answer_content == null ? (
+                            <Link to={`/board/inquiryUpdate/${id}`}>
+                                <input style={{ marginRight: '50px' }} type="button" value="수정" />
+                            </Link>
+                        ) : (
+                                <input style={{ marginRight: '50px' }} type="button" value="수정" onClick={denyUpdate} />
+                        )
+                    }
                     <input onClick={inquiryDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
                 </div>
             );
         }
     }
-
 
     return (
         <div className="InquiryDetail">
@@ -123,7 +134,7 @@ export default function InquiryDetail() {
                 </table><br /><br />
                 <Answer />
                 <div id="bottomBoard" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <WriterButton  />
+                    <WriterButton />
                     <Link to="/community/inquiry"><input type="button" value="목록" /></Link>
                 </div>
             </div>
