@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 function Pagination({ totalPages, currentPage, onPageChange }) {
   const pages = [];
@@ -45,8 +45,6 @@ function isWithin30Days(orderDate) {
 }
 
 export default function OrderList() {
-  const navigate = useNavigate();
-
   const [orderLists, setOrderLists] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -62,7 +60,6 @@ export default function OrderList() {
       .get("/rscart/orderproductList")
       .then((response) => {
         setOrderLists(response.data);
-        //console.log(`** checkdata 서버연결 성공 =>`, response.data);
       })
       .catch((err) => {
         alert(`** checkdata 서버연결 실패 => ${err.message}`);
@@ -76,7 +73,6 @@ export default function OrderList() {
       .delete(url)
       .then((response) => {
         alert("주문이 취소되었습니다.");
-        // navigate("/user/orderList");
         window.location.reload();
       })
       .catch((err) => {
@@ -102,10 +98,10 @@ export default function OrderList() {
               <col style={{ width: 140 }} />
               <col style={{ width: 160 }} />
               <col style={{ width: 150 }} />
-              <col style={{ width: 170 }} />
+              <col style={{ width: 160 }} />
               <col style={{ width: 130 }} />
-              <col style={{ width: 140 }} />
-              <col style={{ width: 140 }} />
+              <col style={{ width: 130 }} />
+              <col style={{ width: 130 }} />
             </colgroup>
             <thead>
               <tr>
