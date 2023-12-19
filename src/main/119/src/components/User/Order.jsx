@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import OrderItem from "./OrderItem";
-import DaumPostcode from 'react-daum-postcode';
+import DaumPostcode from "react-daum-postcode";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const totalPrice = () => {
     return orderItems.reduce(
-      (total, item) => total + calcProductPrice(item.product_price, item.promotion_discount) * item.product_cnt,
+      (total, item) =>
+        total +
+        calcProductPrice(item.product_price, item.promotion_discount) *
+          item.product_cnt,
       0
     );
   };
@@ -30,7 +33,7 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const [orderAddrD, setOrderAddrD] = useState("");
   // 배송요청사항
   const [orderReq, setOrderReq] = useState("조심히 안전하게 와주세요");
-  
+
   // 주문완료시 이동 링크
   const navigate = useNavigate();
 
@@ -54,28 +57,28 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
   const [isPostOpen, setIsPostOpen] = useState(false);
 
   const handleComplete = (data) => {
-      let fullAddress = data.address;
-      let extraAddress = "";
+    let fullAddress = data.address;
+    let extraAddress = "";
 
-      if (data.addressType === "R") {
-          if (data.bname !== "") {
-              extraAddress += data.bname;
-          }
-          if (data.buildingName !== "") {
-              extraAddress +=
-                  extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-          }
-          fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddress += data.bname;
       }
+      if (data.buildingName !== "") {
+        extraAddress +=
+          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    }
 
-      setOrderZipcode(data.zonecode);
-      setOrderAddr(fullAddress);
-      setOrderAddrD(orderAddrD);
-      setIsPostOpen(false);
+    setOrderZipcode(data.zonecode);
+    setOrderAddr(fullAddress);
+    setOrderAddrD(orderAddrD);
+    setIsPostOpen(false);
   };
   const togglePost = (e) => {
-      e.preventDefault();
-      setIsPostOpen(!isPostOpen);
+    e.preventDefault();
+    setIsPostOpen(!isPostOpen);
   };
 
   // 결제 방법을 선택할 때 호출되는 함수입니다.
@@ -89,7 +92,8 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
     // 주문내역 DTO
     const OrderProductDTO = {
       user_id: loginUser.user_id,
-      order_total_price: totalPrice() >= 50000 ? totalPrice() : totalPrice() + 3000,
+      order_total_price:
+        totalPrice() >= 50000 ? totalPrice() : totalPrice() + 3000,
       pay_method: payMethod,
       order_name: orderName,
       order_email: loginUser.user_email,
@@ -98,18 +102,19 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
       order_addr: orderAddr,
       order_addr_detail: orderAddrD,
       order_req: orderReq,
-      orderItems: JSON.stringify(orderItems)
-  };
-  
-  axios.post('/rscart/order', OrderProductDTO)
-  .then(response => {
-    alert("주문완료이 완료되었습니다.");
-    navigate("/");
-  })
-  .catch(error => {
-    alert('주문에 실패했습니다. 다시 시도해주세요.');
-  });
-}
+      orderItems: JSON.stringify(orderItems),
+    };
+
+    axios
+      .post("/rscart/order", OrderProductDTO)
+      .then((response) => {
+        alert("주문완료이 완료되었습니다.");
+        navigate("/user/orderList");
+      })
+      .catch((error) => {
+        alert("주문에 실패했습니다. 다시 시도해주세요.");
+      });
+  }
 
   return (
     <div>
@@ -429,9 +434,11 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
                 <tbody>
                   <tr>
                     <td>
-                      <span>{totalPrice() >= 50000
+                      <span>
+                        {totalPrice() >= 50000
                           ? `${totalPrice().toLocaleString()}원`
-                          : `${(totalPrice() + 3000).toLocaleString()}원`}</span>
+                          : `${(totalPrice() + 3000).toLocaleString()}원`}
+                      </span>
                     </td>
                     <td>
                       <select
@@ -450,14 +457,12 @@ export default function Order({ orderItems, deleteOrder, calcProductPrice }) {
             </div>
           </div>
 
+        </form>
           <div className="payArea">
-            <Link to="/">
               <button className="productPay" onClick={order}>
                 결제하기
               </button>
-            </Link>
           </div>
-        </form>
       </div>
     </div>
   );
