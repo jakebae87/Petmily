@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 
@@ -28,11 +28,17 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
     );
 }
 
-const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) => {
+const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems, nothing, setNothing }) => {
     const { id } = useParams();
+    const [currentImage, setCurrentImage] = useState('');
     const [productDetailData, setProductDetailData] = useState([]);
     const [productImagesData, setProductImagesData] = useState([]);
     const [quantity, setQuantity] = useState(1);
+    const navigate = useNavigate();
+    
+    const handleThumbnailClick = (imageUrl) => {
+        setCurrentImage(imageUrl);
+    };
 
     const regDate = new Date(productDetailData.product_regdate);
     const formattedDate = regDate.toLocaleString('ko-KR', {
@@ -55,28 +61,47 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
 
     // 바로 구매하기
     const handleAddToOrder = () => {
-        addOrder({ ...productDetailData, product_cnt: quantity });
-        setQuantity(1);
+        const loggedInUser = sessionStorage.getItem("loggedInUser");
+
+        if (loggedInUser) {
+            addOrder({ ...productDetailData, product_cnt: quantity });
+            setQuantity(1);
+            navigate("/user/order");
+        } else {
+            alert("로그인 해주세요");
+        }
     };
 
     // 장바구니 추가(3차 프젝)
     function cartInsert(a, b) {
         let url = "/rscart/cartInsert/" + a + "/" + b;
 
-        axios.post(url)
+         const loggedInUser = sessionStorage.getItem("loggedInUser");
+
+        if (loggedInUser) {
+          axios
+            .post(url)
             .then((response) => {
+                // setNothing(nothing + 1);
+                // axios
+                //   .get("/rscart/cartList")
+                //   .then((response) => {
+                //     setCartItems(response.data);
+                //   })
+                //   .catch((err) => {
+                //     alert(`** checkdata 서버연결 실패 => ${err.message}`);
+                //   });
                 alert("장바구니에 상품이 추가되었습니다");
-                axios.get("/rscart/cartList")
-                    .then((response) => {
-                        setCartItems(response.data);
-                    })
-                    .catch((err) => {
-                        alert(`** checkdata 서버연결 실패 => ${err.message}`);
-                    });
-            }).catch(err => {
-                if (err.response.status) alert(err.response.data);
-                else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
+                navigate("/user/cart");
+                // window.location.reload();
+            })
+            .catch((err) => {
+              if (err.response.status) alert(err.response.data);
+              else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
             });
+        } else {
+          alert("로그인 해주세요");
+        }
     }
 
     const scrollToAnchor = (anchorId) => {
@@ -186,8 +211,6 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                 setProductReviewOffset(productReviewRef.current.offsetTop - 152);
                 setProductQAOffset(productQARef.current.offsetTop - 152);
                 setBuyGuideOffset(buyGuideRef.current.offsetTop - 152);
-
-                console.log("Offsets:", productDetailImgOffset, productReviewOffset, productQAOffset, buyGuideOffset);
             }
         };
 
@@ -206,23 +229,43 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
         };
     }, [scrollPosition, productDetailImgOffset, productReviewOffset, productQAOffset, buyGuideOffset]);
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : null;
+
+    function AccessWrite() {
+        if (userName != null) {
+            return (
+                <Link to={`/board/reviewWrite2/${id}`}>후기작성</Link>
+            );
+        }
+    }
+
     return (
         <div className="ProductDetail">
             <div className="productPage">
                 <div className="productImage">
                     <img
-                        src={`${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
+                        src={currentImage || `${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
                         alt={productDetailData.product_mainimagepath}
                         width="500px"
                         height="400px"
                     />
                     <div className="detailGallery">
+                        <img
+                            src={`${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
+                            alt={productDetailData.product_mainimagepath}
+                            className="detailImages"
+                            onClick={() => handleThumbnailClick(`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(productDetailData.product_mainimagepath)}`)}
+                        />
                         {productImagesData.map((image, index) => (
                             <img
                                 key={index}
                                 src={`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(image.product_imagepath)}`}
-                                alt={`Review Image ${index + 1}`}
-                                className="detailThumbnail"
+                                alt={`Thumbnail ${index}`}
+                                className="detailImages"
+                                onClick={() => handleThumbnailClick(`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(image.product_imagepath)}`)}
                             />
                         ))}
                     </div>
@@ -280,7 +323,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                         </tr>
                         <tr>
                             <td colSpan="2">
-                                <Link to={`/user/order`}>
+                                {/* <Link to={`/user/order`}> */}
                                     <button
                                         className="buySoon"
                                         quantity={quantity}
@@ -288,8 +331,8 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                                     >
                                         바로구매하기
                                     </button>
-                                </Link>
-                                <Link to={`/user/cart`}>
+                                {/* </Link> */}
+                                {/* <Link to={`/user/cart`}> */}
                                     <button
                                         className="buyCart"
                                         //quantity={quantity}
@@ -297,7 +340,7 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                                     >
                                         장바구니
                                     </button>
-                                </Link>
+                                {/* </Link> */}
                             </td>
                         </tr>
                     </tbody>
@@ -329,8 +372,10 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems }) =>
                 <div className="productReview" ref={productReviewRef}>
                     <div id="productReview" className="productDetailTitle">
                         <h2>상품후기 <span>({review.length})건</span></h2>
-                        <Link to={`/board/reviewWrite2/${id}`}>후기작성</Link>
+                        {AccessWrite()}
                     </div>
+
+                    
 
                     <div className="boardList">
                         <table>

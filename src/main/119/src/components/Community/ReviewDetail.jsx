@@ -18,7 +18,8 @@ function ReviewDetail() {
         review_regdate: '',
         review_image1: '',
         review_image2: '',
-        reply_check: false
+        reply_check: false,
+        order_key: 0,
     });
     const [replies, setReplies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -47,6 +48,13 @@ function ReviewDetail() {
                     <Link to={`/board/reviewUpdate/${id}`}><input style={{ marginRight: '50px' }} type="button" value="수정" /></Link>
                     <input onClick={reviewDelete} style={{ marginRight: '50px' }} type="button" value="삭제" />
                 </div>
+            );
+        }
+    }
+    function ReplyButton() {
+        if (userName != '') {
+            return (
+                <input onClick={replyWrite} style={{ marginRight: '50px' }} type="button" value="댓글작성" />
             );
         }
     }
@@ -89,7 +97,7 @@ function ReviewDetail() {
     }
 
     function reviewDelete() {
-        let url = '/review/delete/' + id;
+        let url = `/review/delete/${id}/${review.order_key}/${review.product_id}`;
         axios.delete(
             url
         ).then(response => {
@@ -221,7 +229,7 @@ function ReviewDetail() {
                 <Popup data={id} showPopup={showPopup} closePopup={closePopup} />
                 <div id="bottomBoard" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <WriterButton/>
-                    <input onClick={replyWrite} style={{ marginRight: '50px' }} type="button" value="댓글작성" />
+                    <ReplyButton/>
                     <Link to="/community/review"><input type="button" value="목록" /></Link>
                 </div>
             </div>

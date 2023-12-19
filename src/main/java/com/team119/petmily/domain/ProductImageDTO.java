@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductImageDTO {
+public class ProductImageDTO extends ProductDTO {
 	private int pimage_id;
 	private int product_id;
 	private String product_imagepath;

@@ -5,7 +5,7 @@ import axios from 'axios';
 import Star from "./Star";
 
 export default function ReviewWrite() {
-    const { id } = useParams();
+    const { id, key } = useParams();
     const [productData, setProductData] = useState([]);
 
     // 상품후기의 별점 수 받기 시작
@@ -23,6 +23,22 @@ export default function ReviewWrite() {
     const userName = user ? user.user_name : null;
 
     const reviewSubmit = async () => {
+        const selectedFilesInput = document.querySelector('input[type="file"]');
+        const selectedFiles = selectedFilesInput.files;
+
+        if (selectedFiles.length !== 2) {
+            alert("후기 작성시에 이미지는 반드시 2장 업로드해야 합니다.");
+            return;
+        }
+
+        const reviewTitleInput = document.querySelector('input[name="review_title"]');
+        const reviewTitle = reviewTitleInput.value.trim();
+
+        if (!reviewTitle) {
+            alert("제목을 입력하세요.");
+            return;
+        }
+
         let formData = new FormData(document.getElementById('reviewForm'));
 
         await axios.post(
@@ -93,6 +109,8 @@ export default function ReviewWrite() {
                         <input type="hidden" name="review_point" value={score} />
                         <input type="hidden" name="product_id" value={id} />
                         <input type="hidden" name="review_writer" value={userName} />
+                        <input type="hidden" name="order_key" value={key} />
+                        <input type="hidden" name="user_id" value={user.user_id} />
 
                         <textarea name="review_content" rows="30" cols="100"></textarea>
                     </form>

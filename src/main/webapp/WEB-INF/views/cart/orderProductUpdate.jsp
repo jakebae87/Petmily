@@ -92,10 +92,7 @@
 	</form>
 	<hr>
 	<c:if test="${not empty requestScope.message}">
-=> ${requestScope.message}
-</c:if>
-	<hr>
-	&nbsp;
-	<a href="/home">Home</a>&nbsp;
+		=> ${requestScope.message}
+	</c:if>
 </body>
 </html>

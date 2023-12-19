@@ -11,16 +11,23 @@ const ProductItem = ({ it, calcProductPrice, setCartItems }) => {
         
         axios.post(url)
             .then((response) => {
+                const loggedInUser = sessionStorage.getItem("loggedInUser");
+
+                if (loggedInUser) {
                 alert("장바구니 담기 성공");
-                // axios.get("/rscart/cartList")
-                // .then((response) => {
-                // setCartItems(response.data);
-                // })
-                // .catch((err) => {
-                // alert(`** checkdata 서버연결 실패 => ${err.message}`);
-                // });
+                axios
+                    .get("/rscart/cartList")
+                    .then((response) => {
+                    setCartItems(response.data);
+                    })
+                    .catch((err) => {
+                        
+                    });
+                } else {
+                    alert("로그인 해주세요");
+                }
         }).catch( err => {
-                    if ( err.response.status ) alert(err.response.data);  				
+                    if ( err.response.status ) alert(err.response.data);
                     else alert("~~ 시스템 오류, 잠시후 다시하세요 => " + err.message);
         });
     }

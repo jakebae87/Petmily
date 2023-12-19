@@ -86,7 +86,6 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
-
 		<!-- REST API GSON -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -108,7 +107,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-        
 	</dependencies>
 
 	<build>

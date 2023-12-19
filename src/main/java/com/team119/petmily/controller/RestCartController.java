@@ -177,77 +177,77 @@ public class RestCartController {
           for (Object item : jsonArray) {
                JSONObject jsonObject = (JSONObject) item;
 
-               int product_id = ((Long) jsonObject.get("product_id")).intValue();
-               int product_cnt = ((Long) jsonObject.get("product_cnt")).intValue();
-               int product_price = ((Long) jsonObject.get("product_price")).intValue();
-               int promotion_discount = ((Long) jsonObject.get("promotion_discount")).intValue();
-               
-               int calcprice = product_price - (product_price * promotion_discount / 100);
-               
-               oddto.setProduct_id(product_id);
-               oddto.setProduct_cnt(product_cnt);
-               oddto.setProduct_kind_price(calcprice);
-               
-               // 주문상세 추가
-               odservice.insert(oddto);
-               
-           }
-          
-          // 재고/판매수량 변경
-          pservice.updateP();
+	            int product_id = ((Long) jsonObject.get("product_id")).intValue();
+	            int product_cnt = ((Long) jsonObject.get("product_cnt")).intValue();
+	            int product_price = ((Long) jsonObject.get("product_price")).intValue();
+	            int promotion_discount = ((Long) jsonObject.get("promotion_discount")).intValue();
+	            
+	            int calcprice = product_price - (product_price * promotion_discount / 100);
+	            
+	            oddto.setProduct_id(product_id);
+	            oddto.setProduct_cnt(product_cnt);
+	            oddto.setProduct_kind_price(calcprice);
+	            
+	            // 주문상세 추가
+	            odservice.insert(oddto);
+	            
+	        }
+		    
+		    // 재고/판매수량 변경
+		    pservice.updateP();
 
-          // 주문 테이블에 추가
-          opservice.insert(opdto);
+		    // 주문 테이블에 추가
+		    opservice.insert(opdto);
 
-          // 장바구니 삭제
-          String user_id = (String) session.getAttribute("loginID");
-           cservice.deleteP(user_id);
-           
-           return ResponseEntity.status(HttpStatus.OK).body("주문 완료");
-       } catch (Exception e) {
-           log.error("** 주문 중 에러 발생: " + e.getMessage());
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
-       }
-   }
-   
-   @DeleteMapping(value = "/deleteOrder/{ii}")
-   public ResponseEntity<String> dorder(HttpSession session, @PathVariable("ii") int order_key, OrderProductDTO opdto, OrderDetailDTO oddto) {
-      
-      try {
-           // 상품 재고/판매 수량 롤백    
-           pservice.updateD(order_key);
-          
-           opdto.setOrder_key(order_key);
-           oddto.setOrder_key(order_key);
-           
-          // 주문 테이블에 추가
-           opservice.delete(opdto);
-           odservice.delete(oddto);
-           
-           return ResponseEntity.status(HttpStatus.OK).body("주문 취소 완료");
-       } catch (Exception e) {
-           log.error("** 주문 중 에러 발생: " + e.getMessage());
-           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
-       }
-   }
-      
-   // ===============================================================
-   
-   @GetMapping("/orderproductList")
-   public ResponseEntity<List<OrderProductDTO>> orderProductList(HttpSession session) {
-      String user_id = (String) session.getAttribute("loginID");
-      List<OrderProductDTO> OrderProductList = odservice.selectListP(user_id);
-      System.out.println(OrderProductList);
-      return new ResponseEntity<>(OrderProductList, HttpStatus.OK);
-   }
-   
-   // ===============================================================
-   
-   @GetMapping(value = "/inquiry/list")
-   public ResponseEntity<?> inquiryList(HttpSession session) {
-      String review_writer = (String) session.getAttribute("loginName");
-      
-      ResponseEntity<?> result = null;
+		    // 장바구니 삭제
+		    String user_id = (String) session.getAttribute("loginID");
+	        cservice.deleteP(user_id);
+	        
+	        return ResponseEntity.status(HttpStatus.OK).body("주문 완료");
+	    } catch (Exception e) {
+	        log.error("** 주문 중 에러 발생: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
+	    }
+	}
+	
+	@DeleteMapping(value = "/deleteOrder/{ii}")
+	public ResponseEntity<String> dorder(HttpSession session, @PathVariable("ii") int order_key, OrderProductDTO opdto, OrderDetailDTO oddto) {
+		
+		try {
+	        // 상품 재고/판매 수량 롤백    
+	        pservice.updateD(order_key);
+		    
+	        opdto.setOrder_key(order_key);
+	        oddto.setOrder_key(order_key);
+	        
+		    // 주문 테이블에 추가
+	        opservice.delete(opdto);
+	        odservice.delete(oddto);
+	        
+	        return ResponseEntity.status(HttpStatus.OK).body("주문 취소 완료");
+	    } catch (Exception e) {
+	        log.error("** 주문 중 에러 발생: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
+	    }
+	}
+		
+	// ===============================================================
+	
+	@GetMapping("/orderproductList")
+	public ResponseEntity<List<OrderProductDTO>> orderProductList(HttpSession session) {
+		String user_id = (String) session.getAttribute("loginID");
+		List<OrderProductDTO> OrderProductList = odservice.selectListP(user_id);
+		System.out.println(OrderProductList);
+		return new ResponseEntity<>(OrderProductList, HttpStatus.OK);
+	}
+	
+	// ===============================================================
+	
+	@GetMapping(value = "/inquiry/list")
+	public ResponseEntity<?> inquiryList(HttpSession session) {
+		String review_writer = (String) session.getAttribute("loginName");
+		
+		ResponseEntity<?> result = null;
 
       List<InquiryDTO> list = cservice.getInquiryList(review_writer);
 

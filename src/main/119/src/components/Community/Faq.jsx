@@ -29,7 +29,7 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
 
 function Faq() {
     const [faq, setFaq] = useState([]);
-    const [searchPeriod, setSearchPeriod] = useState("all");
+    const [searchType, setSearchType] = useState("all");
     const [searchCriteria, setSearchCriteria] = useState("subject");
     const [searchWord, setSearchWord] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,17 +39,18 @@ function Faq() {
     const handleSearch = (e) => {
         e.preventDefault();
         setFaq([]); // 검색 결과 초기화
-        setSearchPeriod(e.target.searchPeriod.value);
+        setSearchType(e.target.searchType.value);
         setSearchCriteria(e.target.searchCriteria.value);
         setSearchWord(e.target.searchWord.value); // 검색어 업데이트
     };
 
     useEffect(() => {
+        setCurrentPage(1); // 검색 매개변수가 변경될 때 currentPage를 1로 재설정
         const fetchData = async () => {
             try {
                 const response = await axios.get('/faq/list', {
                     params: {
-                        searchPeriod,
+                        searchType,
                         searchCriteria,
                         searchWord,
                     }
@@ -60,7 +61,7 @@ function Faq() {
             }
         };
         fetchData();
-    }, [searchPeriod, searchCriteria, searchWord]);
+    }, [searchType, searchCriteria, searchWord, setCurrentPage]);
 
     const paginatedData = () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
@@ -79,7 +80,7 @@ function Faq() {
                     <li><Link to="/community/notice">공지사항</Link></li>
                     <li><Link to="/community/inquiry">상품문의</Link></li>
                     <li><Link to="/community/review">상품후기</Link></li>
-                    <li><Link to="/community/faq">자주묻는질문</Link></li>
+                    <li><a href="/community/faq">자주묻는질문</a></li>
                 </ul>
             </div>
 
@@ -117,11 +118,12 @@ function Faq() {
                     <form onSubmit={handleSearch}>
                         <div className="searchConditions">
                             <div>
-                                <select name="searchPeriod">
+                                <select name="searchType">
                                     <option value="all">전체</option>
-                                    <option value="week">일주일</option>
-                                    <option value="month">한달</option>
-                                    <option value="firstQuarter">세달</option>
+                                    <option value="delivery">결제/배송</option>
+                                    <option value="join">회원가입/정보</option>
+                                    <option value="refund">교환/환불</option>
+                                    <option value="etc">기타</option>
                                 </select>
                                 <select name="searchCriteria">
                                     <option value="subject">제목</option>

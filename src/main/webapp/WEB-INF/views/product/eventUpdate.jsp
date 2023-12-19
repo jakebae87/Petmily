@@ -26,10 +26,9 @@
 			<td><input type="date" name="event_start" value='<fmt:formatDate value="${requestScope.etable.event_start}" pattern="yyyy-MM-dd" />'></td></tr>
 		<tr><th>EVENT_END</th>
 			<td><input type="date" name="event_end" value='<fmt:formatDate value="${requestScope.etable.event_end}" pattern="yyyy-MM-dd" />'></td></tr>
+		<%-- <tr><th>EVENT_IMAGEPATH</th>
+			<td><input type="text" name="event_imagepath" value="${requestScope.etable.event_imagepath}"></td></tr> --%>
 		<tr><th>EVENT_IMAGEPATH</th>
-			<td><input type="text" name="event_imagepath" value="${requestScope.etable.event_imagepath}"></td></tr>
-		
-		<tr><th>Image</th>
 			<td>
 				<input type="hidden" name="event_imagepath" value="${requestScope.etable.event_imagepath}" readonly><br>		
 				<input type="file" name="uploadfilef" id="uploadfilef">

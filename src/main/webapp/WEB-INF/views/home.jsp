@@ -22,25 +22,26 @@
 <script src="/resources/javascript/productDelete.js"></script>
 </head>
 
-<body>
-	<h1>관리자페이지</h1>
-	<table id="mainTable">
-		<tr>
-			<th><a href="/userform">USER</a></th>
-			<th><a onclick="pTableListf()">PRODUCT</a></th>
-			<th><a onclick="cartForm()">ORDER</a></th>
-			<th><a onclick="noticePagingList('/board/noticePagingList')">BOARD</a></th>
-			<!-- <th><a onclick="noticeList()">BOARD</a></th> -->
-		</tr>
-	</table>
-	<hr>
-	<div id="newPage"></div>
-	<div id="pTableListArea"></div>
-	<div id="resultArea1"></div>
-	<div id="resultArea2"></div>
-	&nbsp;
-	<a href="/home">[Home]</a>&nbsp;
-	<a onclick="location.href='http://localhost:3000/'">[Home]</a>&nbsp;
-</body>
+		<body>
+			<h1>관리자페이지</h1>
+			<table id="mainTable">
+				<tr>
+					<th><a href="/userform">USER</a></th>
+					<th><a onclick="pTableListf()">PRODUCT</a></th>
+					<th><a onclick="cartForm()">ORDER</a></th>
+					<th><a onclick="noticePagingList('/board/noticePagingList')">BOARD</a></th>
+					<!-- <th><a onclick="noticeList()">BOARD</a></th> -->
+				</tr>
+			</table>
+			<hr>
+			<div id="newPage"></div>
+			<div id="pTableListArea"></div>
+			<div id="insertTableArea"></div>
+			<div id="resultArea1"></div>
+			<div id="resultArea2"></div>
+			&nbsp;
+			<a href="/home">[Home]</a>&nbsp;
+			<a onclick="location.href='http://localhost:3000/'">[Petmily]</a>&nbsp;
+		</body>
 
 </html>

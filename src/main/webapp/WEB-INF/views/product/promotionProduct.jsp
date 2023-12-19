@@ -12,6 +12,7 @@
 </head>
 <body>
 	<h2>Promotion_Product Table List</h2>
+	&nbsp;<a class="addData" onclick="pmpInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 
 	<table border="1">
@@ -34,8 +35,7 @@
 					<td><a onclick="pmpUpdate('${s.promotion_id}')" id="${s.promotion_id}">수정</a></td>
 					<td>${s.promotion_id}</td>
 					<td>${s.promotion_name}</td>
-					<td>${s.promotion_image}</td>
-					<%-- <td><img alt="MyImage" src="/resources/uploadImages/${s.promotion_image}" width="60" height="40"></td> --%>
+					<td><img alt="MyImage" src="/resources/uploadImages/${s.promotion_image}" width="60" height="40"></td>
 					<td><fmt:formatDate value="${s.promotion_start}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatDate value="${s.promotion_end}" pattern="yyyy-MM-dd" /></td>
 					<td>${s.promotion_discount}</td>
@@ -50,8 +50,6 @@
 			</tr>
 		</c:if>
 	</table>
-	
-	&nbsp;<a class="addData" onclick="pmpInsertTable()">테이블 데이터 추가</a>&nbsp;
 	<hr>
 </body>
 </html>

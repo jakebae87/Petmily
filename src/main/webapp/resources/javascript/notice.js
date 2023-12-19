@@ -11,7 +11,7 @@ function noticeInsert() {
 			headers: { 'Content-Type': 'application/json' },
 			data: {
 				notice_title: document.getElementById('notice_title').value,
-				notice_writer: '관리자',
+				notice_writer: '펫밀리',
 				notice_content: document.getElementById('notice_content').value
 			}
 

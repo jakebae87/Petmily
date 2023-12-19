@@ -12,11 +12,6 @@
 	<h2>[주문내역 추가 페이지]</h2>
 	<form action="orderProductJoin" method="Post" enctype="multipart/form-data" id="orderproductform">
 		<table border="1" style="width: 100%; text-align: center">
-<!-- 			<tr height="40"> -->
-<!-- 				<td bgcolor="Linen">주문번호</td> -->
-<!-- 				<td><input type="text" name="order_key" placeholder="주문번호" -->
-<!-- 					size="20"></td> -->
-<!-- 			</tr> -->
 			<tr height="40">
 				<td bgcolor="Linen">회원아이디</td>
 				<td><input type="text" name="user_id" placeholder="회원아이디"
@@ -79,10 +74,7 @@
 
 	<c:if test="${not empty message}">
 		<hr>
-${message}<br>
+		${message}<br>
 	</c:if>
-	<hr>
-	&nbsp;&nbsp;
-	<a href="/home">[Home]</a>
 </body>
 </html>

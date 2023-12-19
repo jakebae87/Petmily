@@ -39,10 +39,7 @@
 
 	<c:if test="${not empty message}">
 		<hr>
-${message}<br>
+		${message}<br>
 	</c:if>
-	<hr>
-	&nbsp;&nbsp;
-	<a href="/home">[Home]</a>
 </body>
 </html>

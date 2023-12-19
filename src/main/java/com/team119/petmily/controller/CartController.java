@@ -54,7 +54,7 @@ public class CartController {
 		
 		// 3) View 처리 : PageMaker 필요
 		pageMaker.setCri(cri);
-		pageMaker.setTotalRowsCount(cservice.criTotalCount(cri)); 
+		pageMaker.setTotalRowsCount(cservice.criTotalCount(cri));
 		// => ver01: 전체 rows 갯수
 		//    ver02: 검색조건에 해당하는  rows 갯수
 		model.addAttribute("pageMaker", pageMaker);

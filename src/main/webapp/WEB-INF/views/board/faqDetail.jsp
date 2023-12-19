@@ -20,6 +20,10 @@
 		<c:if test="${not empty requestScope.faq}">
 			<table id="boardDetail">
 				<tr>
+					<th>글번호</th>
+					<td>${requestScope.faq.faq_id}</td>
+				</tr>
+				<tr>
 					<th>글제목</th>
 					<td>${requestScope.faq.faq_title}</td>
 				</tr>

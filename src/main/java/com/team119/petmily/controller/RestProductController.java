@@ -15,7 +15,6 @@ import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ProductImageDTO;
 import com.team119.petmily.domain.PromotionProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
-import com.team119.petmily.domain.SearchDTO;
 import com.team119.petmily.service.EventService;
 import com.team119.petmily.service.ProductImageService;
 import com.team119.petmily.service.ProductService;
