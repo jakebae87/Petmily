@@ -9,6 +9,7 @@ function Login() {
     const [userId, setUserId] = useState("");
     const [userPassword, setUserPassword] = useState("");
 
+
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -18,6 +19,7 @@ function Login() {
             user_id: userId,
             user_password: userPassword,
         };
+
 
         axios
             .post(url, data, { headers: { "Content-Type": "application/json" } })
@@ -31,7 +33,7 @@ function Login() {
                 console.error(
                     `** err.response=${err.response}, err.response.status=${err.response.status}, err.message=${err.message}`
                 );
-                if (err.response.status == 401) {
+                if (err.response.status === 401) {
                     alert("id 또는 password 가 다릅니다");
                 } else {
                     alert("id 또는 password 가 다릅니다");
@@ -47,31 +49,52 @@ function Login() {
         window.location.href = NAVER_AUTH_URL;
     };
 
-    const KakaoLogin = () => {
+    const onKakaoLoginClick = () => {
         const REST_API_KEY = "36c72e69dcc46636ff1acefe07171573";
         const REDIERCT_URI2 = "http://localhost:3000/KakaoLogin";
         const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIERCT_URI2}&response_type=code`;
 
-
         window.location.href = KAKAO_AUTH_URL;
 
-        useEffect(() => {
-            const { code } = new URLSearchParams(window.location.search);
-            if (code) {
-                sendCodeToBackend(code);
-            }
-        }, []); // 코드가 변경될 때만 실행
+        const handleKakaoLogin = () => {
+            onKakaoLoginClick(); // 카카오 로그인 인가 요청
 
-        const sendCodeToBackend = async (code) => {
-            try {
-                const response = await axios.get(`/oauth/kakao?code=${code}`);
-                console.log(response.data);
-                navigate("/"); // 백엔드 응답 후 홈페이지로 리다이렉트
-            } catch (error) {
-                console.error('Error sending code to backend:', error);
+            // 여기서 코드를 가져와서 서버로 전송합니다.
+            const code = new URL(window.location.href).searchParams.get("code");
+            if (code) {
+                sendAuthorizationCodeToServer(code);
             }
         };
-    }
+
+
+        const sendAuthorizationCodeToServer = (code) => {
+            const SERVER_URL = "http://localhost:8080"; // Spring Boot 서버의 URL
+            const KAKAO_LOGIN_URL = `${SERVER_URL}/oauth/kakao`;
+
+            // 카카오 인가 코드를 서버로 전송
+            axios.post(KAKAO_LOGIN_URL, { code })
+                .then((response) => {
+                    // 서버에서 받은 응답 처리
+                    const user = response.data;
+                    sessionStorage.setItem("loggedInUser", JSON.stringify(user));
+                    console.log("Kakao login successful!", response.data);
+                    navigate("/");
+                })
+                .catch((error) => {
+                    // 오류 처리
+                    console.error("Kakao login error:", error);
+                    // 오류 처리 로직 추가
+                });
+        };
+
+
+    };
+
+
+
+
+
+
 
     return (
         <div className="Login">
@@ -100,7 +123,7 @@ function Login() {
                     <input type="submit" className="loginBtn" value="로그인" />
                 </form>
                 <hr />
-                <button className="kakao" onClick={KakaoLogin}>
+                <button className="kakao" onClick={onKakaoLoginClick}>
                     카카오로 로그인
                 </button>
                 <button className="naver" onClick={NaverLogin}>

@@ -217,7 +217,7 @@ function Update() {
     //이메일 유효성 검사
     const [email, setEmail] = useState("");
     const [emMessage, setEmMessage] = useState("");
-    const [isEmail, setIsEmail] = useState(false);
+    const [isEmail, setIsEmail] = useState();
 
     const onChangeEmail = (e) => {
         const currentEmail = e.target.value;
@@ -238,7 +238,7 @@ function Update() {
     const [birthmonth, setBirthmonth] = useState("");
     const [birthday, setBirthday] = useState("");
     const [brMessage, setBrmessage] = useState("");
-    const [isBitrh, setIsbirth] = useState(false);
+    const [isBitrh, setIsbirth] = useState();
 
     const onChangebirth = (e) => {
         const selectedYear = e.target.name === "year" ? e.target.value : birthyear;
@@ -266,7 +266,7 @@ function Update() {
     const [number, setNumber] = useState("");
     const [number2, setNumber2] = useState("");
     const [nuMessage, setNumessage] = useState("");
-    const [isNumber, setIsnumber] = useState(false);
+    const [isNumber, setIsnumber] = useState();
 
     const onChangeNumber = (e) => {
         const currentNumber = e.target.value;
@@ -373,39 +373,48 @@ function Update() {
     };
 
     //모든항목 입력 검사
-    const onSubmit = () => {
-        const userData = {
-            user_id: userId,
-            user_name: userName,
-            user_email: userEmail,
-            user_birthday: `${birthyear}-${birthmonth}-${birthday}`,
-            user_phone: `010-${number}-${number2}`,
-            zipcode: userZipcode,
-            addr: userAddr,
-            addr_detail: AddrD,
-        };
+    const onSubmit = (e) => {
 
-        axios.post(`/rsuser/update/${userId}`, userData)
-            .then(response => {
-                const updatedUserData = {
-                    ...JSON.parse(sessionStorage.getItem("loggedInUser")),
-                    user_name: userName,
-                    user_email: userEmail,
-                    user_birthday: `${birthyear}-${birthmonth}-${birthday}`,
-                    user_phone: `010-${number}-${number2}`,
-                    zipcode: userZipcode,
-                    addr: userAddr,
-                    addr_detail: AddrD,
-                };
-                sessionStorage.setItem("loggedInUser", JSON.stringify(updatedUserData));
-                alert("회원수정 성공");
-                window.location.reload();
+        if (userName === '' || userEmail === '' || userBirthday === '' || number === '' || number2 === '') {
+            e.preventDefault();
+            alert("모든항목을 입력해 주세요");
+        } else if (isName === false || isEmail === false || isBitrh === false || isNumber === false) {
+            e.preventDefault();
+            alert("입력조건에 맞춰주세요");
+        } else {
+            const userData = {
+                user_id: userId,
+                user_name: userName,
+                user_email: userEmail,
+                user_birthday: `${birthyear}-${birthmonth}-${birthday}`,
+                user_phone: `010-${number}-${number2}`,
+                zipcode: userZipcode,
+                addr: userAddr,
+                addr_detail: AddrD,
+            };
 
-            })
-            .catch(error => {
-                console.error('회원수정 실패:', error);
-                alert('회원수정에 실패했습니다. 다시 시도해주세요.');
-            });
+            axios.post(`/rsuser/update/${userId}`, userData)
+                .then(response => {
+                    const updatedUserData = {
+                        ...JSON.parse(sessionStorage.getItem("loggedInUser")),
+                        user_name: userName,
+                        user_email: userEmail,
+                        user_birthday: `${birthyear}-${birthmonth}-${birthday}`,
+                        user_phone: `010-${number}-${number2}`,
+                        zipcode: userZipcode,
+                        addr: userAddr,
+                        addr_detail: AddrD,
+                    };
+                    sessionStorage.setItem("loggedInUser", JSON.stringify(updatedUserData));
+                    alert("회원수정 성공");
+                    window.location.reload();
+
+                })
+                .catch(error => {
+                    console.error('회원수정 실패:', error);
+                    alert('회원수정에 실패했습니다. 다시 시도해주세요.');
+                });
+        }
     }
 
 
@@ -453,7 +462,7 @@ function Update() {
                                     <tr>
                                         <th><label htmlFor="pw">새 비밀번호</label></th>
                                         <td>
-                                            <input id="newpw" type="password" className="updatebox" name="newpw" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                                            <input id="newpw" type="password" className="updatebox" placeholder="숫자 + 영문자 + 특수문자 조합으로 8자리 이상 입력해주세요" name="newpw" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
                                             <span className="emessage">{pwMessage}</span>
                                         </td>
                                     </tr>

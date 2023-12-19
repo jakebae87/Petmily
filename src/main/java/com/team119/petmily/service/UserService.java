@@ -42,6 +42,8 @@ public interface UserService {
 
 	boolean randompw(String userId, String temporaryPassword);
 
+	UserDTO kakaoLogin(String code);
+
 	
 	
 }

@@ -73,7 +73,7 @@ export default function Profile() {
   //회원탈퇴
   const ondelete = (user_id) => {
 
-    const confirmDelete = window.confirm("정말 탈퇴하시겠습니까?");
+    const confirmDelete = window.confirm("탈퇴 후 30일 동안 재가입이 불가능 합니다. 정말 탈퇴하시겠습니까?");
     if (confirmDelete) {
       axios.delete(`/rsuser/selfDelete/${user_id}`)
         .then(response => {

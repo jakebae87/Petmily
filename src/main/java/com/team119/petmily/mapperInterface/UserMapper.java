@@ -45,4 +45,6 @@ public interface UserMapper {
     //임시비밀번호
     boolean randompw(@Param("userId") String userId, @Param("temporaryPassword") String temporaryPassword);
 
+	UserDTO kakaoLogin(String code);
+
 }

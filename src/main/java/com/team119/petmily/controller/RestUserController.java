@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.mapperInterface.UserMapper;
 import com.team119.petmily.service.EmailService;
@@ -93,8 +95,6 @@ public class RestUserController {
 	    return result;
 	}	
 	
-
-
 	
 	@PostMapping(value = "/Signup")
 	public ResponseEntity<String> signup(@RequestBody UserDTO dto) {
@@ -232,17 +232,18 @@ public class RestUserController {
 
 
 
-	@DeleteMapping(value="/selfDelete/{user_id}")
-	public ResponseEntity<?> delete(@PathVariable("user_id") String userId, UserDTO dto) {
-		dto.setUser_id(userId);
-		if (service.delete(dto) > 0) {
-			log.info("** delete HttpStatus.OK => " + HttpStatus.OK);
-			return new ResponseEntity<String>("** 삭제 성공 **", HttpStatus.OK);
-		} else {
-			log.info("** delete HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
-			return new ResponseEntity<String>("** 삭제 실패, Data_NotFound **", HttpStatus.BAD_GATEWAY);
-		}
-	}
+	    @DeleteMapping(value="/selfDelete/{user_id}")
+	    public ResponseEntity<?> delete(@PathVariable("user_id") String userId, UserDTO dto) {
+	       dto.setUser_id(userId);
+	       if (service.delete(dto) > 0) {
+	          log.info("** delete HttpStatus.OK => " + HttpStatus.OK);
+	          return new ResponseEntity<String>("** 삭제 성공 **", HttpStatus.OK);
+	       } else {
+	          log.info("** delete HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
+	          return new ResponseEntity<String>("** 삭제 실패, Data_NotFound **", HttpStatus.BAD_GATEWAY);
+	       }
+	    }
+	
 	
 	@GetMapping(value="/userlist")
 	public ResponseEntity<?> userlist(HttpServletRequest request, UserDTO dto) {

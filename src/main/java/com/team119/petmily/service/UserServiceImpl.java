@@ -83,4 +83,9 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 	
+	@Override
+	public UserDTO kakaoLogin(String code) {
+		return mapper.kakaoLogin(code);
+	}
+	
 } //class
