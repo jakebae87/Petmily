@@ -172,7 +172,7 @@ export default function OrderList() {
                     {item.delivery_status === '배송완료' ? (
                       item.product_review === 0 ? (
                         isWithin30Days(item.order_date) ? (
-                          <Link to="/board/reviewWrite">
+                          <Link to={`/board/reviewWrite2/${item.product_id}/${item.order_key}`}>
                             <input type="button" id="writeButton" value="후기쓰기" />
                           </Link>
                         ) : (

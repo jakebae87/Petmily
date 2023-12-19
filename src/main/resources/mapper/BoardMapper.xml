@@ -247,8 +247,8 @@
 	<!-- REVIEW CRUD -->
 	
 	<insert id="insertReview">
-		INSERT INTO REVIEW (REVIEW_TITLE, PRODUCT_ID, REVIEW_WRITER, REVIEW_POINT, REVIEW_CONTENT, REVIEW_IMAGE1, REVIEW_IMAGE2) VALUES
-		(#{review_title},#{product_id},#{review_writer},#{review_point}, #{review_content}, #{review_image1}, #{review_image2})
+		INSERT INTO REVIEW (REVIEW_TITLE, PRODUCT_ID, REVIEW_WRITER, REVIEW_POINT, REVIEW_CONTENT, REVIEW_IMAGE1, REVIEW_IMAGE2, ORDER_KEY) VALUES
+		(#{review_title},#{product_id},#{review_writer},#{review_point}, #{review_content}, #{review_image1}, #{review_image2}, #{order_key})
 	</insert>
 
 	<select id="getReview"
@@ -358,6 +358,13 @@
 		UPDATE ORDER_DETAIL AS OD
 		INNER JOIN ORDER_PRODUCT AS OP ON OD.ORDER_KEY = OP.ORDER_KEY
 		SET OD.PRODUCT_REVIEW = TRUE
+		WHERE OP.USER_ID = #{user_id} AND OD.ORDER_KEY = #{order_key} AND OD.PRODUCT_ID = #{product_id};
+	</update>
+	
+	<update id="updateStatusDelete">
+		UPDATE ORDER_DETAIL AS OD
+		INNER JOIN ORDER_PRODUCT AS OP ON OD.ORDER_KEY = OP.ORDER_KEY
+		SET OD.PRODUCT_REVIEW = FALSE
 		WHERE OP.USER_ID = #{user_id} AND OD.ORDER_KEY = #{order_key} AND OD.PRODUCT_ID = #{product_id};
 	</update>
 

@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -479,13 +482,17 @@ public class RestBoardController {
 		return result;
 	}
 
-	@DeleteMapping(value = "/review/delete/{id}")
-	public ResponseEntity<?> reviewDelete(@PathVariable("id") int id, ReviewDTO dto) {
+	@DeleteMapping(value = "/review/delete/{id}/{order_key}/{product_id}")
+	public ResponseEntity<?> reviewDelete(@PathVariable("id") int id, ReviewDTO dto, HttpServletRequest request) {
 		ResponseEntity<?> result = null;
+		
+		HttpSession session = request.getSession();
+	    String loggedInUserID = (String) session.getAttribute("loginID");
 
+	    dto.setUser_id(loggedInUserID);
 		dto.setReview_id(id);
 
-		if (boardService.deleteReview(dto) > 0) {
+		if (boardService.deleteReview(dto) > 0 && boardService.updateStatusDelete(dto) > 0 ) {
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 삭제 완료");
 			pservice.updateProductRating();
 		} else {

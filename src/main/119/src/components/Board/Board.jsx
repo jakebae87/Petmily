@@ -12,7 +12,7 @@ export default function Board() {
     return (
         <Routes>
             <Route path='/reviewWrite' element={<ReviewWrite />} />
-            <Route path='/reviewWrite2/:id' element={<ReviewWrite2 />} />
+            <Route path='/reviewWrite2/:id/:key' element={<ReviewWrite2 />} />
             <Route path='/inquiryWrite' element={<InquiryWrite />} />
             <Route path='/inquiryWrite2/:id' element={<InquiryWrite2 />} />
             <Route path='/inquiryUpdate/:id' element={<InquiryUpdate />} />

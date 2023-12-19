@@ -123,8 +123,8 @@ export default function ReviewUpdate() {
 
             <div>
                 <div className="selectStarRegist">
-                    <input type="text" id="searchInput" onChange={handleInputChange} value={review.product_name} />
-                    <div id="searchResult">
+                    <input type="text" id="searchInput" value={review.product_name} readOnly/>
+                    {/* <div id="searchResult">
                         <select id="product_id" style={{
                             width: '150px',
                             height: '50px',
@@ -137,7 +137,7 @@ export default function ReviewUpdate() {
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
 
                     <div id="registButton">
                         <input onClick={reviewUpdate} value="수정" />
