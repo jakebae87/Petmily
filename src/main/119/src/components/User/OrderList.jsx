@@ -178,8 +178,14 @@ export default function OrderList() {
                     {item.delivery_status === "배송완료" ? (
                       item.product_review === 0 ? (
                         isWithin30Days(item.order_date) ? (
-                          <Link to={`/board/reviewWrite2/${item.product_id}/${item.order_key}`}>
-                            <input type="button" id="writeButton" value="후기쓰기" />
+                          <Link
+                            to={`/board/reviewWrite2/${item.product_id}/${item.order_key}`}
+                          >
+                            <input
+                              type="button"
+                              id="writeButton"
+                              value="후기쓰기"
+                            />
                           </Link>
                         ) : (
                           <span>작성일 만료</span>
@@ -203,15 +209,25 @@ export default function OrderList() {
                     )}
                   </td>
                   <td>
-                    <input
-                      type="button"
-                      id="cancelButton"
-                      name="cancelButton"
-                      onClick={() => {
-                        deleteOrder(item.order_key);
-                      }}
-                      value="주문취소"
-                    />
+                    {item.delivery_status === "배송완료" ? (
+                      <input
+                        type="button"
+                        id="nocancelButton"
+                        name="nocancelButton"
+                        value="주문취소불가"
+                        disabled
+                      />
+                    ) : (
+                      <input
+                        type="button"
+                        id="cancelButton"
+                        name="cancelButton"
+                        onClick={() => {
+                          deleteOrder(item.order_key);
+                        }}
+                        value="주문취소"
+                      />
+                    )}
                   </td>
                 </tr>
               ))}

@@ -79,6 +79,18 @@
   text-decoration: none;
 }
 
+#nocancelButton {
+  cursor: pointer;
+  display: block;
+  width: 80px;
+  height: 25px;
+  margin: 10px auto;
+  background-color: #808080;
+  color: white;
+  border: none;
+  text-decoration: none;
+}
+
 /* 페이지네이션 */
 .paginations {
   margin: auto;
