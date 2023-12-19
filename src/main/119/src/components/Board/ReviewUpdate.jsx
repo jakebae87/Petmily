@@ -56,6 +56,11 @@ export default function ReviewUpdate() {
     const reviewUpdate = async () => {
         let formData = new FormData(document.getElementById('reviewForm'));
 
+        if (!review.review_title) {
+            alert("제목을 입력하세요.");
+            return;
+        }
+
         const pointToAdd = clickedStars !== 0 ? clickedStars : review.review_point;
         formData.append('review_point', pointToAdd);
 
@@ -81,12 +86,13 @@ export default function ReviewUpdate() {
             try {
                 const response = await axios.get(`/reviewDetail/${id}`);
                 setReview(response.data);
+                
             } catch (error) {
                 console.error('상품후기 데이터를 불러오는 중 에러:', error);
             }
         };
         fetchData(); // 컴포넌트가 마운트되거나 id 값이 변경될 때마다 호출
-    }, [id]);
+    }, [id],);
 
 
     const fetchData = async () => {

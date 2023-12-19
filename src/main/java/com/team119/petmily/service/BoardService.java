@@ -1,14 +1,17 @@
 package com.team119.petmily.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.OrderProductByUserDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.pagination.Criteria;
 
 public interface BoardService {
@@ -94,5 +97,24 @@ public interface BoardService {
 
 	int updateBoardReview(ReviewDTO dto);
 
+	void updateNoticeCount(NoticeDTO dto);
+
+	void updateInquiryCount(InquiryDTO dto);
+
+	void updateReviewCount(ReviewDTO dto);
+
+	void updateFaqCount(FaqDTO dto);
+
+	List<ProductDTO> getAllProducts();
+
+	List<ProductDTO> getProductByKind(String kind);
+
+	List<ProductDTO> getProductByCategory(Map<String, String> condition);
+
+	UserDTO getEmail(InquiryDTO dto);
+
+	List<OrderProductByUserDTO> getProductByUser(String userName);
+
+	int updateStatus(ReviewDTO dto);
 
 }

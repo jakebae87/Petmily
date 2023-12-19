@@ -29,4 +29,7 @@ public class ReviewDTO extends ProductDTO{
 	// Join과 Update 폼으로부터 전달받은 데이터 
 	private MultipartFile[] uploadfile1;
 	private MultipartFile uploadfile2;
+	
+	private String user_id;
+	private int order_key;
 }

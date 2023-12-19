@@ -15,6 +15,7 @@ public class OrderProductDTO extends ProductDTO {
 	private int order_key;
 	private String user_id;
 	private int order_total_price;
+	private int product_review;
 	
 	//private LocalDateTime order_date;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -29,5 +30,4 @@ public class OrderProductDTO extends ProductDTO {
 	private String order_addr_detail;
 	private String order_req;
 	private String orderItems;
-	private int product_review;
 }

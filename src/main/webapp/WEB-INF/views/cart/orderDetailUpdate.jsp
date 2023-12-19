@@ -28,8 +28,8 @@
 						value="${apple.delivery_status}" size="20"></td>
 				</tr>
 				<tr>
-					<td colspan=2><input type="submit" id="submit" value="수정">&nbsp;&nbsp;
-						<span class="textlink" onclick="orderDetailUpdate()">주문내역	수정</span>&nbsp;&nbsp;
+					<td colspan=2>
+						<input type="submit" id="submit" class="textlink" onclick="orderDetailUpdate()" value="주문내역 수정">&nbsp;&nbsp;
 						<input type="reset" value="취소">
 					</td>
 				</tr>
@@ -45,8 +45,5 @@
 	<c:if test="${not empty requestScope.message}">
 	=> ${requestScope.message}
 	</c:if>
-	<hr>
-	&nbsp;
-	<a href="/home">Home</a>&nbsp;
 </body>
 </html>

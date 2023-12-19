@@ -14,7 +14,10 @@ function pTableListf(){
 	&nbsp;<a onclick="pImagef()">PRODUCT_IMAGE</a>&nbsp;
 	&nbsp;<a onclick="eventf()">EVENT</a>&nbsp;
 	`;
+	document.getElementById('newPage').innerHTML="";
 	document.getElementById('pTableListArea').innerHTML=resultHtml;
+	document.getElementById('insertTableArea').innerHTML = "";
+	document.getElementById('resultArea1').innerHTML = "";
 } // pTableListf
 
 

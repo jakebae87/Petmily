@@ -112,4 +112,9 @@ public class ProductServiceImpl implements ProductService {
 	public int searchTotalCount(SearchCriteria cri) {
 		return mapper.searchTotalCount(cri);
 	}
+	
+	@Override
+	public int updateD(int order_key) {
+		return mapper.updateD(order_key);
+	}
 }

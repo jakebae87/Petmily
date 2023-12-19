@@ -28,7 +28,7 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
 
 function Inquiry() {
     const [inquiry, setInquiry] = useState([]);
-    const [searchPeriod, setSearchPeriod] = useState("all");
+    const [searchCheck, setsearchCheck] = useState("all");
     const [searchCriteria, setSearchCriteria] = useState("subject");
     const [searchWord, setSearchWord] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
@@ -43,17 +43,18 @@ function Inquiry() {
     const handleSearch = (e) => {
         e.preventDefault();
         setInquiry([]); // 검색 결과 초기화
-        setSearchPeriod(e.target.searchPeriod.value);
+        setsearchCheck(e.target.searchCheck.value);
         setSearchCriteria(e.target.searchCriteria.value);
         setSearchWord(e.target.searchWord.value); // 검색어 업데이트
     };
 
     useEffect(() => {
+        setCurrentPage(1); // 검색 매개변수가 변경될 때 currentPage를 1로 재설정
         const fetchData = async () => {
             try {
                 const response = await axios.get('/inquiry/list', {
                     params: {
-                        searchPeriod,
+                        searchCheck,
                         searchCriteria,
                         searchWord,
                     }
@@ -64,7 +65,7 @@ function Inquiry() {
             }
         };
         fetchData();
-    }, [searchPeriod, searchCriteria, searchWord]);
+    }, [searchCheck, searchCriteria, searchWord, setCurrentPage]);
 
 
     function AnswerCheck(inquiry) {
@@ -100,7 +101,7 @@ function Inquiry() {
             <div className="commnunityList">
                 <ul>
                     <li><Link to="/community/notice">공지사항</Link></li>
-                    <li><Link to="/community/inquiry">상품문의</Link></li>
+                    <li><a href="/community/inquiry">상품문의</a></li>
                     <li><Link to="/community/review">상품후기</Link></li>
                     <li><Link to="/community/faq">자주묻는질문</Link></li>
                 </ul>
@@ -133,6 +134,7 @@ function Inquiry() {
                         </tr>
                     )}
                 </table>
+
                 {/* 페이지네이션 UI */}
                 <Pagination
                     totalPages={Math.ceil(inquiry.length / itemsPerPage)}
@@ -143,16 +145,16 @@ function Inquiry() {
                     <form onSubmit={handleSearch}>
                         <div className="searchConditions">
                             <div>
-                                <select name="searchPeriod">
+                                <select name="searchCheck">
                                     <option value="all">전체</option>
-                                    <option value="week">일주일</option>
-                                    <option value="month">한달</option>
-                                    <option value="firstQuarter">세달</option>
+                                    <option value="complete">답변완료</option>
+                                    <option value="ongoing">확인중</option>
                                 </select>
                                 <select name="searchCriteria">
                                     <option value="subject">제목</option>
                                     <option value="content">내용</option>
                                     <option value="writer">글쓴이</option>
+                                    <option value="product">상품명</option>
                                 </select>
                             </div>
                         </div>

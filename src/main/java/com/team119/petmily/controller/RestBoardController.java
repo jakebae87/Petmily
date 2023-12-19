@@ -2,9 +2,9 @@ package com.team119.petmily.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,11 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.team119.petmily.domain.FaqDTO;
 import com.team119.petmily.domain.InquiryDTO;
 import com.team119.petmily.domain.NoticeDTO;
+import com.team119.petmily.domain.OrderProductByUserDTO;
 import com.team119.petmily.domain.ProductDTO;
 import com.team119.petmily.domain.ReviewDTO;
 import com.team119.petmily.domain.ReviewReplyDTO;
 import com.team119.petmily.domain.SearchDTO;
+import com.team119.petmily.domain.UserDTO;
 import com.team119.petmily.service.BoardService;
+import com.team119.petmily.service.EmailService;
 import com.team119.petmily.service.ProductService;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +40,7 @@ import lombok.extern.log4j.Log4j2;
 public class RestBoardController {
 	BoardService boardService;
 	ProductService pservice;
+	EmailService emailService;
 
 	@GetMapping(value = "/notice/list")
 	public ResponseEntity<?> noticeList(SearchDTO searchDTO) {
@@ -60,6 +64,7 @@ public class RestBoardController {
 		dto.setNotice_id(id);
 		ResponseEntity<?> result = null;
 
+		boardService.updateNoticeCount(dto);
 		NoticeDTO notice = boardService.getNotice(dto);
 
 		if (notice != null) {
@@ -95,6 +100,7 @@ public class RestBoardController {
 		dto.setFaq_id(id);
 		ResponseEntity<?> result = null;
 
+		boardService.updateFaqCount(dto);
 		FaqDTO faq = boardService.getFaq(dto);
 
 		if (faq != null) {
@@ -130,6 +136,7 @@ public class RestBoardController {
 		dto.setInquiry_id(id);
 		ResponseEntity<?> result = null;
 
+		boardService.updateInquiryCount(dto);
 		InquiryDTO inquiry = boardService.getInquiry(dto);
 
 		if (inquiry != null) {
@@ -138,22 +145,6 @@ public class RestBoardController {
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
 			log.info("Inquiry Detail HttpStatus => " + HttpStatus.BAD_GATEWAY);
-		}
-
-		return result;
-	}
-
-	@GetMapping(value = "/product/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> searchProduct(@RequestParam("name") String name) {
-		ResponseEntity<?> result = null;
-		List<ProductDTO> product = boardService.getProduct(name);
-
-		if (product != null) {
-			result = ResponseEntity.status(HttpStatus.OK).body(product);
-			log.info("Product Search HttpStatus => " + HttpStatus.OK);
-		} else {
-			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-			log.info("Product Search HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		}
 
 		return result;
@@ -194,6 +185,8 @@ public class RestBoardController {
 	public ResponseEntity<?> reviewDetail(@PathVariable("id") int id, ReviewDTO dto) {
 		dto.setReview_id(id);
 		ResponseEntity<?> result = null;
+
+		boardService.updateReviewCount(dto);
 		ReviewDTO review = boardService.getReview(dto);
 
 		if (review != null) {
@@ -210,7 +203,7 @@ public class RestBoardController {
 	@PostMapping(value = "/review/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> reviewInsert(ReviewDTO dto) throws IllegalStateException, IOException {
 		ResponseEntity<?> result = null;
-
+		
 		String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\reviews\\";
 
 		String file1, file2 = "";
@@ -218,87 +211,87 @@ public class RestBoardController {
 
 		MultipartFile[] uploadfile1 = dto.getUploadfile1();
 		if (uploadfile1 != null && uploadfile1.length > 0) {
-		    // 첫 번째 파일 처리
-		    file1 = realPath + uploadfile1[0].getOriginalFilename();
-		    file2 = uploadfile1[0].getOriginalFilename();
+			// 첫 번째 파일 처리
+			file1 = realPath + uploadfile1[0].getOriginalFilename();
+			file2 = uploadfile1[0].getOriginalFilename();
 
-		    // 중복 파일명 처리
-		    File file = new File(file1);
-		    while (file.exists()) {
-		        String extension = "";
-		        int dotIndex = file2.lastIndexOf('.');
-		        if (dotIndex != -1) {
-		            extension = file2.substring(dotIndex);
-		            file2 = file2.substring(0, dotIndex);
-		        }
+			// 중복 파일명 처리
+			File file = new File(file1);
+			while (file.exists()) {
+				String extension = "";
+				int dotIndex = file2.lastIndexOf('.');
+				if (dotIndex != -1) {
+					extension = file2.substring(dotIndex);
+					file2 = file2.substring(0, dotIndex);
+				}
 
-		        // 괄호 안의 숫자만 추출하여 증가시키기
-		        int start = file2.lastIndexOf('(');
-		        int end = file2.lastIndexOf(')');
-		        if (start != -1 && end != -1 && start < end) {
-		            String numberStr = file2.substring(start + 1, end);
-		            try {
-		                int fileIndex = Integer.parseInt(numberStr) + 1;
-		                String incrementedNumber = String.valueOf(fileIndex);
-		                file2 = file2.substring(0, start + 1) + incrementedNumber + ")" + extension;
-		            } catch (NumberFormatException e) {
-		                // 숫자 변환이 실패할 경우 새로운 괄호를 추가
-		                file2 = file2 + "(1)" + extension;
-		            }
-		        } else {
-		            file2 = file2 + "(1)" + extension;
-		        }
+				// 괄호 안의 숫자만 추출하여 증가시키기
+				int start = file2.lastIndexOf('(');
+				int end = file2.lastIndexOf(')');
+				if (start != -1 && end != -1 && start < end) {
+					String numberStr = file2.substring(start + 1, end);
+					try {
+						int fileIndex = Integer.parseInt(numberStr) + 1;
+						String incrementedNumber = String.valueOf(fileIndex);
+						file2 = file2.substring(0, start + 1) + incrementedNumber + ")" + extension;
+					} catch (NumberFormatException e) {
+						// 숫자 변환이 실패할 경우 새로운 괄호를 추가
+						file2 = file2 + "(1)" + extension;
+					}
+				} else {
+					file2 = file2 + "(1)" + extension;
+				}
 
-		        file1 = realPath + file2;
-		        file = new File(file1);
-		    }
+				file1 = realPath + file2;
+				file = new File(file1);
+			}
 
-		    uploadfile1[0].transferTo(new File(file1));
+			uploadfile1[0].transferTo(new File(file1));
 
-		    // 두 번째 파일 처리
-		    if (uploadfile1.length > 1) {
-		        file3 = realPath + uploadfile1[1].getOriginalFilename();
-		        file4 = uploadfile1[1].getOriginalFilename();
+			// 두 번째 파일 처리
+			if (uploadfile1.length > 1) {
+				file3 = realPath + uploadfile1[1].getOriginalFilename();
+				file4 = uploadfile1[1].getOriginalFilename();
 
-		        // 중복 파일명 처리 (두 번째 파일)
-		        File file2nd = new File(file3);
-		        while (file2nd.exists()) {
-		            String extension = "";
-		            int dotIndex = file4.lastIndexOf('.');
-		            if (dotIndex != -1) {
-		                extension = file4.substring(dotIndex);
-		                file4 = file4.substring(0, dotIndex);
-		            }
+				// 중복 파일명 처리 (두 번째 파일)
+				File file2nd = new File(file3);
+				while (file2nd.exists()) {
+					String extension = "";
+					int dotIndex = file4.lastIndexOf('.');
+					if (dotIndex != -1) {
+						extension = file4.substring(dotIndex);
+						file4 = file4.substring(0, dotIndex);
+					}
 
-		            // 괄호 안의 숫자만 추출하여 증가시키기
-		            int start = file4.lastIndexOf('(');
-		            int end = file4.lastIndexOf(')');
-		            if (start != -1 && end != -1 && start < end) {
-		                String numberStr = file4.substring(start + 1, end);
-		                try {
-		                    int fileIndex = Integer.parseInt(numberStr) + 1;
-		                    String incrementedNumber = String.valueOf(fileIndex);
-		                    file4 = file4.substring(0, start + 1) + incrementedNumber + ")" + extension;
-		                } catch (NumberFormatException e) {
-		                    // 숫자 변환이 실패할 경우 새로운 괄호를 추가
-		                    file4 = file4 + "(1)" + extension;
-		                }
-		            } else {
-		                file4 = file4 + "(1)" + extension;
-		            }
+					// 괄호 안의 숫자만 추출하여 증가시키기
+					int start = file4.lastIndexOf('(');
+					int end = file4.lastIndexOf(')');
+					if (start != -1 && end != -1 && start < end) {
+						String numberStr = file4.substring(start + 1, end);
+						try {
+							int fileIndex = Integer.parseInt(numberStr) + 1;
+							String incrementedNumber = String.valueOf(fileIndex);
+							file4 = file4.substring(0, start + 1) + incrementedNumber + ")" + extension;
+						} catch (NumberFormatException e) {
+							// 숫자 변환이 실패할 경우 새로운 괄호를 추가
+							file4 = file4 + "(1)" + extension;
+						}
+					} else {
+						file4 = file4 + "(1)" + extension;
+					}
 
-		            file3 = realPath + file4;
-		            file2nd = new File(file3);
-		        }
+					file3 = realPath + file4;
+					file2nd = new File(file3);
+				}
 
-		        uploadfile1[1].transferTo(new File(file3));
-		    }
+				uploadfile1[1].transferTo(new File(file3));
+			}
 		}
 
 		dto.setReview_image1(file2);
 		dto.setReview_image2(file4);
 
-		if (boardService.insertReview(dto) > 0) { // Transaction_Test, insert2
+		if (boardService.insertReview(dto) > 0 && boardService.updateStatus(dto) > 0) { // Transaction_Test, insert2
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 등록 성공");
 			log.info("HttpStatus.OK => " + HttpStatus.OK);
 			pservice.updateProductRating();
@@ -402,12 +395,16 @@ public class RestBoardController {
 
 	@PostMapping(value = "/inquiry/update", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void inquiryUpdate(@RequestBody InquiryDTO dto) {
-		boardService.updateInquiry(dto);
+
+		if (dto.getAnswer_content() != null) {
+			UserDTO user = boardService.getEmail(dto);
+			boardService.updateInquiry(dto);
+			emailService.sendEmail(user.getUser_email(), dto.getAnswer_content());
+		}
 	}
 
 	@PostMapping(value = "/inquiry/updateBoard", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void updateBoardInquiry(@RequestBody InquiryDTO dto) {
-		System.out.println(dto);
 		boardService.updateBoardInquiry(dto);
 	}
 
@@ -508,6 +505,95 @@ public class RestBoardController {
 			result = ResponseEntity.status(HttpStatus.OK).body("댓글 삭제 완료");
 		} else {
 			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("댓글 삭제 실패");
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/product/search", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProduct(@RequestParam("name") String name) {
+		ResponseEntity<?> result = null;
+
+		List<ProductDTO> product;
+
+		if (name != null) {
+			product = boardService.getProduct(name);
+		} else {
+			product = boardService.getAllProducts();
+		}
+
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			log.info("Product Search HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Search HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/product/searchByUser", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProductByUser(@RequestParam("user") String userName) {
+		ResponseEntity<?> result = null;
+		
+		List<OrderProductByUserDTO> product = boardService.getProductByUser(userName);
+
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			log.info("Product Search HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Search HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/product/kind/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProductByKind(@PathVariable("category") String kind) {
+		ResponseEntity<?> result = null;
+
+		Map<String, Object> responseData = new HashMap<>();
+
+		List<ProductDTO> product = boardService.getProductByKind(kind);
+		Map<String, String> kinds = new HashMap<String, String>();
+
+		for (ProductDTO data : product) {
+			kinds.put(data.getProduct_category(), data.getProduct_category());
+		}
+
+		responseData.put("product", product);
+		responseData.put("kinds", kinds);
+
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(responseData);
+			log.info("Product Category HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Category HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+	}
+
+	@GetMapping(value = "/product/category/{kind}/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchProductByKind(@PathVariable("kind") String kind,
+			@PathVariable("category") String category) {
+		ResponseEntity<?> result = null;
+
+		Map<String, String> condition = new HashMap<String, String>();
+		condition.put("kind", kind);
+		condition.put("category", category);
+
+		List<ProductDTO> product = boardService.getProductByCategory(condition);
+
+		if (product != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(product);
+			log.info("Product Category HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Product Category HttpStatus => " + HttpStatus.BAD_GATEWAY);
 		}
 
 		return result;

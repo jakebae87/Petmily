@@ -18,6 +18,9 @@ function cartForm() {
 	&nbsp;
 	<a href="/home">[Home]</a>
 	`;
+	document.getElementById('newPage').innerHTML = "";
+	document.getElementById('pTableListArea').innerHTML = "";
+	document.getElementById('insertTableArea').innerHTML = "";
 	document.getElementById('resultArea1').innerHTML = resultHtml;
 }
 
@@ -26,7 +29,6 @@ function cartList() {
 	let url = "/cart/cartList";
 	axios.get(url
 	).then(response => {
-		alert("** response 성공");
 		document.getElementById('resultArea2').innerHTML = response.data;
 	}).catch(err => {
 		alert("** response 실패 => " + err.message);
@@ -40,7 +42,6 @@ function cartInsertf() {
 	let url = "/cart/cartInsert";
 	axios.get(url
 	).then(response => {
-		alert("** response 성공");
 		document.getElementById('resultArea2').innerHTML = response.data;
 	}).catch(err => {
 		alert("** response 실패 => " + err.message);

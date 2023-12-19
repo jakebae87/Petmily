@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
 // Home
 import Home from "./Home/Home";
@@ -40,20 +39,7 @@ function Main() {
   // 장바구니 무한루프 방지용
   const [nothing, setNothing] = useState(1);
 
-  // useEffect(() => {
-  //   const loggedInUser = sessionStorage.getItem('loggedInUser');
-  
-  //   if (loggedInUser) {
-  //     axios
-  //       .get("/rscart/cartList")
-  //       .then((response) => {
-  //         setCartItems(response.data);
-  //       })
-  //       .catch((err) => {
-  //         alert(`** checkdata 서버연결 실패 => ${err.message}`);
-  //       });
-  //   }
-  // }, [nothing]);
+  const navigate = useNavigate();
 
   // 장바구니 체크된 상품
   const [checkedItems, setCheckedItems] = useState(
@@ -156,10 +142,16 @@ function Main() {
 
   // 장바구니 체크(선택)상품만 주문
   const selectedOrder = () => {
+    
     const selectedOrderItems = cartItems.filter((cart) =>
-      checkedItems.includes(cart.product_id)
+    checkedItems.includes(cart.product_id)
     );
     setOrderItems(selectedOrderItems);
+    if (selectedOrderItems.length > 0) {
+      navigate("/user/order");
+    } else {
+      alert("상품을 선택해주세요");
+    }
   };
 
   return (
@@ -181,6 +173,8 @@ function Main() {
               calcProductPrice={calcProductPrice}
               addCart={addCart}
               addOrder={addOrder}
+              nothing={nothing}
+              setNothing={setNothing}
               setCartItems={setCartItems}
               increQuantity={increQuantity}
               decreQuantity={decreQuantity}

@@ -23,20 +23,20 @@
 	<br> <br>
 	<table id="boardTable">
 		<tr>
+			<th>글번호</th>
 			<th>글분류</th>
 			<th>글제목</th>
 			<th>조회수</th>
-			<th>글내용</th>
 			<th>작성일</th>
 			<th>삭제</th>
 		</tr>
 		<c:if test="${not empty requestScope.faq}">
 			<c:forEach var="s" items="${requestScope.faq}">
 				<tr>
+					<td>${s.faq_id}</td>
 					<td>${s.question_type}</td>
 					<td><a onclick="faqDetail(${s.faq_id})">${s.faq_title}</a></td>
 					<td>${s.faq_count}</td>
-					<td>${s.faq_content}</td>
 					<td>${s.faq_regdate}</td>
 					<td><a onclick="faqDelete(${s.faq_id})">삭제</a></td>
 				</tr>

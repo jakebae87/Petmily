@@ -21,8 +21,16 @@
 		<c:if test="${not empty requestScope.review}">
 			<table id="boardDetail">
 				<tr>
+					<th>글번호</th>
+					<td>${requestScope.review.review_id}</td>
+				</tr>
+				<tr>
 					<th>글제목</th>
 					<td>${requestScope.review.review_title}</td>
+				</tr>
+				<tr>
+					<th>상품명</th>
+					<td>${requestScope.review.product_name}</td>
 				</tr>
 				<tr>
 					<th>작성자</th>

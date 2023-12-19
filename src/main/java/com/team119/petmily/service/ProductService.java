@@ -49,4 +49,6 @@ public interface ProductService {
 	
 	List<ProductDTO> searchCri(SearchCriteria cri); // 출력할 Data만 select
 	int searchTotalCount(SearchCriteria cri); // 전체 rows 갯수
+
+	int updateD(int order_key);
 }

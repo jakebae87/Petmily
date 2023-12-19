@@ -16,6 +16,10 @@ export default function InquiryUpdate() {
     const navigate = useNavigate();
 
     const inquiryUpdate = async () => {
+        if (!inquiry.inquiry_title) {
+            alert("제목을 입력하세요.");
+            return;
+        }
         try {
             await axios.post(`/inquiry/updateBoard/`, {
                 inquiry_id: id,

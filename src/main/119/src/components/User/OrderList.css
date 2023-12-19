@@ -60,8 +60,9 @@
   text-decoration: none;
 }
 
-/* 글쓰기 버튼 */
-#writeButton {
+/* 글쓰기 버튼, 주문취소 버튼 */
+#writeButton,
+#cancelButton {
   cursor: pointer;
   display: block;
   width: 60px;
