@@ -13,6 +13,7 @@ function pTableListf(){
 	document.getElementById('pTableListArea').innerHTML=resultHtml;
 	document.getElementById('insertTableArea').innerHTML = "";
 	document.getElementById('resultArea1').innerHTML = "";
+	document.getElementById('resultArea2').innerHTML = "";
 } // pTableListf
 
 

@@ -115,7 +115,7 @@ export default function OrderList() {
                   (주문번호)
                 </th>
                 <th scope="col">이미지</th>
-                <th scope="col">상품정보</th>
+                <th scope="col">상품명</th>
                 <th scope="col">수량</th>
                 <th scope="col">상품별금액</th>
                 <th scope="col">주문처리상태</th>
@@ -125,7 +125,7 @@ export default function OrderList() {
             </thead>
             <tbody>
               {paginatedData().map((item) => (
-                <tr>  
+                <tr>
                   <td>
                     <span className="orderDate">
                       {new Date(item.order_date)
@@ -142,17 +142,23 @@ export default function OrderList() {
                   </td>
                   <td>
                     <div className="orderListImage">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          `/Images/products/${item.product_mainimagepath}`
-                        }
-                        alt={item.product_mainimagepath}
-                      />
+                      <Link to={`/products/productdetail/${item.product_id}`}>
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            `/Images/products/${item.product_mainimagepath}`
+                          }
+                          alt={item.product_mainimagepath}
+                        />
+                      </Link>
                     </div>
                   </td>
                   <td>
-                    <span className="orderProduct">{item.product_name}</span>
+                    <span className="orderProduct">
+                      <Link to={`/products/productdetail/${item.product_id}`}>
+                        {item.product_name}
+                      </Link>
+                    </span>
                   </td>
                   <td>
                     <span className="orderQuantity">{item.product_cnt}</span>
@@ -169,24 +175,42 @@ export default function OrderList() {
                     <span className="orderState">{item.delivery_status}</span>
                   </td>
                   <td>
-                    {item.delivery_status === '배송완료' ? (
+                    {item.delivery_status === "배송완료" ? (
                       item.product_review === 0 ? (
                         isWithin30Days(item.order_date) ? (
                           <Link to="/board/reviewWrite">
-                            <input type="button" id="writeButton" value="후기쓰기" />
+                            <input
+                              type="button"
+                              id="writeButton"
+                              value="후기쓰기"
+                            />
                           </Link>
                         ) : (
                           <span>작성일 만료</span>
                         )
                       ) : (
-                        <input style={{ background: 'blue' }} type="button" id="writeButton" value="작성완료" readOnly />
+                        <input
+                          style={{ background: "blue" }}
+                          type="button"
+                          id="writeButton"
+                          value="작성완료"
+                          readOnly
+                        />
                       )
                     ) : (
-                      <input style={{ width: '80px', background: 'red' }} type="button" id="writeButton" value="배송 후 가능" />
+                      <input
+                        style={{ width: "80px", background: "red" }}
+                        type="button"
+                        id="writeButton"
+                        value="배송 후 가능"
+                      />
                     )}
                   </td>
                   <td>
-                    <input type="button" id="cancelButton" name="cancelButton"
+                    <input
+                      type="button"
+                      id="cancelButton"
+                      name="cancelButton"
                       onClick={() => {
                         deleteOrder(item.order_key);
                       }}

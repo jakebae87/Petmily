@@ -22,6 +22,7 @@ function cartForm() {
 	document.getElementById('pTableListArea').innerHTML = "";
 	document.getElementById('insertTableArea').innerHTML = "";
 	document.getElementById('resultArea1').innerHTML = resultHtml;
+	document.getElementById('resultArea2').innerHTML = "";
 }
 
 // CartList(장바구니)

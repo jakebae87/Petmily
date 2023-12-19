@@ -99,8 +99,6 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems, noth
         }
     }
 
-    console.log(nothing);
-
     const scrollToAnchor = (anchorId) => {
         const element = document.getElementById(anchorId);
         if (element) {

@@ -45,6 +45,11 @@
   border-top: 1px solid black;
 }
 
+.orderListInfo a,
+.orderListInfo a:visited {
+  color: black;
+}
+
 /* 이미지 */
 .orderListImage img {
   width: 100px;
