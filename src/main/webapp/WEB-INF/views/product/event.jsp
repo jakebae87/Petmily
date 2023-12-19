@@ -37,8 +37,7 @@
 					<td>${s.event_description}</td>
 					<td><fmt:formatDate value="${s.event_start}" pattern="yyyy-MM-dd" /></td>
 					<td><fmt:formatDate value="${s.event_end}" pattern="yyyy-MM-dd" /></td>
-					<td>${s.event_imagepath}</td>
-					<%-- <td><img alt="MyImage" src="/resources/uploadImages/${s.event_imagepath}" width="60" height="40"></td> --%>
+					<td><img alt="MyImage" src="/resources/uploadImages/${s.event_imagepath}" width="60" height="40"></td>
 				</tr>
 			</c:forEach>
 		</c:if>

@@ -4,11 +4,18 @@
 <mapper namespace="com.team119.petmily.mapperInterface.ProductImageMapper">
 	
 	<select id="selectList" resultType="com.team119.petmily.domain.ProductImageDTO">
-		select * from PRODUCT_IMAGE
+		SELECT pi.*, p.product_name 
+		FROM PRODUCT_IMAGE AS pi
+		JOIN PRODUCT AS p
+		ON pi.product_id = p.product_id
 	</select>
 	
 	<select id="selectListByID" resultType="com.team119.petmily.domain.ProductImageDTO">
-		select * from PRODUCT_IMAGE where product_id=#{product_id}
+		SELECT pi.*, p.product_name 
+		FROM PRODUCT_IMAGE AS pi
+		JOIN PRODUCT AS p
+		ON pi.product_id = p.product_id
+		WHERE pi.product_id=#{product_id}
 	</select>
 	
 	<select id="selectOne" resultType="com.team119.petmily.domain.ProductImageDTO">
@@ -29,5 +36,43 @@
 	<delete id="delete">
 		DELETE FROM PRODUCT_IMAGE WHERE pimage_id=#{pimage_id}
 	</delete>
+	
+	<sql id="search">
+		<!-- 1) CONCAT('%',#{keyword},'%') 처리 -->
+		<if test="keyword!=null">
+			<bind name="keyVal" value="'%'+keyword+'%'"/>
+		</if>
+		<!-- 2) LIKE 조건문 -->
+		<choose>
+			<when test="searchType!=null and searchType!='all'">
+				and ${searchType} LIKE #{keyVal} )
+			</when>	
+			<when test="searchType!=null and searchType=='all' and keyword!=null">
+				and ( pimage_id LIKE #{keyVal}
+					  OR product_id LIKE #{keyVal} ))
+			</when>	
+			<otherwise>)</otherwise>
+		</choose>
+	</sql>
+	
+	<select id="searchCri" resultType="com.team119.petmily.domain.ProductImageDTO">
+		select * from PRODUCT_IMAGE
+			where ( pimage_id>0 <include refid="search"></include>
+			ORDER BY pimage_id DESC
+			limit #{sno}, #{rowsPerPage}
+		
+		<!-- SELECT pi.*, p.product_name
+	    FROM PRODUCT_IMAGE AS pi
+	    JOIN PRODUCT AS p
+	    ON p.product_id = pi.product_id
+	    WHERE ( pi.pimage_id>0 <include refid="search"></include>
+		ORDER BY pi.pimage_id DESC
+		limit #{sno}, #{rowsPerPage} -->
+	</select>
+	
+	<select id="searchTotalCount" resultType="int">
+		select count(*) from PRODUCT_IMAGE
+			where ( pimage_id>0 <include refid="search"></include>
+	</select>
 	
 </mapper>

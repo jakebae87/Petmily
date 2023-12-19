@@ -30,10 +30,15 @@ function Pagination({ totalPages, currentPage, onPageChange }) {
 
 const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems, nothing, setNothing }) => {
     const { id } = useParams();
+    const [currentImage, setCurrentImage] = useState('');
     const [productDetailData, setProductDetailData] = useState([]);
     const [productImagesData, setProductImagesData] = useState([]);
     const [quantity, setQuantity] = useState(1);
     const navigate = useNavigate();
+    
+    const handleThumbnailClick = (imageUrl) => {
+        setCurrentImage(imageUrl);
+    };
 
     const regDate = new Date(productDetailData.product_regdate);
     const formattedDate = regDate.toLocaleString('ko-KR', {
@@ -224,23 +229,43 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems, noth
         };
     }, [scrollPosition, productDetailImgOffset, productReviewOffset, productQAOffset, buyGuideOffset]);
 
+    const isLoggedIn =
+        sessionStorage.getItem("loggedInUser");
+    const user = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const userName = user ? user.user_name : null;
+
+    function AccessWrite() {
+        if (userName != null) {
+            return (
+                <Link to={`/board/reviewWrite2/${id}`}>후기작성</Link>
+            );
+        }
+    }
+
     return (
         <div className="ProductDetail">
             <div className="productPage">
                 <div className="productImage">
                     <img
-                        src={`${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
+                        src={currentImage || `${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
                         alt={productDetailData.product_mainimagepath}
                         width="500px"
                         height="400px"
                     />
                     <div className="detailGallery">
+                        <img
+                            src={`${process.env.PUBLIC_URL}/Images/products/${productDetailData.product_mainimagepath}`}
+                            alt={productDetailData.product_mainimagepath}
+                            className="detailImages"
+                            onClick={() => handleThumbnailClick(`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(productDetailData.product_mainimagepath)}`)}
+                        />
                         {productImagesData.map((image, index) => (
                             <img
                                 key={index}
                                 src={`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(image.product_imagepath)}`}
-                                alt={`Review Image ${index + 1}`}
-                                className="detailThumbnail"
+                                alt={`Thumbnail ${index}`}
+                                className="detailImages"
+                                onClick={() => handleThumbnailClick(`${process.env.PUBLIC_URL}/Images/products/${encodeURIComponent(image.product_imagepath)}`)}
                             />
                         ))}
                     </div>
@@ -347,8 +372,10 @@ const ProductDetail = ({ calcProductPrice, addCart, addOrder, setCartItems, noth
                 <div className="productReview" ref={productReviewRef}>
                     <div id="productReview" className="productDetailTitle">
                         <h2>상품후기 <span>({review.length})건</span></h2>
-                        <Link to={`/board/reviewWrite2/${id}`}>후기작성</Link>
+                        {AccessWrite()}
                     </div>
+
+                    
 
                     <div className="boardList">
                         <table>

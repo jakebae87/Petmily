@@ -2,8 +2,13 @@
 
 
 function pTableListf(){
+	document.getElementById('pTableListArea').innerHTML="";
+	document.getElementById('resultArea1').innerHTML="";
+	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('newPage').innerHTML="";
+	
 	let resultHtml =
-	`<h3>PRODUCT Table List</h3>
+	`<h3>상품 및 이벤트 테이블 관리</h3>
 	&nbsp;<a onclick="pmProductf()">PROMOTION_PRODUCT</a>&nbsp;
 	&nbsp;<a onclick="productf()">PRODUCT</a>&nbsp;
 	&nbsp;<a onclick="pImagef()">PRODUCT_IMAGE</a>&nbsp;
@@ -19,6 +24,10 @@ function pTableListf(){
 
 // 프로모션 상품 테이블 리스트 온클릭
 function pmProductf() {
+	document.getElementById('resultArea1').innerHTML="";
+	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('newPage').innerHTML="";
+	
 	let url = "/product/pmProductList";
 	
 	axios.get(
@@ -36,11 +45,24 @@ function pmProductf() {
 
 
 // 상품 테이블 리스트 온클릭
-function productf() {
-	let url = "/product/productList";
+function productf(url) {
+	document.getElementById('resultArea1').innerHTML="";
+	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('newPage').innerHTML="";
+	
+	let myurl = "";
+	
+	if(!url) {
+		myurl = "/product/productList";
+	}
+	else {
+		myurl = url;
+	}
+	
+	// let url = "/product/productList";
 	
 	axios.get(
-		url
+		myurl
 	).then(response => {
 		console.log("** productf response 성공 **");
 		document.getElementById('resultArea1').innerHTML=response.data;
@@ -54,11 +76,24 @@ function productf() {
 
 
 // 상품 이미지 테이블 리스트 온클릭
-function pImagef() {
-	let url = "/product/pImageList";
+function pImagef(url) {
+	document.getElementById('resultArea1').innerHTML="";
+	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('newPage').innerHTML="";
+	
+	let myurl = "";
+	
+	if(!url) {
+		myurl = "/product/pImageList";
+	}
+	else {
+		myurl = url;
+	}
+	
+	// let url = "/product/pImageList";
 	
 	axios.get(
-		url
+		myurl
 	).then(response => {
 		console.log("** pImagef response 성공 **");
 		document.getElementById('resultArea1').innerHTML=response.data;
@@ -73,6 +108,10 @@ function pImagef() {
 
 // 이벤트 테이블 온클릭
 function eventf() {
+	document.getElementById('resultArea1').innerHTML="";
+	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('newPage').innerHTML="";
+	
 	let url = "/product/eventList";
 	
 	axios.get(
@@ -91,6 +130,10 @@ function eventf() {
 
 // 하나의 상품 아이디에 대한 상품 이미지 테이블 리스트
 function showImages(id) {
+	document.getElementById('resultArea1').innerHTML="";
+	document.getElementById('resultArea2').innerHTML="";
+	document.getElementById('newPage').innerHTML="";
+	
 	let url = "/product/pImageList/" + id;
 	
 	axios.get(
@@ -105,3 +148,25 @@ function showImages(id) {
 	document.getElementById('insertTableArea').innerHTML="";
 	
 } // showImages
+
+function searchPDB() {
+    let searchType = document.getElementById('searchType').value;
+    let keyword = document.getElementById('keyword').value;
+    let url = '/product/productList?currPage=1&searchType=' + searchType + '&keyword=' + keyword;
+    
+    productf(url);
+}
+
+function searchPIDB() {
+    let searchType = document.getElementById('searchType').value;
+    let keyword = document.getElementById('keyword').value;
+    let url = '/product/pImageList?currPage=1&searchType=' + searchType + '&keyword=' + keyword;
+
+    pImagef(url);
+}
+
+function keywordClear() {
+    if (document.getElementById('searchType').value=='all') {
+        document.getElementById('keyword').value='';
+    }   
+}

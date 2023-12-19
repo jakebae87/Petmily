@@ -18,7 +18,8 @@ function ReviewDetail() {
         review_regdate: '',
         review_image1: '',
         review_image2: '',
-        reply_check: false
+        reply_check: false,
+        order_key: 0,
     });
     const [replies, setReplies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +97,7 @@ function ReviewDetail() {
     }
 
     function reviewDelete() {
-        let url = '/review/delete/' + id;
+        let url = `/review/delete/${id}/${review.order_key}/${review.product_id}`;
         axios.delete(
             url
         ).then(response => {
