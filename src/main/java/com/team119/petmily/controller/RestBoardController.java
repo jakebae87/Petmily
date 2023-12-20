@@ -206,7 +206,7 @@ public class RestBoardController {
 	@PostMapping(value = "/review/insert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<?> reviewInsert(ReviewDTO dto) throws IllegalStateException, IOException {
 		ResponseEntity<?> result = null;
-		
+
 		String realPath = "C:\\Team119\\petmily\\src\\main\\119\\public\\Images\\reviews\\";
 
 		String file1, file2 = "";
@@ -485,14 +485,14 @@ public class RestBoardController {
 	@DeleteMapping(value = "/review/delete/{id}/{order_key}/{product_id}")
 	public ResponseEntity<?> reviewDelete(@PathVariable("id") int id, ReviewDTO dto, HttpServletRequest request) {
 		ResponseEntity<?> result = null;
-		
-		HttpSession session = request.getSession();
-	    String loggedInUserID = (String) session.getAttribute("loginID");
 
-	    dto.setUser_id(loggedInUserID);
+		HttpSession session = request.getSession();
+		String loggedInUserID = (String) session.getAttribute("loginID");
+
+		dto.setUser_id(loggedInUserID);
 		dto.setReview_id(id);
 
-		if (boardService.deleteReview(dto) > 0 && boardService.updateStatusDelete(dto) > 0 ) {
+		if (boardService.deleteReview(dto) > 0 && boardService.updateStatusDelete(dto) > 0) {
 			result = ResponseEntity.status(HttpStatus.OK).body("상품후기 삭제 완료");
 			pservice.updateProductRating();
 		} else {
@@ -543,7 +543,7 @@ public class RestBoardController {
 	@GetMapping(value = "/product/searchByUser", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> searchProductByUser(@RequestParam("user") String userName) {
 		ResponseEntity<?> result = null;
-		
+
 		List<OrderProductByUserDTO> product = boardService.getProductByUser(userName);
 
 		if (product != null) {
@@ -605,4 +605,25 @@ public class RestBoardController {
 
 		return result;
 	}
+
+	@GetMapping(value = "/review/detail/{product_id}/{order_key}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getReviewDetail(ReviewDTO dto) {
+		ResponseEntity<?> result = null;
+
+		System.out.println("매개변수 dto 확인: " + dto);
+
+		ReviewDTO review = boardService.getReviewTest(dto);
+
+		if (review != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(review);
+			log.info("Get ReviewDetail HttpStatus => " + HttpStatus.OK);
+		} else {
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+			log.info("Get ReviewDetail HttpStatus => " + HttpStatus.BAD_GATEWAY);
+		}
+
+		return result;
+
+	}
+
 }

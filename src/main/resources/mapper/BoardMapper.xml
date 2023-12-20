@@ -358,15 +358,19 @@
 		UPDATE ORDER_DETAIL AS OD
 		INNER JOIN ORDER_PRODUCT AS OP ON OD.ORDER_KEY = OP.ORDER_KEY
 		SET OD.PRODUCT_REVIEW = TRUE
-		WHERE OP.USER_ID = #{user_id} AND OD.ORDER_KEY = #{order_key} AND OD.PRODUCT_ID = #{product_id};
+		WHERE OP.USER_ID = #{user_id} AND OD.ORDER_KEY = #{order_key} AND OD.PRODUCT_ID = #{product_id}
 	</update>
 	
 	<update id="updateStatusDelete">
 		UPDATE ORDER_DETAIL AS OD
 		INNER JOIN ORDER_PRODUCT AS OP ON OD.ORDER_KEY = OP.ORDER_KEY
 		SET OD.PRODUCT_REVIEW = FALSE
-		WHERE OP.USER_ID = #{user_id} AND OD.ORDER_KEY = #{order_key} AND OD.PRODUCT_ID = #{product_id};
+		WHERE OP.USER_ID = #{user_id} AND OD.ORDER_KEY = #{order_key} AND OD.PRODUCT_ID = #{product_id}
 	</update>
+
+	<select id="getReviewTest" resultType="com.team119.petmily.domain.ReviewDTO">
+		SELECT * FROM REVIEW WHERE ORDER_KEY = #{order_key} AND PRODUCT_ID = #{product_id}
+	</select>
 
 </mapper>
 
