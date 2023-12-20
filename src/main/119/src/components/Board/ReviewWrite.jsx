@@ -109,10 +109,10 @@ export default function ReviewWrite() {
 
             <div>
                 <div className="selectStarRegist">
-                    <input type="text" id="searchInput" onChange={fetchData} placeholder="상품명을 입력하세요." required />
+                    {/* <input type="text" id="searchInput" onChange={fetchData} placeholder="상품명을 입력하세요." required /> */}
                     <div id="searchResult">
                         <select id="product_id" style={{
-                            width: '150px',
+                            width: '250px',
                             height: '50px',
                             fontSize: '16px'
                         }} value={selectedValue} onChange={handleSelectChange}>
