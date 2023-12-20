@@ -108,4 +108,6 @@ public interface BoardMapper {
 
 	int updateStatusDelete(ReviewDTO dto);
 
+	ReviewDTO getReviewTest(ReviewDTO dto);
+
 }

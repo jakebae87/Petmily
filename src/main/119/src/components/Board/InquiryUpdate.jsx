@@ -12,6 +12,8 @@ export default function InquiryUpdate() {
         product_id: '',
         inquiry_content: ''
     });
+    const [kind, setKind] = useState('all');
+    const [productByKind, setProductByKind] = useState([]);
 
     const navigate = useNavigate();
 
@@ -44,7 +46,7 @@ export default function InquiryUpdate() {
             }
         };
         fetchData(); // 컴포넌트가 마운트되거나 id 값이 변경될 때마다 호출
-    }, [id]);
+    }, [selectedValue]);
 
 
     const fetchData = async () => {
@@ -57,15 +59,41 @@ export default function InquiryUpdate() {
             console.error('찾으시는 상품이 없습니다.', error);
         }
     };
-    const handleInputChange = (event) => {
-        const value = event.target.value;
-        setInquiry({ ...inquiry, product_name: value });
-        fetchData(value);
-    };
     const handleSelectChange = (event) => {
         const selectedProductId = event.target.value; // select 태그의 option 중 해당하는 상품명을 변수에 담는다.
         setSelectedValue(selectedProductId);
     };
+
+    const handleKindChange = async (event) => {
+        const selectedKind = event.target.value;
+        setKind(selectedKind);
+
+        try {
+            const response = await axios.get(`/product/kind/${selectedKind}`);
+            const { product, kinds } = response.data;
+
+            const formattedData = Object.values(kinds).map(category => ({
+                product_category: category
+            }));
+
+            setProductByKind(formattedData);
+            setSearchResult(Object.values(product));
+        } catch (error) {
+            console.error('카테고리 데이터를 불러오는 중 에러:', error);
+        }
+    };
+
+    const handleCategoryChange = async (event) => {
+        const selectedCategory = event.target.value;
+
+        try {
+            const response = await axios.get(`/product/category/${kind}/${selectedCategory}`);
+            setSearchResult(response.data);
+        } catch (error) {
+            console.error('카테고리 데이터를 불러오는 중 에러:', error);
+        }
+    };
+
 
     return (
         <div className="write">
@@ -78,16 +106,25 @@ export default function InquiryUpdate() {
                     <input
                         type="text"
                         id="searchInput"
-                        onChange={handleInputChange}
+                        onChange={fetchData}
                         value={inquiry.product_name}
                     />
-                    <div id="searchResult">
-                        <select id="product_id" style={{
-                            width: '150px',
-                            height: '50px',
-                            fontSize: '16px'
-                        }} value={selectedValue} onChange={handleSelectChange}>
-                            <option value="">선택하세요</option>
+                    <div id="searchResult" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <select id="product_kind" onChange={handleKindChange} style={{ width: '150px' }}>
+                            <option value="all">종류</option>
+                            <option value="dog">강아지</option>
+                            <option value="cat">고양이</option>
+                        </select>
+                        <select id="product_category" onChange={handleCategoryChange} style={{ width: '150px' }}>
+                            <option value="all">카테고리</option>
+                            {productByKind.map((result, index) => (
+                                <option key={index} >
+                                    {result.product_category}
+                                </option>
+                            ))}
+                        </select>
+                        <select id="product_id" value={selectedValue} onChange={handleSelectChange} style={{ width: '150px' }}>
+                            <option value="">상품</option>
                             {searchResult.map((result, index) => (
                                 <option key={index} value={result.product_id} >
                                     {result.product_name}

@@ -119,4 +119,6 @@ public interface BoardService {
 
 	int updateStatusDelete(ReviewDTO dto);
 
+	ReviewDTO getReviewTest(ReviewDTO dto);
+
 }

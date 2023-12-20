@@ -81,6 +81,22 @@ export default function OrderList() {
       });
   }
 
+  function reviewDetail(order_key, product_id) {
+    let url = `/review/detail/${order_key}/${product_id}`
+
+    axios
+      .get(url)
+      .then((response) => {
+        alert(response.data);
+        navigate("/community/review/" + response.data);
+      })
+      .catch((error) => {
+        console.error(`에러 응답 = ${error.response},
+        error status = ${error.response.status},
+        error message = ${error.message}`);
+      });
+  }
+
   return (
     <div className="OrderList">
       <div className="orderListtitleArea">
@@ -192,7 +208,9 @@ export default function OrderList() {
                           type="button"
                           id="writeButton"
                           value="작성완료"
-                          readOnly
+                            onClick={() => {
+                              reviewDetail(item.order_key, item.product_id);
+                            }}
                         />
                       )
                     ) : (
