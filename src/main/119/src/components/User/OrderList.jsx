@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Pagination({ totalPages, currentPage, onPageChange }) {
   const pages = [];
@@ -48,6 +48,7 @@ export default function OrderList() {
   const [orderLists, setOrderLists] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const navigate = useNavigate();
 
   const paginatedData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
